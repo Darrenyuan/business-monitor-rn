@@ -1,0 +1,18 @@
+{
+  "login": {
+    "welcome": "Welcome {{name}} to our localized app!"
+  },
+  "user_profile": {
+    "title": "Your Profile"
+  },
+  "drawer": {
+    "login_label": "login"
+  },
+  "screen": {
+    "login_username": "username",
+    "login_password": "password",
+    "login_button": "login",
+    "login_content_text1": "中建三局一公司项目质量安全管理系统"
+  },
+  "loading": "loading"
+}

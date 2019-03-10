@@ -10,15 +10,22 @@
   "main": "node_modules/expo/AppEntry.js",
   "dependencies": {
     "@babel/plugin-transform-react-jsx-source": "^7.2.0",
+    "axios": "^0.18.0",
     "detect-newline": "^2.1.0",
     "expo": "^32.0.0",
+    "i18next": "^15.0.6",
     "prop-types": "^15.6.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^1.1.0",
+    "react-native-i18n": "^2.0.15",
     "react-native-tab-view": "^0.0.75",
     "react-native-vector-icons": "^6.3.0",
-    "react-navigation": "^3.3.2"
+    "react-navigation": "^3.3.2",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "superagent": "^4.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.2",
