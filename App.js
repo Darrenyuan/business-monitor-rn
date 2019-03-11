@@ -14,7 +14,7 @@ import {
 } from "react-navigation";
 import PropTypes from "prop-types";
 import LoginDrawerItem from "./drawer/login";
-import ProjectsDrawerItem from "./drawer/login";
+import ProjectsDrawerItem from "./drawer/projects";
 import i18n from "./services/i18n";
 import en from "./lang/en.json";
 import zh from "./lang/zh.json";
