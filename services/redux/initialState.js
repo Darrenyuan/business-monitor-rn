@@ -6,9 +6,10 @@
 
 // NOTE: initialState constant is necessary so that Rekit could auto add initial state when creating async actions.
 const initialState = {
+  loginData: null,
   loginPending: false,
   loginError: null,
-  language: 'zh',
+  language: "zh",
   logoutPending: false,
   logoutError: null,
   getAvailableTitlePending: false,
@@ -35,7 +36,7 @@ const initialState = {
     fetchProjectListPending: false,
     fetchProjectListError: null,
     fetchProjectPending: false,
-    fetchProjectError: null,
+    fetchProjectError: null
   },
   issueList: {
     items: [],
@@ -47,11 +48,11 @@ const initialState = {
     dimension: 0,
     listNeedReload: false,
     fetchIssueListPending: false,
-    fetchIssueListError: null,
+    fetchIssueListError: null
   },
   stepState: {
-    nameExist: true,
-  },
+    nameExist: true
+  }
 };
 
 export default initialState;

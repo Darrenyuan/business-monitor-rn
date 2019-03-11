@@ -6,7 +6,8 @@
     "title": "Your Profile"
   },
   "drawer": {
-    "login_label": "登录"
+    "login_label": "登录",
+    "projects_label": "项目"
   },
   "screen": {
     "login_username": "用户名",

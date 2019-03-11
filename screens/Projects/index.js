@@ -1,7 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import { ScrollView, Text, View } from "react-native";
 
-export class ProjectsScreen extends Component {
+export class Projects extends Component {
   render() {
     return (
       <ScrollView>
@@ -13,4 +13,4 @@ export class ProjectsScreen extends Component {
   }
 }
 
-export default ProjectsScreen;
+export default Projects;

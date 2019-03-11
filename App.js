@@ -13,10 +13,16 @@ import {
   DrawerItems
 } from "react-navigation";
 import PropTypes from "prop-types";
-import Login from "./drawer/login";
+import LoginDrawerItem from "./drawer/login";
+import ProjectsDrawerItem from "./drawer/login";
 import i18n from "./services/i18n";
 import en from "./lang/en.json";
 import zh from "./lang/zh.json";
+import configureStore from "./services/common/configStore";
+import { Provider } from "react-redux";
+
+const store = configureStore();
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -62,7 +68,11 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.isI18nInitialized) {
-      return <RootTabs {...this.state} />;
+      return (
+        <Provider store={store}>
+          <RootTabs {...this.state} />
+        </Provider>
+      );
     }
     return (
       <View>
@@ -115,21 +125,11 @@ const RootTabs = props => {
   const Root = createAppContainer(
     createDrawerNavigator(
       {
-        Login: {
-          path: "/login",
-          screen: Login
-        }
-        // Projects: {
-        //   path: "/projects",
-        //   screen: Projects
-        // },
-        // Issues: {
-        //   path: "/issues",
-        //   screen: Issues
-        // }
+        login: LoginDrawerItem,
+        projects: ProjectsDrawerItem
       },
       {
-        initialRouteName: "Login",
+        initialRouteName: "login",
         contentOptions: {
           activeTintColor: "#548ff7",
           activeBackgroundColor: "transparent",

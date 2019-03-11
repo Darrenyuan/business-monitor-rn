@@ -11,11 +11,16 @@ import { Font } from "expo";
 import Icon from "react-native-vector-icons/FontAwesome";
 import LoginStyle from "./LoginStyle";
 import { t } from "../../services/i18n";
+import { bindActionCreators } from "redux";
+import * as actions from "../../services/redux/actions";
+import { connect } from "react-redux";
+import { NavigationActions } from "react-navigation";
+import Projects from "../Projects";
 
 const BG_IMAGE = require("../../assets/images/login_bg_screen.jpg");
 
 const styles = StyleSheet.create({ ...LoginStyle });
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -27,6 +32,8 @@ export default class Login extends Component {
       login_failed: false,
       showLoading: false
     };
+    this.usernameInput = React.createRef();
+    this.passwordInput = React.createRef();
   }
 
   async componentDidMount() {
@@ -49,14 +56,29 @@ export default class Login extends Component {
   submitLoginCredentials() {
     const { showLoading } = this.state;
 
+    this.props.actions.login({
+      username: this.usernameInput.current.props.value,
+      password: this.passwordInput.current.props.value
+    });
     this.setState({
-      showLoading: !showLoading
+      showLoading: true
     });
   }
 
   render() {
-    const { username, password, username_valid, showLoading } = this.state;
-
+    const { username, password, username_valid } = this.state;
+    const showLoading = Boolean(this.props.monitor.loginPending);
+    const loginData = this.props.monitor.loginData;
+    const { navigate } = this.props.navigation;
+    console.log("loginData=%s", JSON.stringify(loginData));
+    if (loginData) {
+      console.log("navigate to next screen:projects");
+      return (
+        <View style={styles.container}>
+          <Projects />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <ImageBackground source={BG_IMAGE} style={styles.bgImage}>
@@ -99,12 +121,12 @@ export default class Login extends Component {
                   autoCorrect={false}
                   keyboardType="email-address"
                   returnKeyType="done"
-                  ref={input => (this.usernameInput = input)}
+                  ref={this.usernameInput}
                   onSubmitEditing={() => {
                     this.setState({
                       username_valid: this.validateUsername(username)
                     });
-                    this.passwordInput.focus();
+                    this.passwordInput.current.focus();
                   }}
                   blurOnSubmit={false}
                   placeholderTextColor="white"
@@ -132,7 +154,7 @@ export default class Login extends Component {
                   autoCorrect={false}
                   keyboardType="default"
                   returnKeyType="done"
-                  ref={input => (this.passwordInput = input)}
+                  ref={this.passwordInput}
                   blurOnSubmit={true}
                   placeholderTextColor="white"
                 />
@@ -165,3 +187,21 @@ export default class Login extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    monitor: state
+  };
+}
+
+/* istanbul ignore next */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ ...actions }, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
