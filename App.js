@@ -126,8 +126,7 @@ const RootTabs = props => {
     createDrawerNavigator(
       {
         login: LoginDrawerItem,
-        projects: ProjectsDrawerItem,
-        issues:I
+        projects: ProjectsDrawerItem
       },
       {
         initialRouteName: "login",
