@@ -7,7 +7,9 @@
   },
   "drawer": {
     "login_label": "login",
-    "projects_label": "projects"
+    "projects_label": "projects",
+    "creatissu_label": "create issue"
+
   },
   "screen": {
     "login_username": "username",

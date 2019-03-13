@@ -20,6 +20,7 @@ import en from "./lang/en.json";
 import zh from "./lang/zh.json";
 import configureStore from "./services/common/configStore";
 import { Provider } from "react-redux";
+import CreatissuDrawerItem from "./drawer/creatissu";
 
 const store = configureStore();
 
@@ -126,7 +127,8 @@ const RootTabs = props => {
     createDrawerNavigator(
       {
         login: LoginDrawerItem,
-        projects: ProjectsDrawerItem
+        projects: ProjectsDrawerItem,
+        creatissu: CreatissuDrawerItem
       },
       {
         initialRouteName: "login",
@@ -148,7 +150,7 @@ const RootTabs = props => {
       }
     )
   );
-  return <Root />;
+  return <Root/>;
 };
 
 HomeIcon.propTypes = {
