@@ -17,7 +17,23 @@
     "login_button": "登录",
     "login_content_text1": "中建三局一公司",
     "login_content_text2": "项目质量安全",
-    "login_content_text3": "管理系统"
+    "login_content_text3": "管理系统",
+
+    "creatissu_modalDropdown1": "问题类型",
+    "creatissu_modalDropdown1_item1": "材料",
+    "creatissu_modalDropdown1_item2": "质量",
+    "creatissu_modalDropdown1_item3": "安全",
+    "creatissu_modalDropdown1_item4": "其他",
+
+    "creatissu_modalDropdown2": "指定处理人",
+    "creatissu_modalDropdown2_item1": "项目经理",
+    "creatissu_modalDropdown2_item2": "生产经理",
+    "creatissu_modalDropdown2_item3": "安全员",
+    "creatissu_modalDropdown2_item4": "质量员",
+    "creatissu_modalDropdown2_item5": "材料员",
+
+    "creatissu_submit": "提交",
+    "creatissu_textinput": "问题描述"
   },
   "loading": "载入"
 }

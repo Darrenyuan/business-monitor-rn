@@ -17,7 +17,23 @@
     "login_button": "login",
     "login_content_text1": "Welcome to Project ",
     "login_content_text2": "HSE Management",
-    "login_content_text3": " System"
+    "login_content_text3": " System",
+
+    "creatissu_modalDropdown1": "problem types",
+    "creatissu_modalDropdown1_item1": "meterial",
+    "creatissu_modalDropdown1_item2": "quality",
+    "creatissu_modalDropdown1_item3": "security",
+    "creatissu_modalDropdown1_item4": "else",
+
+    "creatissu_modalDropdown2": "designated handler",
+    "creatissu_modalDropdown2_item1": "project manager",
+    "creatissu_modalDropdown2_item2": "production manager",
+    "creatissu_modalDropdown2_item3": "safety officer",
+    "creatissu_modalDropdown2_item4": "quality personnel",
+    "creatissu_modalDropdown2_item5": "materialman",
+
+    "creatissu_submit": "submit",
+    "creatissu_textinput": "problem description"
   },
   "loading": "loading"
 }
