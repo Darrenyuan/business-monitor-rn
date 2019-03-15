@@ -40,10 +40,10 @@ class ProblemStatistics extends Component {
   //   })
 
   // }
-  componentWillReceiveProps(nextPoprs){
+  componentWillReceiveProps(nextPoprs) {
     let id = this.props.navigation.state.params.info;
     console.log('idcc', id);
-    console.log('nextPoprs',nextPoprs);
+    console.log('nextPoprs', nextPoprs);
   }
   onpress(evss) {
     if (evss === "内部" || evss === "外部") {
@@ -70,27 +70,27 @@ class ProblemStatistics extends Component {
       buttons: bs
     })
   }
-  submint(interaction,type,status,id) {
-    
-    this.props.navigation.navigate('statisticsDetailsStack',{
+  submint(interaction, type, status, id) {
+
+    this.props.navigation.navigate('statisticsDetailsStack', {
       interaction: interaction,
       type: type,
       status: status,
       id: id,
     });
-    console.log("状态传过来",interaction,type,status)
+    console.log("状态传过来", interaction, type, status)
   }
-  jump(){
-    console.log("跳转创建问题页")
+  jump() {
+    this.props.navigation.navigate('creatissuStack');
   }
-  goback(text){
+  goback(text) {
     this.props.navigation.navigate(text);
   }
   render() {
     let buttonText;
     let oBx = this.state.buttons;
     let but1 = this.state.button1, but2 = this.state.button2, but3 = this.state.button3;
-    let but = [but1,but2, but3];
+    let but = [but1, but2, but3];
     let Nav = ["名称", "交互", "分类", "状态"];
     if (oBx === "内部" || oBx === "外部" || oBx === "交互") {
       buttonText = ["内部", "外部"]
@@ -199,7 +199,7 @@ class ProblemStatistics extends Component {
       ]
     }
     let result = doFilter(products, conditions);
-    result = result.length?result:products;
+    result = result.length ? result : products;
     let lists = [];
     let listss = this.props.monitor.issueList.byId;
     for (const key in listss) {
@@ -208,20 +208,20 @@ class ProblemStatistics extends Component {
     return (
       <View style={styles.worp}>
         <Header
-          leftComponent= { <View >
+          leftComponent={<View >
             <Text
-              onPress={this.goback.bind(this,"ProjectDetailsStack")}
-              style={{color: "#fff", fontSize: 18, marginLeft: 10}}>返回</Text>
-          </View> }
-          centerComponent={{ text: this.state.name, style: { color: '#fff',fontSize:18 } }}
-          rightComponent = {<View >
-            <Icon name = "home" color="#fff" size ={28} 
-              iconStyle = {{marginRight: 10}}
-              onPress = {this.goback.bind(this,"projectsStack")}
+              onPress={this.goback.bind(this, "ProjectDetailsStack")}
+              style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>返回</Text>
+          </View>}
+          centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
+          rightComponent={<View >
+            <Icon name="home" color="#fff" size={28}
+              iconStyle={{ marginRight: 10 }}
+              onPress={this.goback.bind(this, "projectsStack")}
             />
-            
-          </View> }
-        /> 
+
+          </View>}
+        />
         <View style={styles.buttonViem}>
           {
             but.map((item, i) => {
@@ -234,9 +234,9 @@ class ProblemStatistics extends Component {
             })
           }
           <Button
-            title = "创建"
+            title="创建"
             containerStyle={styles.arrStyle}
-            onPress = {this.jump.bind(this)}
+            onPress={this.jump.bind(this)}
           />
         </View>
         <Modal
@@ -268,21 +268,21 @@ class ProblemStatistics extends Component {
         </Modal>
         <View style={styles.headerNav}>
           {
-            Nav.map((item , i)=>{
+            Nav.map((item, i) => {
               return <View key={i} style={styles.listItem}>
-              <Text style={styles.navText1}>
-                {item}
-              </Text>
-            </View>
+                <Text style={styles.navText1}>
+                  {item}
+                </Text>
+              </View>
             })
-          } 
+          }
         </View>
         <ScrollView>
           <View>
             {
-              result.map((item,i)=>{
-                return <TouchableOpacity key={i} 
-                  onPress = {this.submint.bind(this,item.interaction,item.type,item.status,item.id)} style={styles.headerNav}>
+              result.map((item, i) => {
+                return <TouchableOpacity key={i}
+                  onPress={this.submint.bind(this, item.interaction, item.type, item.status, item.id)} style={styles.headerNav}>
                   <View style={styles.viewList}>
                     <Text style={styles.navText}>
                       {item.name}
@@ -306,7 +306,7 @@ class ProblemStatistics extends Component {
                 </TouchableOpacity>
               })
             }
-            
+
           </View>
         </ScrollView>
       </View>

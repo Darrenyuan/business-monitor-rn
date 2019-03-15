@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 import axios from "axios";
 import { logout } from "../redux/actions";
 let baseUrl = "http://192.168.0.200:8080/imageserver";
-=======
-import axios, { post } from 'axios';
-import { logout } from '../redux/actions';
-let baseUrl = 'http://192.168.0.102:8080';
->>>>>>> feature_createissue
 
 let imageUrl = 'http://localhost:7070';
 // let option = {
@@ -138,7 +132,7 @@ export function apiFetchProject(args = {}) {
 export function apiFetchIssueList(args = {}) {
   return instance.get(
     `${baseUrl}/issues?projectId=${args.projectId}&page=${args.page}&pageSize=${
-      args.pageSize
+    args.pageSize
     }&keyword=${args.keyword}&dimension=${args.dimension}`,
   );
 }
