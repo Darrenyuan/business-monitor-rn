@@ -2,21 +2,21 @@ import React from "react";
 import { StackNavigator, createStackNavigator } from "react-navigation";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { t } from "../services/i18n";
-import Login from "../screens/Login";
-const LoginDrawerItem = createStackNavigator(
+import statisticsDetails from "../screens/statisticsDetails";
+const statisticsDetailsDrawerItem = createStackNavigator(
   {
-    loginStack: {
-      screen: Login
+    statisticsDetailsStack: {
+      screen: statisticsDetails
     }
   },
   {
     headerMode: "none",
-    initialRouteName: "loginStack"
+    initialRouteName: "statisticsDetailsStack"
   }
 );
 
-LoginDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t("drawer.login_label"),
+statisticsDetailsDrawerItem.navigationOptions = ({ navigation }) => ({
+  drawerLabel: t("drawer.projects_statistics"),
   drawerIcon: ({ tintColor }) => {
     return (
       <Icon
@@ -31,4 +31,4 @@ LoginDrawerItem.navigationOptions = ({ navigation }) => ({
     );
   }
 });
-export default LoginDrawerItem;
+export default statisticsDetailsDrawerItem;

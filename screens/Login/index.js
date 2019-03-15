@@ -63,6 +63,7 @@ class Login extends Component {
     this.setState({
       showLoading: true
     });
+    this.props.navigation.navigate('projectsStack');
   }
 
   render() {

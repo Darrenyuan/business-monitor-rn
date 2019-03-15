@@ -7,7 +7,8 @@
   },
   "drawer": {
     "login_label": "登录",
-    "projects_label": "项目"
+    "projects_label": "项目",
+    "projects_statistics": "问题统计信息"
   },
   "screen": {
     "login_username": "用户名",

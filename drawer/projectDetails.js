@@ -2,33 +2,33 @@ import React from "react";
 import { StackNavigator, createStackNavigator } from "react-navigation";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { t } from "../services/i18n";
-import Login from "../screens/Login";
-const LoginDrawerItem = createStackNavigator(
+import ProjectDetails from "../screens/ProjectDetails";
+const ProjectsDrawerItem = createStackNavigator(
   {
-    loginStack: {
-      screen: Login
+    ProjectDetailsStack: {
+      screen: ProjectDetails
     }
   },
   {
     headerMode: "none",
-    initialRouteName: "loginStack"
+    initialRouteName: "ProjectDetailsStack"
   }
 );
 
-LoginDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t("drawer.login_label"),
+ProjectsDrawerItem.navigationOptions = ({ navigation }) => ({
+  drawerLabel: t("drawer.projects_label"),
   drawerIcon: ({ tintColor }) => {
     return (
       <Icon
-        name="user"
+        name="air"
         size={30}
         iconStyle={{
           width: 30,
-          height: 30 
+          height: 30
         }}
         color={tintColor}
       />
     );
   }
 });
-export default LoginDrawerItem;
+export default ProjectsDrawerItem;

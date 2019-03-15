@@ -1,16 +1,93 @@
 import React, { Component } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View ,StyleSheet} from "react-native";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import * as actions from "../../services/redux/actions";
+import { ListItem , Header,Icon } from 'react-native-elements';
+import projectStyle from './projectlistStyle';
 
-export class Projects extends Component {
+const styles = StyleSheet.create({...projectStyle});
+
+class Projects extends Component {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      name: "工程列表"
+    }
+  }
+
+  componentDidMount(){
+    this.props.actions.fetchProjectList({
+      page: 1,
+      pageSize: 10
+    })
+  }
+  onpress(evss){
+    this.props.navigation.navigate('ProjectDetailsStack',{
+      info: evss
+    })
+  }
+  goback(text){
+    this.props.navigation.navigate(text);
+  }
   render() {
-    return (
-      <ScrollView>
+    let lists = [];
+    if(this.props.monitor.projectList.fetchProjectListPending){
+      return(
         <View>
-          <Text>monitor:projects</Text>
+          <Text>loading...</Text>
         </View>
-      </ScrollView>
+      )
+    }
+    let listss = this.props.monitor.projectList.byId;
+    for (const key in listss) {
+        lists.push(listss[key]);
+    }
+    return (
+      <View style = {styles.worp}>
+        <Header
+          centerComponent={{ text: this.state.name, style: { color: '#fff',fontSize:18 } }}
+          rightComponent = {<View >
+            <Icon name = "home" color="#fff" size ={28} 
+              iconStyle = {{marginRight: 10}}
+              onPress = {this.goback.bind(this,"projectsStack")}
+            />
+            
+          </View> }
+        /> 
+        <ScrollView>
+          <View>
+            {
+              lists.map((item,i)=>{
+                return <ListItem key={i} title={item.name} rightIcon={ {name :'chevron-right'}}
+                containerStyle = {styles.container}
+                onPress= {this.onpress.bind(this,item.id)}
+                />
+              })
+            }
+          </View>
+        </ScrollView>  
+      </View>
+      
     );
   }
 }
 
-export default Projects;
+function mapStateToProps(state) {
+  return {
+    monitor: state
+  };
+}
+
+/* istanbul ignore next */
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ ...actions }, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Projects);

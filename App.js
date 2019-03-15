@@ -15,6 +15,9 @@ import {
 import PropTypes from "prop-types";
 import LoginDrawerItem from "./drawer/login";
 import ProjectsDrawerItem from "./drawer/projects";
+import ProjectsDetailsDrawerItem from "./drawer/projectDetails";
+import ProblemStatisticsDrawerItem from "./drawer/ProblemStatistics";
+import statisticsDetailsDrawerItem from "./drawer/statisticsDetils";
 import i18n from "./services/i18n";
 import en from "./lang/en.json";
 import zh from "./lang/zh.json";
@@ -127,7 +130,9 @@ const RootTabs = props => {
       {
         login: LoginDrawerItem,
         projects: ProjectsDrawerItem,
-        issues:I
+        projectsDetails: ProjectsDetailsDrawerItem,
+        ProblemStatistics: ProblemStatisticsDrawerItem,
+        statisticsDetails: statisticsDetailsDrawerItem,
       },
       {
         initialRouteName: "login",
