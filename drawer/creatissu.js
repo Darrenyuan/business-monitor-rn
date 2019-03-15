@@ -20,7 +20,7 @@ CreatissuDrawerItem.navigationOptions = ({ navigation }) => ({
   drawerIcon: ({ tintColor }) => {
     return (
       <Icon
-        name="user"
+        name="bullseye"
         size={30}
         iconStyle={{
           width: 30,

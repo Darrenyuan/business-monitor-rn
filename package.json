@@ -28,7 +28,8 @@
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "superagent": "^4.1.0"
+    "superagent": "^4.1.0",
+    "react-native-is-iphonex": "^1.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.2",

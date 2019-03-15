@@ -20,7 +20,7 @@ ProjectsDrawerItem.navigationOptions = ({ navigation }) => ({
   drawerIcon: ({ tintColor }) => {
     return (
       <Icon
-        name="air"
+        name="book"
         size={30}
         iconStyle={{
           width: 30,
