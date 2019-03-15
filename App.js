@@ -23,6 +23,7 @@ import en from "./lang/en.json";
 import zh from "./lang/zh.json";
 import configureStore from "./services/common/configStore";
 import { Provider } from "react-redux";
+import CreatissuDrawerItem from "./drawer/creatissu";
 
 const store = configureStore();
 
@@ -133,6 +134,7 @@ const RootTabs = props => {
         projectsDetails: ProjectsDetailsDrawerItem,
         ProblemStatistics: ProblemStatisticsDrawerItem,
         statisticsDetails: statisticsDetailsDrawerItem,
+        creatissu: CreatissuDrawerItem
       },
       {
         initialRouteName: "login",

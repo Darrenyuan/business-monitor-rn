@@ -2,25 +2,25 @@ import React from "react";
 import { StackNavigator, createStackNavigator } from "react-navigation";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { t } from "../services/i18n";
-import Projects from "../screens/Projects";
-const ProjectsDrawerItem = createStackNavigator(
+import Creatissu from "../screens/Creatissu";
+const CreatissuDrawerItem = createStackNavigator(
   {
-    projectsStack: {
-      screen: Projects
+    creatissuStack: {
+      screen: Creatissu
     }
   },
   {
     headerMode: "none",
-    initialRouteName: "projectsStack"
+    initialRouteName: "creatissuStack"
   }
 );
 
-ProjectsDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t("drawer.projects_label"),
+CreatissuDrawerItem.navigationOptions = ({ navigation }) => ({
+  drawerLabel: t("drawer.creatissu_label"),
   drawerIcon: ({ tintColor }) => {
     return (
       <Icon
-        name="book"
+        name="bullseye"
         size={30}
         iconStyle={{
           width: 30,
@@ -31,4 +31,4 @@ ProjectsDrawerItem.navigationOptions = ({ navigation }) => ({
     );
   }
 });
-export default ProjectsDrawerItem;
+export default CreatissuDrawerItem;

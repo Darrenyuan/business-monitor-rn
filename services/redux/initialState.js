@@ -9,7 +9,7 @@ const initialState = {
   loginData: null,
   loginPending: false,
   loginError: null,
-  language: "zh",
+  language: 'zh',
   logoutPending: false,
   logoutError: null,
   getAvailableTitlePending: false,
@@ -36,7 +36,7 @@ const initialState = {
     fetchProjectListPending: false,
     fetchProjectListError: null,
     fetchProjectPending: false,
-    fetchProjectError: null
+    fetchProjectError: null,
   },
   issueList: {
     items: [],
@@ -48,11 +48,13 @@ const initialState = {
     dimension: 0,
     listNeedReload: false,
     fetchIssueListPending: false,
-    fetchIssueListError: null
+    fetchIssueListError: null,
   },
   stepState: {
-    nameExist: true
-  }
+    nameExist: true,
+  },
+  isInCamera: false,
+  imagePaths: [],
 };
 
 export default initialState;

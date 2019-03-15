@@ -6,10 +6,21 @@ export { getAvailableTitle, dismissGetAvailableTitleError } from './getAvailable
 export { createUser, dismissCreateUserError } from './createUser';
 export { createProject, dismissCreateProjectError } from './createProject';
 export { getAvailableProjects, dismissGetAvailableProjectsError } from './getAvailableProjects';
-export { getAvailableProjectsSize, dismissGetAvailableProjectsSizeError } from './getAvailableProjectsSize';
-export { getAvailableProjectIssues, dismissGetAvailableProjectIssuesError } from './getAvailableProjectIssues';
-export { getAvailableProjectIssuesSize, dismissGetAvailableProjectIssuesSizeError } from './getAvailableProjectIssuesSize';
+export {
+  getAvailableProjectsSize,
+  dismissGetAvailableProjectsSizeError,
+} from './getAvailableProjectsSize';
+export {
+  getAvailableProjectIssues,
+  dismissGetAvailableProjectIssuesError,
+} from './getAvailableProjectIssues';
+export {
+  getAvailableProjectIssuesSize,
+  dismissGetAvailableProjectIssuesSizeError,
+} from './getAvailableProjectIssuesSize';
 export { fetchProjectList, dismissFetchProjectListError } from './fetchProjectList';
 export { fetchProject, dismissFetchProjectError } from './fetchProject';
 export { fetchIssueList, dismissFetchIssueListError } from './fetchIssueList';
 export { syncStepState } from './syncStepState';
+export { setIsInCamera } from './setIsInCamera';
+export { setImagePaths } from './setImagePaths';
