@@ -9,7 +9,6 @@
     "login_label": "login",
     "projects_label": "projects",
     "creatissu_label": "create issue"
-
   },
   "screen": {
     "login_username": "username",
@@ -33,7 +32,12 @@
     "creatissu_modalDropdown2_item5": "materialman",
 
     "creatissu_submit": "submit",
-    "creatissu_textinput": "problem description"
+    "creatissu_textinput": "problem description",
+
+    "creatissu_photo": "photo upload",
+    "creatissu_togallery": "Save to gallery",
+    "creatissu_save": "Successfully saved",
+    "creatissu_nochoice": "No photos to save!"
   },
   "loading": "loading"
 }

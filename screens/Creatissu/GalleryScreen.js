@@ -3,6 +3,7 @@ import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'rea
 import { FileSystem, FaceDetector, MediaLibrary, Permissions } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import Photo from './Photo';
+import { t } from '../../services/i18n';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../services/redux/actions';
@@ -60,13 +61,13 @@ class GalleryScreen extends React.Component {
       });
 
       await Promise.all(promises);
-      alert("Successfully saved photos to user's gallery!");
+      alert(t('screen.creatissu_save'));
       console.log(remotePaths);
       FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos', { idempotent: true });
       this.props.actions.setIsInCamera({ isInCamera: false });
       this.props.actions.setImagePaths({ imagePaths: remotePaths });
     } else {
-      alert('No photos to save!');
+      alert(t('screen.creatissu_nochoice'));
     }
   };
 
@@ -86,7 +87,7 @@ class GalleryScreen extends React.Component {
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
-            <Text style={styles.whiteText}>Save selected to gallery</Text>
+            <Text style={styles.whiteText}>{t('screen.creatissu_togallery')}</Text>
           </TouchableOpacity>
         </View>
         <ScrollView contentComponentStyle={{ flex: 1 }}>

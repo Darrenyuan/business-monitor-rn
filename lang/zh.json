@@ -9,7 +9,6 @@
     "login_label": "登录",
     "projects_label": "项目",
     "creatissu_label": "创建问题"
-    
   },
   "screen": {
     "login_username": "用户名",
@@ -33,7 +32,12 @@
     "creatissu_modalDropdown2_item5": "材料员",
 
     "creatissu_submit": "提交",
-    "creatissu_textinput": "问题描述"
+    "creatissu_textinput": "问题描述",
+
+    "creatissu_photo": "拍照上传",
+    "creatissu_togallery": "保存到图库",
+    "creatissu_save": "成功保存",
+    "creatissu_nochoice": "没有选择图片"
   },
   "loading": "载入"
 }
