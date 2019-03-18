@@ -20,6 +20,7 @@ class ProblemStatistics extends Component {
     this.state = {
       name: "问题统计列表",
       showModal: false,
+      disabled: [false, false, false],
       selectedIndex: 2,
       buttons: "交互",
       button1: "交互",
@@ -28,22 +29,37 @@ class ProblemStatistics extends Component {
     }
   }
 
-  // componentDidMount() {
-  //   let id = this.props.navigation.state.params.info;
-  //   console.log('id', id);
-  //   this.props.actions.fetchIssueList({
-  //     projectId: id,
-  //     page: 1,
-  //     pageSize: 10,
-  //     keyword: 0,
-  //     dimension: 0
-  //   })
+  componentDidMount() {
+    let name = this.props.monitor.loginData.roles[0].roleName;
+    if (name === "pojectDirector" || name === "ownerEngineer" || name === "specializedSupervisionEngineer") {
+      this.setState({
+        disabled: [true, false, false],
+        button1: "外部",
+      })
+    }
+    let id = this.props.navigation.state.params.info;
+    console.log("idssssss", id);
+    this.props.actions.fetchIssueList({
+      page: 1,
+      pageSize: 10,
+      projectId: id,
+      type: 0,
+      status: 0,
+      interaction: 0,
+    })
 
-  // }
+  }
   componentWillReceiveProps(nextPoprs) {
     let id = this.props.navigation.state.params.info;
     console.log('idcc', id);
-    console.log('nextPoprs', nextPoprs);
+    // nextPoprs.actions.fetchIssueList({
+    //   page: 1,
+    //   pageSize: 10,
+    //   proiectId: id,
+    //   type: this.state.button2,
+    //   status: this.state.button3,
+    //   interaction: this.state.button1,
+    // })
   }
   onpress(evss) {
     if (evss === "内部" || evss === "外部") {
@@ -64,7 +80,8 @@ class ProblemStatistics extends Component {
     }
   }
   updateIndex(bs) {
-    console.log("sss", bs);
+    if (bs)
+      console.log("sss", bs);
     this.setState({
       showModal: true,
       buttons: bs
@@ -229,12 +246,13 @@ class ProblemStatistics extends Component {
                 key={i}
                 containerStyle={styles.arrStyle}
                 title={item}
+                disabled={this.state.disabled[i]}
                 onPress={this.updateIndex.bind(this, item)}
               />
             })
           }
           <Button
-            title="创建"
+            title="创建问题"
             containerStyle={styles.arrStyle}
             onPress={this.jump.bind(this)}
           />

@@ -130,10 +130,11 @@ export function apiFetchProject(args = {}) {
 }
 
 export function apiFetchIssueList(args = {}) {
+  console.log("argess=>>>>>>>>>>>>>>>", args);
   return instance.get(
     `${baseUrl}/issues?projectId=${args.projectId}&page=${args.page}&pageSize=${
     args.pageSize
-    }&keyword=${args.keyword}&dimension=${args.dimension}`,
+    }&type=${args.type}&status=${args.status}&interaction=${args.interaction}`,
   );
 }
 

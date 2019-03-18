@@ -26,6 +26,7 @@ export function fetchIssueList(args = {}) {
       const doRequest = apiFetchIssueList(args);
       doRequest.then(
         res => {
+          console.log(">>>>>>>>>>>______>>>>>>>>", res);
           dispatch({
             type: MONITOR_FETCH_ISSUE_LIST_SUCCESS,
             data: {
@@ -33,8 +34,9 @@ export function fetchIssueList(args = {}) {
               page: res.data.data.page,
               pageSize: res.data.data.pageSize,
               total: res.data.data.total,
-              keyword: res.data.data.keyword,
-              dimension: Number.parseInt(res.data.data.dimension, 10),
+              type: res.data.data.type,
+              status: res.data.data.status,
+              interaction: res.data.data.interaction,
             },
           });
           resolve(res);
@@ -93,8 +95,9 @@ export function reducer(state, action) {
           page: action.data.page,
           pageSize: action.data.pageSize,
           total: action.data.total,
-          keyword: action.data.keyword,
-          dimension: action.data.dimension,
+          type: res.data.data.type,
+          status: res.data.data.status,
+          interaction: res.data.data.interaction,
         },
       };
 

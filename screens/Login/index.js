@@ -66,6 +66,7 @@ class Login extends Component {
     this.props.navigation.navigate('projectsStack');
   }
 
+
   render() {
     const { username, password, username_valid } = this.state;
     const showLoading = Boolean(this.props.monitor.loginPending);
@@ -181,8 +182,8 @@ class Login extends Component {
               />
             </View>
           ) : (
-            <Text>{t("loading")}Loading...</Text>
-          )}
+              <Text>{t("loading")}Loading...</Text>
+            )}
         </ImageBackground>
       </View>
     );
