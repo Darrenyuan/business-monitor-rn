@@ -1,8 +1,8 @@
 import axios, { post } from 'axios';
 import { logout } from '../redux/actions';
-let baseUrl = 'http://192.168.0.102:8080';
+let baseUrl = 'http://192.168.0.200:8080/imageserver';
 
-let imageUrl = 'http://localhost:7070';
+let imageUrl = 'http://192.168.0.200:9000/resources';
 // let option = {
 //   baseURL: baseUrl,
 //   timeout: 5000,
@@ -160,3 +160,30 @@ export function apiUploadImage(args = {}) {
 
   return fetch(`${baseUrl}/upload`, options);
 }
+
+export function apiFetchforeman(args = {}) {
+  return instance.get(`${baseUrl}/user/foreman?projectId=${args.projectId}`);
+}
+
+export function apiCreateIssues(args = {}) {
+  return instance.post(baseUrl + '/issues', {
+    name: args.name,
+    type: args.type,
+    status: 1,
+    description: args.description,
+    handerId: args.handerId,
+    projectId: 45,
+    imagePath: args.imagePaths,
+  });
+}
+
+export function apiCreatecomment(args = {}) {
+  return instance.post(baseUrl + '/comment', {
+    issueId: 3,
+    username: args.username,
+    content: args.content,
+  });
+}
+// export function apiGetRole(args = {}){
+//   return instance.get(`${baseUrl}/role/under`);
+// }

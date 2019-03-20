@@ -10,33 +10,90 @@ import ModalDropdown from 'react-native-modal-dropdown';
 import CreatissuStyle from './CreatissuStyle';
 import CameraScreen from './CameraScreen';
 import { URL } from '../../services/axios/api';
-// import console = require('console');
+import { apiCreateIssues, apiFetchforeman } from '../../services/axios/api';
 const styles = StyleSheet.create({ ...CreatissuStyle });
 class Creatissu extends Component {
   constructor(props) {
     super(props);
     this.camaraRef = React.createRef();
     this.state = {
+      title: '',
       description: '',
       type: null,
       personnel: '',
+      personnelArr: [],
+      result: [],
     };
   }
+
   processImage = () => {
     this.props.actions.setIsInCamera({ isInCamera: true });
   };
+
+  // collectPersonnel = () => {
+  //   this.state.result.map(item => {
+  //     return item.nickname;
+  //   });
+  // };
+
+  componentDidMount() {
+    apiFetchforeman({ projectId: 1 }).then(
+      res => {
+        this.setState({
+          result: res.data.data,
+        });
+        this.setState({
+          personnelArr: res.data.data.map(item => {
+            return item.nickname;
+          }),
+        });
+      },
+      err => {
+        // console.log(err);
+      },
+    );
+  }
+
+  createIssues() {
+    apiCreateIssues({
+      name: this.state.title,
+      type: this.state.type,
+      description: this.state.description,
+      handerId: this.state.personnel,
+      imagePaths: JSON.stringify(this.props.monitor.imagePaths),
+    }).then(
+      res => {
+        console.log(res);
+      },
+      err => {
+        console.log(err);
+      },
+    );
+  }
+
   render() {
+    const paths = [];
+    this.props.monitor.imagePaths.forEach(element => {
+      paths.push(URL + element);
+    });
     if (this.props.monitor.isInCamera) {
       return <CameraScreen />;
     } else
       return (
         <View style={styles.container}>
-          <Text style={styles.title}>{t('drawer.creatissu_label')}</Text>
+          <TextInput
+            value={this.state.title}
+            autoFocus={true}
+            onChangeText={title => this.setState({ title })}
+            placeholderTextColor={'#BBBBBB'}
+            underlineColorAndroid={'transparent'}
+            placeholder={t('screen.creatissu_titleinput')}
+            style={styles.titleInput}
+          />
           <View style={styles.inputContainer}>
             <TextInput
+              value={this.state.description}
               onChangeText={description => this.setState({ description })}
-              // value={this.state.description}
-              autoFocus={true}
               placeholder={t('screen.creatissu_textinput')}
               placeholderTextColor={'#BBBBBB'}
               underlineColorAndroid={'transparent'}
@@ -44,9 +101,8 @@ class Creatissu extends Component {
               multiline
             />
           </View>
-          <Text>{this.state.description}</Text>
           <View style={styles.imgContainer}>
-            {this.props.monitor.imagePaths.length !== 0 && (
+            {/* {this.props.monitor.imagePaths.length !== 0 && (
                 <Image
                   style={styles.img}
                   source={{ uri: URL + this.props.monitor.imagePaths[0] }}
@@ -55,10 +111,13 @@ class Creatissu extends Component {
               ) && (
                 <Image
                   style={styles.img}
-                  resizeMode={'contain'}
                   source={{ uri: URL + this.props.monitor.imagePaths[1] }}
+                  resizeMode={'contain'}
                 />
-              )}
+              )} */}
+            {paths.map(item => {
+              return <Image style={styles.img} source={{ uri: item }} resizeMethod={'resize'} />;
+            })}
             <Button
               title={t('screen.creatissu_photo')}
               buttonStyle={{
@@ -88,31 +147,25 @@ class Creatissu extends Component {
               // dropdownTextStyle={styles.dropdownText}
               onSelect={(i, v) => {
                 this.setState({
-                  type: i + 1,
+                  type: +i + 1,
                 });
               }}
             />
             <ModalDropdown
               defaultValue={t('screen.creatissu_modalDropdown2')}
-              options={[
-                t('screen.creatissu_modalDropdown2_item1'),
-                t('screen.creatissu_modalDropdown2_item2'),
-                t('screen.creatissu_modalDropdown2_item3'),
-                t('screen.creatissu_modalDropdown2_item4'),
-                t('screen.creatissu_modalDropdown2_item5'),
-              ]}
+              options={this.state.personnelArr}
               style={styles.modalDropdown}
               textStyle={styles.textStyle}
               dropdownStyle={styles.dropdownStyle}
               onSelect={(i, v) => {
                 this.setState({
-                  // personnel: v,
+                  personnel: this.state.result[i].userId,
                 });
               }}
             />
           </View>
           <Button
-            onPress={this.processImage}
+            onPress={this.createIssues.bind(this)}
             title={t('screen.creatissu_submit')}
             buttonStyle={{
               height: 50,
@@ -121,7 +174,7 @@ class Creatissu extends Component {
               borderColor: 'white',
               borderRadius: 30,
               marginLeft: 20,
-              marginTop: 105,
+              marginTop: 40,
             }}
           />
         </View>

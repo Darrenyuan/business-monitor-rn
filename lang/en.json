@@ -8,7 +8,8 @@
   "drawer": {
     "login_label": "login",
     "projects_label": "projects",
-    "creatissu_label": "create issue"
+    "creatissu_label": "create issue",
+    "createcomment_label": "answer issue"
   },
   "screen": {
     "login_username": "username",
@@ -23,21 +24,16 @@
     "creatissu_modalDropdown1_item2": "quality",
     "creatissu_modalDropdown1_item3": "security",
     "creatissu_modalDropdown1_item4": "else",
-
     "creatissu_modalDropdown2": "designated handler",
-    "creatissu_modalDropdown2_item1": "project manager",
-    "creatissu_modalDropdown2_item2": "production manager",
-    "creatissu_modalDropdown2_item3": "safety officer",
-    "creatissu_modalDropdown2_item4": "quality personnel",
-    "creatissu_modalDropdown2_item5": "materialman",
-
     "creatissu_submit": "submit",
+    "creatissu_titleinput": "problem description",
     "creatissu_textinput": "problem description",
-
     "creatissu_photo": "photo upload",
     "creatissu_togallery": "Save to gallery",
     "creatissu_save": "Successfully saved",
-    "creatissu_nochoice": "No photos to save!"
+    "creatissu_nochoice": "No photos to save!",
+
+    "createcomment_titleinput": "problem reply"
   },
   "loading": "loading"
 }

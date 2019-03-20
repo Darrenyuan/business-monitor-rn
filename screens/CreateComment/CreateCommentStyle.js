@@ -1,33 +1,15 @@
 import { Dimensions } from 'react-native';
 import { Colors } from '../../constants';
 
-// const SCREEN_WIDTH = Dimensions.get("window").width;
-// const SCREEN_HEIGHT = Dimensions.get("window").height;
-
 export default {
   container: {
     flex: 1,
-  },
-  titleInput: {
-    paddingLeft: 5,
-    marginTop: 120,
-    marginLeft: 20,
-    textAlign: 'left',
-    height: 40,
-    width: 320,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    // paddingVertical: 0,
-    fontSize: 16,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderColor: '#ccc',
   },
   inputContainer: {
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#ccc',
-    marginTop: 10,
+    marginTop: 140,
     width: 320,
     marginLeft: 20,
     height: 105,
@@ -71,32 +53,8 @@ export default {
     padding: 10,
     margin: 40,
   },
-  modalDropdownContainer: {
-    marginTop: 30,
-    width: 320,
-    marginLeft: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  modalDropdown: {
-    backgroundColor: '#40AFFF',
-    width: 130,
-    height: 50,
-    borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   textStyle: {
     color: 'white',
     fontSize: 18,
-  },
-  dropdownStyle: {
-    // flex:1,
-    // width: 130,
-    // borderRadius: 4,
-    // justifyContent: "center",
-    // alignItems: "center",
-    // backgroundColor: "red",
-    // marginRight:30
   },
 };

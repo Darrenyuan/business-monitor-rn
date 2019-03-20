@@ -8,7 +8,8 @@
   "drawer": {
     "login_label": "登录",
     "projects_label": "项目",
-    "creatissu_label": "创建问题"
+    "creatissu_label": "创建问题",
+    "createcomment_label": "回复问题"
   },
   "screen": {
     "login_username": "用户名",
@@ -23,21 +24,16 @@
     "creatissu_modalDropdown1_item2": "质量",
     "creatissu_modalDropdown1_item3": "安全",
     "creatissu_modalDropdown1_item4": "其他",
-
     "creatissu_modalDropdown2": "指定处理人",
-    "creatissu_modalDropdown2_item1": "项目经理",
-    "creatissu_modalDropdown2_item2": "生产经理",
-    "creatissu_modalDropdown2_item3": "安全员",
-    "creatissu_modalDropdown2_item4": "质量员",
-    "creatissu_modalDropdown2_item5": "材料员",
-
     "creatissu_submit": "提交",
+    "creatissu_titleinput": "问题标题",
     "creatissu_textinput": "问题描述",
-
     "creatissu_photo": "拍照上传",
     "creatissu_togallery": "保存到图库",
     "creatissu_save": "成功保存",
-    "creatissu_nochoice": "没有选择图片"
+    "creatissu_nochoice": "没有选择图片",
+
+    "createcomment_titleinput": "问题回复"
   },
   "loading": "载入"
 }

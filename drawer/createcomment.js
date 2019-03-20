@@ -2,21 +2,21 @@ import React from 'react';
 import { StackNavigator, createStackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '../services/i18n';
-import Creatissu from '../screens/Creatissu';
-const CreatissuDrawerItem = createStackNavigator(
+import CreateComment from '../screens/CreateComment';
+const CreateCommentDrawerItem = createStackNavigator(
   {
-    creatissuStack: {
-      screen: Creatissu,
+    createCommentStack: {
+      screen: CreateComment,
     },
   },
   {
     headerMode: 'none',
-    initialRouteName: 'creatissuStack',
+    initialRouteName: 'createCommentStack',
   },
 );
 
-CreatissuDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t('drawer.creatissu_label'),
+CreateCommentDrawerItem.navigationOptions = ({ navigation }) => ({
+  drawerLabel: t('drawer.createcomment_label'),
   drawerIcon: ({ tintColor }) => {
     return (
       <Icon
@@ -31,4 +31,4 @@ CreatissuDrawerItem.navigationOptions = ({ navigation }) => ({
     );
   },
 });
-export default CreatissuDrawerItem;
+export default CreateCommentDrawerItem;
