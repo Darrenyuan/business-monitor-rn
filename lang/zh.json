@@ -12,7 +12,8 @@
     "creatissu_label": "创建问题",
     "projects_details": "工程详情信息",
     "statistics_details": "问题详情信息",
-    "projects_list": "工程列表"
+    "projects_list": "工程列表",
+    "createcomment_label": "回复问题"
   },
   "screen": {
     "login_username": "用户名",
@@ -40,18 +41,20 @@
     "creatissu_modalDropdown4_item2": "待确认",
     "creatissu_modalDropdown4_item3": "已确认",
     "creatissu_modalDropdown5": "名称",
-    "creatissu_submit": "提交",
     "creatissu_rectification": "整改",
     "creatissu_confirm": "确认",
     "creatissu_disagree": "不同意",
     "creatissu_opinion": "请输入意见",
     "creatissu_return": "返回",
+    "creatissu_submit": "提交",
+    "creatissu_titleinput": "问题标题",
     "creatissu_textinput": "问题描述",
     "creatissu_photo": "拍照上传",
     "creatissu_togallery": "保存到图库",
     "creatissu_save": "成功保存",
     "creatissu_issue": "工程问题信息",
-    "creatissu_nochoice": "没有选择图片"
+    "creatissu_nochoice": "没有选择图片",
+    "createcomment_titleinput": "问题回复"
   },
   "loading": "载入"
 }

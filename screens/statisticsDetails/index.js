@@ -6,6 +6,7 @@ import * as actions from "../../services/redux/actions";
 import { Button, Header, Image, Icon, Overlay, Input } from 'react-native-elements';
 import staDetStyle from './staDetStyle';
 import { t } from '../../services/i18n';
+import { URL } from '../../services/axios/api';
 import { apiCreateReply } from '../../services/axios/api';
 import { apiupdateIssueStatus } from '../../services/axios/api';
 const styles = StyleSheet.create({ ...staDetStyle });
@@ -30,19 +31,26 @@ class StatisticsDetails extends Component {
     })
   }
 
-  onperss() {
-    apiupdateIssueStatus({
-      issueId: this.props.navigation.state.params.issueId,
-      status: 3,
-    }).then((res) => {
-      this.props.navigation.navigate('ProblemStatisticsStack', {
-        id: this.props.navigation.state.params.projectId,
-        issueStatus: 1
+  onperss(buttonStatusText) {
+    if (buttonStatusText === t('screen.creatissu_rectification')) {
+      this.props.navigation.navigate('createCommentStack', {
+        issueId: this.props.navigation.state.params.issueId
       });
-      DeviceEventEmitter.emit('xxxName', true);
+    } else {
+      apiupdateIssueStatus({
+        issueId: this.props.navigation.state.params.issueId,
+        status: 1,
+      }).then((res) => {
+        this.props.navigation.navigate('ProblemStatisticsStack', {
+          id: this.props.navigation.state.params.projectId,
+          issueStatus: 1
+        });
+        DeviceEventEmitter.emit('xxxName', true);
+      }
+
+      )
     }
 
-    )
 
   }
   onpass(str) {
@@ -79,6 +87,7 @@ class StatisticsDetails extends Component {
     let issueReplyList = [];
     let buttonStatusText = "";
     let whoseIusseReply = [];
+    let imagePathReply = [];
     let issueId = this.props.navigation.state.params.issueId;
     let iusseItem = this.props.monitor.issueList.byId[issueId];
     let status = this.props.navigation.state.params.status;
@@ -87,8 +96,13 @@ class StatisticsDetails extends Component {
       issueReplyList.push(replyList[key]);
     }
     whoseIusseReply = issueReplyList.filter((item) => {
-      return item.issueId === issueId
+      return item.issueId === issueId && item.imagePath === "[]"
     })
+    console.log("whoseIusseReply", whoseIusseReply);
+    imagePathReply = issueReplyList.filter((item) => {
+      return item.imagePath !== "[]" && item.issueId === issueId
+    })
+    console.log("imagePathReply", imagePathReply);
     buttonStatusText = status === t('screen.creatissu_modalDropdown4_item1') ? t('screen.creatissu_rectification') : t('screen.creatissu_confirm');
     if (this.props.monitor.replyList.fetchReplyListPending) {
       return (
@@ -137,20 +151,23 @@ class StatisticsDetails extends Component {
                 </View>
               </View>
               {
-                status === t('screen.creatissu_modalDropdown4_item1') ? <Text></Text> : <View style={styles.viewWorps}>
-                  <View style={styles.imgStyle}>
-                    <View style={styles.issueStyle}>
-                      <Text style={{ fontSize: 18 }}>整改描述:</Text>
+                status === t('screen.creatissu_modalDropdown4_item1') ? <Text></Text> : (
+                  imagePathReply.map((item, i) => {
+                    return <View style={styles.viewWorps} key={i}>
+                      <View style={styles.imgStyle}>
+                        <View style={styles.issueStyle}>
+                          <Text style={{ fontSize: 18 }}>整改描述:</Text>
+                        </View>
+                        {JSON.parse(item.imagePath).map(item => {
+                          return <Image style={styles.img} source={{ uri: URL + item }} resizeMethod={'resize'} />;
+                        })}
+                      </View>
+                      <View style={styles.textStyle}>
+                        <Text style={{ lineHeight: 28, fontSize: 16, }}>   {item.content}</Text>
+                      </View>
                     </View>
-                    <Image
-                      source={{ uri: "Selection_003.png" }}
-                      PlaceholderContent={<ActivityIndicator />}
-                    />
-                  </View>
-                  <View style={styles.textStyle}>
-                    <Text style={{ lineHeight: 28, fontSize: 16, }}>   {iusseItem.description}</Text>
-                  </View>
-                </View>
+                  })
+                )
               }
 
             </View>
@@ -177,7 +194,7 @@ class StatisticsDetails extends Component {
                 status === t('screen.creatissu_modalDropdown4_item3') ? <Text></Text> : <Button
                   title={buttonStatusText}
                   disabled={this.state.disabled}
-                  onPress={this.onperss.bind(this)}
+                  onPress={this.onperss.bind(this, buttonStatusText)}
                   containerStyle={styles.butStyle}
                 />
               }

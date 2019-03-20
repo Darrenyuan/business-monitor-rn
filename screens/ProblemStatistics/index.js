@@ -78,7 +78,8 @@ class ProblemStatistics extends Component {
   componentWillReceiveProps(nextPops) {
     this.setState({
       projectId: this.props.navigation.state.params.id,
-      issueStatus: this.props.navigation.state.params.issueStatus
+      issueStatus: this.props.navigation.state.params.issueStatus,
+
     })
     this.forceUpdate();
   }
@@ -198,7 +199,9 @@ class ProblemStatistics extends Component {
     });
   }
   jump() {
-    this.props.navigation.navigate('creatissuStack');
+    this.props.navigation.navigate('creatissuStack', {
+      projectId: this.props.navigation.state.params.id
+    });
   }
   goback(text) {
     this.props.navigation.navigate(text);

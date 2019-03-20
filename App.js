@@ -21,9 +21,10 @@ import statisticsDetailsDrawerItem from "./drawer/statisticsDetils";
 import i18n from "./services/i18n";
 import en from "./lang/en.json";
 import zh from "./lang/zh.json";
-import configureStore from "./services/common/configStore";
-import { Provider } from "react-redux";
-import CreatissuDrawerItem from "./drawer/creatissu";
+import configureStore from './services/common/configStore';
+import { Provider } from 'react-redux';
+import CreatissuDrawerItem from './drawer/creatissu';
+import CreateCommentDrawerItem from './drawer/createcomment';
 
 const store = configureStore();
 
@@ -31,7 +32,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isI18nInitialized: false
+      isI18nInitialized: false,
     };
   }
   componentDidMount() {
@@ -39,12 +40,12 @@ export default class App extends React.Component {
       i18n
         .init()
         .then(() => {
-          const RNDir = RNI18nManager.isRTL ? "RTL" : "LTR";
+          const RNDir = RNI18nManager.isRTL ? 'RTL' : 'LTR';
 
           // RN doesn't always correctly identify native
           // locale direction, so we force it here.
           if (i18n.dir !== RNDir) {
-            const isLocaleRTL = i18n.dir === "RTL";
+            const isLocaleRTL = i18n.dir === 'RTL';
 
             RNI18nManager.forceRTL(isLocaleRTL);
 
@@ -52,19 +53,19 @@ export default class App extends React.Component {
             // don't restart the app's JavaScript.
             Expo.Updates.reloadFromCache();
           }
-          console.log("====================>into app.js");
-          i18n.t("loading");
-          console.log("en=" + { ...en });
-          console.log("zh=" + { ...zh });
-          i18n.addResourceBundle("en", "common", {
-            ...en
+          console.log('====================>into app.js');
+          i18n.t('loading');
+          console.log('en=' + { ...en });
+          console.log('zh=' + { ...zh });
+          i18n.addResourceBundle('en', 'common', {
+            ...en,
           });
-          i18n.addResourceBundle("zh", "common", {
-            ...zh
+          i18n.addResourceBundle('zh', 'common', {
+            ...zh,
           });
-          i18n.t("loading");
+          i18n.t('loading');
           this.setState({ isI18nInitialized: true });
-          console.log("<<====================return app.js componentDidMount");
+          console.log('<<====================return app.js componentDidMount');
         })
         .catch(error => console.warn(error));
     }
@@ -86,20 +87,20 @@ export default class App extends React.Component {
   }
 }
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const CustomDrawerContentComponent = props => {
   return (
-    <View style={{ flex: 1, backgroundColor: "#43484d" }}>
+    <View style={{ flex: 1, backgroundColor: '#43484d' }}>
       <View
         style={{
           marginTop: 40,
-          justifyContent: "center",
-          alignItems: "center"
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <Image
-          source={require("./assets/icons/app-icon.png")}
+          source={require('./assets/icons/app-icon.png')}
           style={{ width: SCREEN_WIDTH * 0.57 }}
           resizeMode="contain"
         />
@@ -112,17 +113,12 @@ const CustomDrawerContentComponent = props => {
 };
 
 const HomeIcon = ({ focused, tintColor }) => (
-  <Icon
-    name="man"
-    type="entypo"
-    size={26}
-    color={focused ? tintColor : "gray"}
-  />
+  <Icon name="man" type="entypo" size={26} color={focused ? tintColor : 'gray'} />
 );
 
 const RootTabs = props => {
-  console.log("RootTab render");
-  console.log("props=", JSON.stringify(props));
+  console.log('RootTab render');
+  console.log('props=', JSON.stringify(props));
   if (!props.isI18nInitialized) {
     return <View>loading</View>;
   }
@@ -134,32 +130,33 @@ const RootTabs = props => {
         projectsDetails: ProjectsDetailsDrawerItem,
         ProblemStatistics: ProblemStatisticsDrawerItem,
         statisticsDetails: statisticsDetailsDrawerItem,
-        creatissu: CreatissuDrawerItem
+        creatissu: CreatissuDrawerItem,
+        createcomment: CreateCommentDrawerItem,
       },
       {
-        initialRouteName: "login",
+        initialRouteName: 'login',
         contentOptions: {
-          activeTintColor: "#548ff7",
-          activeBackgroundColor: "transparent",
-          inactiveTintColor: "#ffffff",
-          inactiveBackgroundColor: "transparent",
+          activeTintColor: '#548ff7',
+          activeBackgroundColor: 'transparent',
+          inactiveTintColor: '#ffffff',
+          inactiveBackgroundColor: 'transparent',
           labelStyle: {
             fontSize: 15,
-            marginLeft: 0
-          }
+            marginLeft: 0,
+          },
         },
         drawerWidth: SCREEN_WIDTH * 0.8,
         contentComponent: CustomDrawerContentComponent,
-        drawerOpenRoute: "DrawerOpen",
-        drawerCloseRoute: "DrawerClose",
-        drawerToggleRoute: "DrawerToggle"
-      }
-    )
+        drawerOpenRoute: 'DrawerOpen',
+        drawerCloseRoute: 'DrawerClose',
+        drawerToggleRoute: 'DrawerToggle',
+      },
+    ),
   );
   return <Root />;
 };
 
 HomeIcon.propTypes = {
   focused: PropTypes.bool.isRequired,
-  tintColor: PropTypes.string.isRequired
+  tintColor: PropTypes.string.isRequired,
 };

@@ -12,7 +12,8 @@
     "projects_details": "Project details",
     "statistics_details": "issue details",
     "problem_statistics": "issue statistics list",
-    "projects_list": "projects list"
+    "projects_list": "projects list",
+    "createcomment_label": "answer issue"
   },
   "screen": {
     "login_username": "username",
@@ -40,18 +41,20 @@
     "creatissu_modalDropdown4_item2": "To be confirmed",
     "creatissu_modalDropdown4_item3": "Confirmed",
     "creatissu_modalDropdown5": "name",
-    "creatissu_submit": "submit",
     "creatissu_rectification": "rectification",
     "creatissu_confirm": "confirm",
     "creatissu_disagree": "disagree",
     "creatissu_opinion": "opinion",
     "creatissu_return": "return",
     "creatissu_issue": "project issue",
+    "creatissu_submit": "submit",
+    "creatissu_titleinput": "problem description",
     "creatissu_textinput": "problem description",
     "creatissu_photo": "photo upload",
     "creatissu_togallery": "Save to gallery",
     "creatissu_save": "Successfully saved",
-    "creatissu_nochoice": "No photos to save!"
+    "creatissu_nochoice": "No photos to save!",
+    "createcomment_titleinput": "problem reply"
   },
   "loading": "loading"
 }
