@@ -3,99 +3,199 @@ import {
   ScrollView, Text, View, StyleSheet,
   Modal,
   TouchableOpacity,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  DeviceEventEmitter
 } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actions from "../../services/redux/actions";
 import { Header, Button, Icon } from 'react-native-elements';
 import statisticsStyle from './statisticsStyle';
-import doFilter from './screen';
+import { t } from '../../services/i18n';
+import { apiFetchIssueList } from "../../services/axios/api";
+import statisticsDetails from "../statisticsDetails"
 const styles = StyleSheet.create({ ...statisticsStyle });
+const typeMap = {
+  1: "材料",
+  2: "质量",
+}
+const statusMap = {
+
+}
 
 class ProblemStatistics extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      name: "问题统计列表",
+      name: t('drawer.problem_statistics'),
       showModal: false,
       disabled: [false, false, false],
-      selectedIndex: 2,
-      buttons: "交互",
-      button1: "交互",
-      button2: "分类",
-      button3: "状态",
+      buttons: t('screen.creatissu_modalDropdown3'),
+      button1: t('screen.creatissu_modalDropdown3'),
+      button2: t('screen.creatissu_modalDropdown1'),
+      button3: t('screen.creatissu_modalDropdown4'),
+      issueStatus: false,
+      type: 0,
+      status: 0,
+      interaction: 0,
+      page: 1,
+      pageSize: 10,
+      projectId: this.props.navigation.state.params.id,
     }
   }
 
   componentDidMount() {
     let name = this.props.monitor.loginData.roles[0].roleName;
-    if (name === "pojectDirector" || name === "ownerEngineer" || name === "specializedSupervisionEngineer") {
+    if (name === "pojectDirector" ||
+      name === "ownerEngineer" ||
+      name === "specializedSupervisionEngineer") {
       this.setState({
         disabled: [true, false, false],
-        button1: "外部",
+        button1: t('screen.creatissu_modalDropdown3_item2'),
       })
     }
-    let id = this.props.navigation.state.params.info;
-    console.log("idssssss", id);
-    this.props.actions.fetchIssueList({
-      page: 1,
-      pageSize: 10,
-      projectId: id,
-      type: 0,
-      status: 0,
-      interaction: 0,
-    })
-
+    let id = this.props.navigation.state.params.id;
+    this.fetchData();
+    this.listener = DeviceEventEmitter.addListener('xxxName', (res) => {
+      this.setState({
+        issueStatus: res
+      });
+    });
   }
-  componentWillReceiveProps(nextPoprs) {
-    let id = this.props.navigation.state.params.info;
-    console.log('idcc', id);
-    // nextPoprs.actions.fetchIssueList({
-    //   page: 1,
-    //   pageSize: 10,
-    //   proiectId: id,
-    //   type: this.state.button2,
-    //   status: this.state.button3,
-    //   interaction: this.state.button1,
-    // })
+
+
+  fetchData = () => {
+    this.props.actions.fetchIssueList({
+      page: this.state.page,
+      pageSize: this.state.pageSize,
+      projectId: this.state.projectId,
+      type: this.state.type,
+      status: this.state.status,
+      interaction: this.state.interaction,
+    });
+  };
+  componentWillReceiveProps(nextPops) {
+    this.setState({
+      projectId: this.props.navigation.state.params.id,
+      issueStatus: this.props.navigation.state.params.issueStatus
+    })
+    this.forceUpdate();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.navigation.state.params.id !== this.props.navigation.state.params.id ||
+      prevState.page !== this.state.page ||
+      prevState.pageSize !== this.state.pageSize ||
+      prevState.projectId !== this.state.projectId ||
+      prevState.type !== this.state.type ||
+      prevState.status !== this.state.status ||
+      prevState.interaction !== this.state.interaction ||
+      prevState.issueStatus !== this.state.issueStatus
+    ) {
+      this.fetchData();
+    }
+  }
+  componentWillUnmount() {
+    this.listener.remove();
   }
   onpress(evss) {
-    if (evss === "内部" || evss === "外部") {
-      this.setState({
-        button1: evss,
-        showModal: false
-      })
-    } else if (evss === "材料" || evss === "质量" || evss === "安全" || evss === "其他") {
-      this.setState({
-        button2: evss,
-        showModal: false
-      })
+    if (evss === t('screen.creatissu_modalDropdown3_item1') ||
+      evss === t('screen.creatissu_modalDropdown3_item2')) {
+      if (evss === t('screen.creatissu_modalDropdown3_item1')) {
+        this.setState({
+          showModal: false,
+          interaction: 1,
+          button1: evss
+        });
+      } else {
+        this.setState({
+          showModal: false,
+          interaction: 2,
+          button1: evss
+        });
+      }
+    } else if (evss === t('screen.creatissu_modalDropdown1_item1') ||
+      evss === t('screen.creatissu_modalDropdown1_item2') ||
+      evss === t('screen.creatissu_modalDropdown1_item3') ||
+      evss === t('screen.creatissu_modalDropdown1_item4')) {
+      switch (evss) {
+        case t('screen.creatissu_modalDropdown1_item1'):
+          this.setState({
+            type: 1,
+            showModal: false,
+            button2: evss
+          });
+          break;
+        case t('screen.creatissu_modalDropdown1_item2'):
+          this.setState({
+            type: 2,
+            showModal: false,
+            button2: evss
+          });
+
+          break;
+        case t('screen.creatissu_modalDropdown1_item3'):
+          this.setState({
+            type: 3,
+            showModal: false,
+            button2: evss
+          });
+
+          break;
+        case t('screen.creatissu_modalDropdown1_item4'):
+          this.setState({
+            type: 4,
+            showModal: false,
+            button2: evss
+          });
+
+          break;
+      }
     } else {
-      this.setState({
-        button3: evss,
-        showModal: false
-      })
+      switch (evss) {
+        case t('screen.creatissu_modalDropdown4_item1'):
+          this.setState({
+            status: 1,
+            showModal: false,
+            button3: evss
+          });
+
+          break;
+        case t('screen.creatissu_modalDropdown4_item2'):
+          this.setState({
+            status: 2,
+            showModal: false,
+            button3: evss
+          });
+
+          break;
+        case t('screen.creatissu_modalDropdown4_item3'):
+          this.setState({
+            status: 3,
+            showModal: false,
+            button3: evss
+          });
+
+          break;
+      }
     }
   }
   updateIndex(bs) {
-    if (bs)
-      console.log("sss", bs);
     this.setState({
       showModal: true,
       buttons: bs
     })
   }
-  submint(interaction, type, status, id) {
+  submint(interaction, type, status, issueId) {
 
     this.props.navigation.navigate('statisticsDetailsStack', {
       interaction: interaction,
       type: type,
       status: status,
-      id: id,
+      issueId: issueId,
+      projectId: this.state.projectId
     });
-    console.log("状态传过来", interaction, type, status)
   }
   jump() {
     this.props.navigation.navigate('creatissuStack');
@@ -104,123 +204,85 @@ class ProblemStatistics extends Component {
     this.props.navigation.navigate(text);
   }
   render() {
-    let buttonText;
+    let modelInnerButtonsText;
     let oBx = this.state.buttons;
+    let roleName = this.props.monitor.loginData.roles[0].roleName;
     let but1 = this.state.button1, but2 = this.state.button2, but3 = this.state.button3;
     let but = [but1, but2, but3];
-    let Nav = ["名称", "交互", "分类", "状态"];
-    if (oBx === "内部" || oBx === "外部" || oBx === "交互") {
-      buttonText = ["内部", "外部"]
-    } else if (oBx === "材料" || oBx === "质量" || oBx === "安全" || oBx === "其他" || oBx === "分类") {
-      buttonText = ["材料", "质量", "安全", "其他"]
+    let Nav = [t('screen.creatissu_modalDropdown5'), t('screen.creatissu_modalDropdown3'), t('screen.creatissu_modalDropdown1'), t('screen.creatissu_modalDropdown4')];
+    if (oBx === t('screen.creatissu_modalDropdown3_item1') || oBx === t('screen.creatissu_modalDropdown3_item2') || oBx === t('screen.creatissu_modalDropdown3')) {
+      modelInnerButtonsText = [t('screen.creatissu_modalDropdown3_item1'), t('screen.creatissu_modalDropdown3_item2')]
+    } else if (oBx === t('screen.creatissu_modalDropdown1_item1') ||
+      oBx === t('screen.creatissu_modalDropdown1_item2') ||
+      oBx === t('screen.creatissu_modalDropdown1_item3') ||
+      oBx === t('screen.creatissu_modalDropdown1_item4') ||
+      oBx === t('screen.creatissu_modalDropdown1')) {
+      modelInnerButtonsText = [t('screen.creatissu_modalDropdown1_item1'), t('screen.creatissu_modalDropdown1_item2'), t('screen.creatissu_modalDropdown1_item3'), t('screen.creatissu_modalDropdown1_item4')]
     } else {
-      buttonText = ["待反馈", "待确认", "已确认"]
+      modelInnerButtonsText = [t('screen.creatissu_modalDropdown4_item1'), t('screen.creatissu_modalDropdown4_item2'), t('screen.creatissu_modalDropdown4_item3')]
     }
     console.log('this.isint', this);
-    if (this.props.monitor.projectList.fetchProjectListPending) {
+    if (this.props.monitor.issueList.fetchIssueListPending) {
       return (
         <View>
           <Text>loading...</Text>
         </View>
       )
     }
-    let products = [{
-      name: "问题啊啊1",
-      interaction: "内部",
-      type: "材料",
-      status: "待确认",
-      id: 1,
-    },
-    {
-      name: "问题问题2",
-      interaction: "内部",
-      type: "质量",
-      status: "待反馈",
-      id: 2,
-    },
-    {
-      name: "问题问题3",
-      interaction: "内部",
-      type: "安全",
-      status: "已确认",
-      id: 3,
-    },
-    {
-      name: "问题问题4",
-      interaction: "内部",
-      type: "其他",
-      status: "待确认",
-      id: 4,
-    },
-    {
-      name: "问题问题5",
-      interaction: "外部",
-      type: "材料",
-      status: "待反馈",
-      id: 5,
-    },
-    {
-      name: "问题问题6",
-      interaction: "外部",
-      type: "安全",
-      status: "已确认",
-      id: 6,
-    },
-    {
-      name: "问题问题7",
-      interaction: "外部",
-      type: "质量",
-      status: "待反馈",
-      id: 7,
-    },
-    {
-      name: "问题问题8",
-      interaction: "外部",
-      type: "质量",
-      status: "待反馈",
-      id: 8,
-    },
-    {
-      name: "问题问题9",
-      interaction: "外部",
-      type: "质量",
-      status: "待确认",
-      id: 9,
-    },
-    {
-      name: "问题问题10",
-      interaction: "外部",
-      type: "其他",
-      status: "已确认",
-      id: 10,
+    let issueItemList = [];
+    //深拷贝,不改变原数组
+    let issueListById = JSON.parse(JSON.stringify(this.props.monitor.issueList.byId));
+    for (const key in issueListById) {
+      issueItemList.push(issueListById[key]);
     }
-    ];
-    let conditions = {
-      ranges: [
-        {
-          type: 'interaction',
-          value: but1
+    Issueres = issueItemList.map((item, i) => {
+      item.interaction = item.interaction === 1 ? t('screen.creatissu_modalDropdown3_item1') : t('screen.creatissu_modalDropdown3_item2');
+      switch (item.type) {
+        case 1:
+          item.type = t('screen.creatissu_modalDropdown1_item1')
+          break;
+        case 2:
+          item.type = t('screen.creatissu_modalDropdown1_item2')
+          break;
+        case 3:
+          item.type = t('screen.creatissu_modalDropdown1_item3')
+          break;
+        case 4:
+          item.type = t('screen.creatissu_modalDropdown1_item4')
+          break;
+      }
+      switch (item.status) {
+        case 1:
+          item.status = t('screen.creatissu_modalDropdown4_item1')
+          break;
+        case 2:
+          item.status = t('screen.creatissu_modalDropdown4_item2')
+          break;
+        case 3:
+          item.status = t('screen.creatissu_modalDropdown4_item3')
+          break;
+      }
+      return {
+        name: item.name,
+        interaction: item.interaction,
+        type: item.type,
+        status: item.status,
+        id: item.id,
+      }
+    })
+    console.log("Issueres", Issueres);
+    if (roleName === "pojectDirector" || roleName === "ownerEngineer" || roleName === "specializedSupervisionEngineer") {
+      Issueres = Issueres.reduce((r, c, i) => {
+        if (c.interaction === t('screen.creatissu_modalDropdown3_item2')) {
+          return [
+            ...r,
+            c
+          ];
+        } else {
+          return [];
         }
-      ],
-      chooses: [
-        {
-          type: 'type',
-          value: but2
-        }
-      ],
-      statuss: [
-        {
-          type: 'status',
-          value: but3
-        }
-      ]
-    }
-    let result = doFilter(products, conditions);
-    result = result.length ? result : products;
-    let lists = [];
-    let listss = this.props.monitor.issueList.byId;
-    for (const key in listss) {
-      lists.push(listss[key]);
+      }, []);
+      console.log("supervisorList", Issueres);
     }
     return (
       <View style={styles.worp}>
@@ -228,7 +290,7 @@ class ProblemStatistics extends Component {
           leftComponent={<View >
             <Text
               onPress={this.goback.bind(this, "ProjectDetailsStack")}
-              style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>返回</Text>
+              style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>{t('screen.creatissu_return')}</Text>
           </View>}
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
           rightComponent={<View >
@@ -252,7 +314,7 @@ class ProblemStatistics extends Component {
             })
           }
           <Button
-            title="创建问题"
+            title={t('drawer.creatissu_label')}
             containerStyle={styles.arrStyle}
             onPress={this.jump.bind(this)}
           />
@@ -270,7 +332,7 @@ class ProblemStatistics extends Component {
                 <View style={styles.boxView}>
                   <View style={styles.courseWrap}>
                     {
-                      buttonText.map((item, i) => {
+                      modelInnerButtonsText.map((item, i) => {
                         return <TouchableOpacity key={i} onPress={this.onpress.bind(this, item)}>
                           <View style={{ padding: 10 }}>
                             <Text style={styles.textstyle}>{item}</Text>
@@ -298,7 +360,7 @@ class ProblemStatistics extends Component {
         <ScrollView>
           <View>
             {
-              result.map((item, i) => {
+              Issueres.map((item, i) => {
                 return <TouchableOpacity key={i}
                   onPress={this.submint.bind(this, item.interaction, item.type, item.status, item.id)} style={styles.headerNav}>
                   <View style={styles.viewList}>
@@ -308,7 +370,9 @@ class ProblemStatistics extends Component {
                   </View >
                   <View style={styles.viewList}>
                     <Text style={styles.navText}>
-                      {item.interaction}
+                      {
+                        item.interaction
+                      }
                     </Text>
                   </View>
                   <View style={styles.viewList}>

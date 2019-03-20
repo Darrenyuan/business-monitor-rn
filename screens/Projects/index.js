@@ -5,62 +5,66 @@ import { connect } from "react-redux";
 import * as actions from "../../services/redux/actions";
 import { ListItem, Header, Icon } from 'react-native-elements';
 import projectStyle from './projectlistStyle';
-
+import { t } from '../../services/i18n';
+import { toUnicode } from "punycode";
 
 const styles = StyleSheet.create({ ...projectStyle });
 
 class Projects extends Component {
   constructor(props) {
     super(props)
-
+    //TODO t函数
     this.state = {
-      name: "工程列表",
+      name: t('drawer.projects_list'),
       noMoreData: false,
+      pageNumber: 1,
+      projectList: {},
     }
   }
-
+  //TODO 上划加载
   componentDidMount() {
     this.props.actions.fetchProjectList({
-      page: 1,
-      pageSize: 10
-    })
+      page: this.state.pageNumber,
+      pageSize: 14
+    });
   }
-  onpress(evss) {
+  onpress(id) {
     this.props.navigation.navigate('ProjectDetailsStack', {
-      info: evss
+      id: id
     })
   }
   goback(text) {
     this.props.navigation.navigate(text);
   }
-  queryData() {
-    if (list.length > 0) {
-      this.setState({
-        list: [...this.state.list, ...list],
-      });
-    } else {
-      this.setState({
-        noMoreData: true
-      })
+  loadMoreData(num) {
+    let pageNumber = this.state.pageNumber + num
+    if (pageNumber < 1) {
+      pageNumber = 1;
     }
-    if (list.length < this.state.pagesize) {
-      this.setState({
-        noMoreData: true
-      })
-    }
+    this.props.actions.fetchProjectList({
+      page: pageNumber,
+      pageSize: 14
+    });
+    this.setState({
+      pageNumber: pageNumber
+    });
   }
-  scrollHandle(evt) {
-    let y = evt.nativeEvent.contentOffset.y;
-    let height = evt.nativeEvent.layoutMeasurement.height;
-    let contentHeight = evt.nativeEvent.contentSize.height;
-    console.log("y", y);
-    console.log("height", height);
-    console.log("contentHeight", contentHeight);
-    console.log("evt", evt.nativeEvent);
+  scrollHandle(event) {
+    const contentHeight = event.nativeEvent.contentSize.height;
+    const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
+    const scrollOffset = event.nativeEvent.contentOffset.y;
+    const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
+    const isContentFillPage = contentHeight >= scrollViewHeight;
+    if (this.state.pageNumber !== 1) {
+      if (scrollOffset < -30) {
+        this.loadMoreData(-1);
+      }
+    }
+    if (isContentFillPage && isEndReached) {
+      this.loadMoreData(1);
+    }
   }
   render() {
-    console.log("this0", this);
-    let lists = [];
     if (this.props.monitor.projectList.fetchProjectListPending) {
       return (
         <View>
@@ -68,11 +72,13 @@ class Projects extends Component {
         </View>
       )
     }
-    let listss = this.props.monitor.projectList.byId;
-    for (const key in listss) {
-      lists.push(listss[key]);
+    let projectList = [];
+    let projectListById = this.props.monitor.projectList.byId;
+    for (const key in projectListById) {
+      projectList.push(projectListById[key]);
     }
     return (
+      //TODO 修worp名字
       <View style={styles.worp}>
         <Header
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
@@ -86,10 +92,11 @@ class Projects extends Component {
         />
         <ScrollView
           onScroll={(evt) => this.scrollHandle(evt)}
+          scrollEventThrottle={50}
         >
           <View>
             {
-              lists.map((item, i) => {
+              projectList.map((item, i) => {
                 return <ListItem key={i} title={item.name} rightIcon={{ name: 'chevron-right' }}
                   containerStyle={styles.container}
                   onPress={this.onpress.bind(this, item.id)}

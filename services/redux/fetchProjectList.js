@@ -75,7 +75,7 @@ export function reducer(state, action) {
       };
 
     case MONITOR_FETCH_PROJECT_LIST_SUCCESS:
-      const byId = {};
+      const byId = { ...state.projectList.byId };
       const items = [];
       action.data.items.forEach(item => {
         items.push(item.id);

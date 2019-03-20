@@ -92,6 +92,18 @@ export function apiGetAvailableProjectsSize(args = {}) {
   return instance.get(baseUrl + '/project/size');
 }
 
+export function apiCreateReply(args = {}) {
+  return instance.post(baseUrl + '/comment', {
+    issueId: args.issueId,
+    username: args.username,
+    content: args.content,
+  })
+}
+
+export function apiFetchReplyList(args = {}) {
+  return instance.get(`${baseUrl}/issues/${args.issueId}/comments`);
+}
+
 export function apiGetAvailableProjectIssues(args = {}) {
   if (!args.current) {
     args = { ...args, current: 1 };
@@ -130,12 +142,15 @@ export function apiFetchProject(args = {}) {
 }
 
 export function apiFetchIssueList(args = {}) {
-  console.log("argess=>>>>>>>>>>>>>>>", args);
   return instance.get(
     `${baseUrl}/issues?projectId=${args.projectId}&page=${args.page}&pageSize=${
     args.pageSize
     }&type=${args.type}&status=${args.status}&interaction=${args.interaction}`,
   );
+}
+
+export function apiupdateIssueStatus(args = {}) {
+  return instance.put(`/issues?issueId=${args.issueId}&status=${args.status}`);
 }
 
 export function apiUploadImage(args = {}) {

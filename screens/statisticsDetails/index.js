@@ -1,54 +1,57 @@
 import React, { Component } from "react";
-import { ScrollView, Text, View, StyleSheet, ActivityIndicator, TextInput } from "react-native";
+import { ScrollView, Text, View, StyleSheet, ActivityIndicator, DeviceEventEmitter } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actions from "../../services/redux/actions";
 import { Button, Header, Image, Icon, Overlay, Input } from 'react-native-elements';
 import staDetStyle from './staDetStyle';
+import { t } from '../../services/i18n';
+import { apiCreateReply } from '../../services/axios/api';
+import { apiupdateIssueStatus } from '../../services/axios/api';
 const styles = StyleSheet.create({ ...staDetStyle });
 
-class Projects extends Component {
+class StatisticsDetails extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      name: "问题详情信息",
+      name: t('drawer.statistics_details'),
       isVisible: false,
       texts: "",
       bool: true,
-      but: "不同意",
-      disabled: false
+      disabled: false,
+      replyList: []
     }
   }
 
   componentDidMount() {
-    let id = this.props.navigation.state.params.status;
-    // this.props.actions.fetchIssueList({
-    //   projectId: id,
-    //   page: 1,
-    //   pageSize: 10,
-    //   keyword: 0,
-    //   dimension: 0
-    // })
+    this.props.actions.fetchReplyList({
+      issueId: this.props.navigation.state.params.issueId,
+    })
   }
 
-  onperss(evss) {
-    this.props.navigation.navigate('ProblemStatisticsStack');
-    console.log("批准不批准");
+  onperss() {
+    apiupdateIssueStatus({
+      issueId: this.props.navigation.state.params.issueId,
+      status: 3,
+    }).then((res) => {
+      this.props.navigation.navigate('ProblemStatisticsStack', {
+        id: this.props.navigation.state.params.projectId,
+        issueStatus: 1
+      });
+      DeviceEventEmitter.emit('xxxName', true);
+    }
+
+    )
+
   }
   onpass(str) {
-    if (str === "不同意") {
-      this.setState({ isVisible: true, });
-    } else {
-      this.setState({ but: "不同意", disabled: false });
-      this.props.navigation.navigate('ProblemStatisticsStack');
-    }
+    this.setState({ isVisible: true, });
   }
   goback(text) {
     this.props.navigation.navigate(text);
   }
   onChangeText(tex) {
-    console.log("change", tex);
     this.setState({
       texts: tex
     })
@@ -56,17 +59,38 @@ class Projects extends Component {
   onVisible() {
     this.setState({
       isVisible: false,
-      bool: false,
-      but: "提交",
-      disabled: true,
     })
+    apiCreateReply({
+      issueId: this.props.navigation.state.params.issueId,
+      username: this.props.monitor.loginData.username,
+      content: this.state.texts
+    }).then((res) => {
+      apiupdateIssueStatus({
+        issueId: this.props.navigation.state.params.issueId,
+        status: 1,
+      })
+      this.props.navigation.navigate('ProblemStatisticsStack', {
+        id: this.props.navigation.state.params.projectId
+      });
+    })
+
   }
   render() {
-    console.log("tishsssssss", this);
-    let id = this.props.navigation.state.params.id;
-    let DetailId = this.props.monitor.issueList.byId[id];
+    let issueReplyList = [];
+    let buttonStatusText = "";
+    let whoseIusseReply = [];
+    let issueId = this.props.navigation.state.params.issueId;
+    let iusseItem = this.props.monitor.issueList.byId[issueId];
     let status = this.props.navigation.state.params.status;
-    if (this.props.monitor.projectList.fetchProjectListPending) {
+    let replyList = this.props.monitor.replyList.byId;
+    for (const key in replyList) {
+      issueReplyList.push(replyList[key]);
+    }
+    whoseIusseReply = issueReplyList.filter((item) => {
+      return item.issueId === issueId
+    })
+    buttonStatusText = status === t('screen.creatissu_modalDropdown4_item1') ? t('screen.creatissu_rectification') : t('screen.creatissu_confirm');
+    if (this.props.monitor.replyList.fetchReplyListPending) {
       return (
         <View>
           <Text>loading...</Text>
@@ -79,7 +103,7 @@ class Projects extends Component {
           leftComponent={<View >
             <Text
               onPress={this.goback.bind(this, "ProblemStatisticsStack")}
-              style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>返回</Text>
+              style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>{t('screen.creatissu_return')}</Text>
           </View>}
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
           rightComponent={<View >
@@ -95,7 +119,7 @@ class Projects extends Component {
             <View style={styles.contenter}>
               <View style={styles.viewWorp}>
                 <Text style={styles.henderText}>
-                  {DetailId.name}
+                  {iusseItem.name}
                 </Text>
               </View>
               <View style={styles.viewWorps}>
@@ -104,49 +128,54 @@ class Projects extends Component {
                     <Text style={{ fontSize: 18 }}>问题描述:</Text>
                   </View>
                   <Image
-                    source={{ uri: DetailId.imagePath }}
+                    source={{ uri: "Selection_003.png" }}
                     PlaceholderContent={<ActivityIndicator />}
                   />
                 </View>
                 <View style={styles.textStyle}>
-                  <Text style={{ lineHeight: 28, fontSize: 16, }}>   {DetailId.description}</Text>
+                  <Text style={{ lineHeight: 28, fontSize: 16, }}>   {iusseItem.description}</Text>
                 </View>
               </View>
-              <View style={styles.viewWorps}>
-                <View style={styles.imgStyle}>
-                  <View style={styles.issueStyle}>
-                    <Text style={{ fontSize: 18 }}>整改描述:</Text>
+              {
+                status === t('screen.creatissu_modalDropdown4_item1') ? <Text></Text> : <View style={styles.viewWorps}>
+                  <View style={styles.imgStyle}>
+                    <View style={styles.issueStyle}>
+                      <Text style={{ fontSize: 18 }}>整改描述:</Text>
+                    </View>
+                    <Image
+                      source={{ uri: "Selection_003.png" }}
+                      PlaceholderContent={<ActivityIndicator />}
+                    />
                   </View>
-                  <Image
-                    source={{ uri: DetailId.imagePath }}
-                    PlaceholderContent={<ActivityIndicator />}
-                  />
+                  <View style={styles.textStyle}>
+                    <Text style={{ lineHeight: 28, fontSize: 16, }}>   {iusseItem.description}</Text>
+                  </View>
                 </View>
-                <View style={styles.textStyle}>
-                  <Text style={{ lineHeight: 28, fontSize: 16, }}>   {DetailId.description}</Text>
-                </View>
-              </View>
+              }
+
             </View>
             {
-              this.state.bool ? <Text></Text> : <View style={styles.OpinStyle}>
-                <View>
-                  <Text style={{ fontSize: 18, marginRight: 10 }}>意见: </Text>
+              whoseIusseReply.map((item, i) => {
+                return <View style={styles.OpinStyle} key={i}>
+                  <View>
+                    <Text style={{ fontSize: 18, marginRight: 10 }}>意见{i + 1}: </Text>
+                  </View>
+                  <View>
+                    <Text style={styles.OpinionStyle}>{item.content}</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text style={styles.OpinionStyle}>{this.state.texts}</Text>
-                </View>
-              </View>
+              })
             }
 
             <View style={styles.butViewStyle}>
-              {(status === "已确认" || status === "待反馈") ? <Text></Text> : <Button
-                title={this.state.but}
-                onPress={this.onpass.bind(this, this.state.but)}
+              {(status === t('screen.creatissu_modalDropdown4_item3') || status === t('screen.creatissu_modalDropdown4_item1')) ? <Text></Text> : <Button
+                title={t('screen.creatissu_disagree')}
+                onPress={this.onpass.bind(this)}
                 containerStyle={styles.butStyle}
               />}
               {
-                status === "已确认" ? <Text></Text> : <Button
-                  title="确认"
+                status === t('screen.creatissu_modalDropdown4_item3') ? <Text></Text> : <Button
+                  title={buttonStatusText}
                   disabled={this.state.disabled}
                   onPress={this.onperss.bind(this)}
                   containerStyle={styles.butStyle}
@@ -160,14 +189,14 @@ class Projects extends Component {
             >
               <View>
                 <Input
-                  placeholder='请输入意见'
+                  placeholder={t('screen.creatissu_opinion')}
                   containerStyle={styles.modulStyle}
                   onChangeText={this.onChangeText.bind(this)}
                   shake={true}
                   multiline={true}
                 />
                 <Button
-                  title="提交"
+                  title={t('screen.creatissu_submit')}
                   onPress={this.onVisible.bind(this)}
                 />
               </View>
@@ -196,4 +225,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Projects);
+)(StatisticsDetails);

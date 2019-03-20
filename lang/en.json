@@ -8,7 +8,11 @@
   "drawer": {
     "login_label": "login",
     "projects_label": "projects",
-    "creatissu_label": "create issue"
+    "creatissu_label": "create issue",
+    "projects_details": "Project details",
+    "statistics_details": "issue details",
+    "problem_statistics": "issue statistics list",
+    "projects_list": "projects list"
   },
   "screen": {
     "login_username": "username",
@@ -17,23 +21,33 @@
     "login_content_text1": "Welcome to Project ",
     "login_content_text2": "HSE Management",
     "login_content_text3": " System",
-
     "creatissu_modalDropdown1": "problem types",
     "creatissu_modalDropdown1_item1": "meterial",
     "creatissu_modalDropdown1_item2": "quality",
     "creatissu_modalDropdown1_item3": "security",
     "creatissu_modalDropdown1_item4": "else",
-
     "creatissu_modalDropdown2": "designated handler",
     "creatissu_modalDropdown2_item1": "project manager",
     "creatissu_modalDropdown2_item2": "production manager",
     "creatissu_modalDropdown2_item3": "safety officer",
     "creatissu_modalDropdown2_item4": "quality personnel",
     "creatissu_modalDropdown2_item5": "materialman",
-
+    "creatissu_modalDropdown3": "interactive",
+    "creatissu_modalDropdown3_item1": "inside",
+    "creatissu_modalDropdown3_item2": "external",
+    "creatissu_modalDropdown4": "state",
+    "creatissu_modalDropdown4_item1": "Pending feedback",
+    "creatissu_modalDropdown4_item2": "To be confirmed",
+    "creatissu_modalDropdown4_item3": "Confirmed",
+    "creatissu_modalDropdown5": "name",
     "creatissu_submit": "submit",
+    "creatissu_rectification": "rectification",
+    "creatissu_confirm": "confirm",
+    "creatissu_disagree": "disagree",
+    "creatissu_opinion": "opinion",
+    "creatissu_return": "return",
+    "creatissu_issue": "project issue",
     "creatissu_textinput": "problem description",
-
     "creatissu_photo": "photo upload",
     "creatissu_togallery": "Save to gallery",
     "creatissu_save": "Successfully saved",

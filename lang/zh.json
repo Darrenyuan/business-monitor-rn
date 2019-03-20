@@ -8,8 +8,11 @@
   "drawer": {
     "login_label": "登录",
     "projects_label": "项目",
-    "projects_statistics": "问题统计信息",
-    "creatissu_label": "创建问题"
+    "problem_statistics": "问题统计列表",
+    "creatissu_label": "创建问题",
+    "projects_details": "工程详情信息",
+    "statistics_details": "问题详情信息",
+    "projects_list": "工程列表"
   },
   "screen": {
     "login_username": "用户名",
@@ -29,11 +32,25 @@
     "creatissu_modalDropdown2_item3": "安全员",
     "creatissu_modalDropdown2_item4": "质量员",
     "creatissu_modalDropdown2_item5": "材料员",
+    "creatissu_modalDropdown3": "交互",
+    "creatissu_modalDropdown3_item1": "内部",
+    "creatissu_modalDropdown3_item2": "外部",
+    "creatissu_modalDropdown4": "状态",
+    "creatissu_modalDropdown4_item1": "待反馈",
+    "creatissu_modalDropdown4_item2": "待确认",
+    "creatissu_modalDropdown4_item3": "已确认",
+    "creatissu_modalDropdown5": "名称",
     "creatissu_submit": "提交",
+    "creatissu_rectification": "整改",
+    "creatissu_confirm": "确认",
+    "creatissu_disagree": "不同意",
+    "creatissu_opinion": "请输入意见",
+    "creatissu_return": "返回",
     "creatissu_textinput": "问题描述",
     "creatissu_photo": "拍照上传",
     "creatissu_togallery": "保存到图库",
     "creatissu_save": "成功保存",
+    "creatissu_issue": "工程问题信息",
     "creatissu_nochoice": "没有选择图片"
   },
   "loading": "载入"

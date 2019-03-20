@@ -24,6 +24,7 @@ import { reducer as fetchIssueListReducer } from './fetchIssueList';
 import { reducer as syncStepStateReducer } from './syncStepState';
 import { reducer as setIsInCameraReducer } from './setIsInCamera';
 import { reducer as setImagePathsReducer } from './setImagePaths';
+import { reducer as fetchReplyList } from "./fetchReplyList"
 
 const reducers = [
   loginReducer,
@@ -43,6 +44,7 @@ const reducers = [
   syncStepStateReducer,
   setIsInCameraReducer,
   setImagePathsReducer,
+  fetchReplyList,
 ];
 
 export default function reducer(state = initialState, action) {
