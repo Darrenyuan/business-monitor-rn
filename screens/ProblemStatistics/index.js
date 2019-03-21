@@ -29,8 +29,10 @@ class ProblemStatistics extends Component {
   constructor(props) {
     super(props);
     const showInteraction = this.shouldShowInteraction();
+    const showCreateIssue = this.shouldShowCreateIssue();
     this.state = {
       showInteraction: showInteraction,
+      showCreateIssue: showCreateIssue,
       type: 0,
       status: 0,
       interaction: showInteraction ? 0 : 2,
@@ -43,7 +45,7 @@ class ProblemStatistics extends Component {
     };
   }
 
-  shouldShowInteraction() {
+  shouldShowInteraction = () => {
     let result = false;
     if (this.props.monitor.loginData) {
       this.props.monitor.loginData.roles.forEach(element => {
@@ -64,8 +66,29 @@ class ProblemStatistics extends Component {
       });
     }
     return result;
-  }
+  };
 
+  shouldShowCreateIssue = () => {
+    let result = false;
+    if (this.props.monitor.loginData) {
+      this.props.monitor.loginData.roles.forEach(element => {
+        const roleName = element.roleName;
+        if (
+          roleName === titleConstants.TITLE_PROJECT_DIRECTOR ||
+          roleName === titleConstants.TITLE_PRODUCE_DIRECTOR ||
+          roleName === titleConstants.TITLE_SECURITY_GUARD ||
+          roleName === titleConstants.TITLE_QUALITY_INSPECTOR ||
+          roleName === titleConstants.TITLE_MATERIAL_STAFF ||
+          roleName === titleConstants.TITLE_CHIEF_INSPECTOR ||
+          roleName === titleConstants.TITLE_SPECIALIZED_SUPERVISION_ENGINEER ||
+          roleName === titleConstants.TITLE_OWNER_ENGINEER
+        ) {
+          result = true;
+        }
+      });
+    }
+    return result;
+  };
   componentDidMount() {
     this.fetchData();
   }
@@ -260,22 +283,27 @@ class ProblemStatistics extends Component {
             title={statusMap.get(this.state.status)}
             onPress={() => this.handleStatusModalVisible(true)}
           />
-          <Button
-            key={makeUUID()}
-            containerStyle={styles.arrStyle}
-            title={interactionMap.get(this.state.interaction)}
-            onPress={() => this.handleInteractionModalVisible(true)}
-          />
+          {this.state.shouldShowInteraction && (
+            <Button
+              key={makeUUID()}
+              containerStyle={styles.arrStyle}
+              title={interactionMap.get(this.state.interaction)}
+              onPress={() => this.handleInteractionModalVisible(true)}
+            />
+          )}
+
           <Button
             title={t('screen.problem_statistics_button_reset_all')}
             containerStyle={styles.arrStyle}
             onPress={this.resetAll}
           />
-          <Button
-            title={t('screen.problem_statistics_button_jump_drawer')}
-            containerStyle={styles.arrStyle}
-            onPress={this.jump.bind(this)}
-          />
+          {this.state.shouldShowCreateIssue && (
+            <Button
+              title={t('screen.problem_statistics_button_jump_drawer')}
+              containerStyle={styles.arrStyle}
+              onPress={this.jump.bind(this)}
+            />
+          )}
         </View>
         <TypeModal
           visible={this.state.typeModalVisible}
