@@ -1,26 +1,16 @@
-import React from "react";
-import {
-  Platform,
-  Dimensions,
-  View,
-  Text,
-  I18nManager as RNI18nManager
-} from "react-native";
-import { Image, Icon } from "react-native-elements";
-import {
-  createDrawerNavigator,
-  createAppContainer,
-  DrawerItems
-} from "react-navigation";
-import PropTypes from "prop-types";
-import LoginDrawerItem from "./drawer/login";
-import ProjectsDrawerItem from "./drawer/projects";
-import ProjectsDetailsDrawerItem from "./drawer/projectDetails";
-import ProblemStatisticsDrawerItem from "./drawer/ProblemStatistics";
-import statisticsDetailsDrawerItem from "./drawer/statisticsDetils";
-import i18n from "./services/i18n";
-import en from "./lang/en.json";
-import zh from "./lang/zh.json";
+import React from 'react';
+import { Platform, Dimensions, View, Text, I18nManager as RNI18nManager } from 'react-native';
+import { Image, Icon } from 'react-native-elements';
+import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
+import PropTypes from 'prop-types';
+import LoginDrawerItem from './drawer/login';
+import ProjectsDrawerItem from './drawer/projects';
+import ProjectsDetailsDrawerItem from './drawer/projectDetails';
+import ProblemStatisticsDrawerItem from './drawer/ProblemStatistics';
+import statisticsDetailsDrawerItem from './drawer/statisticsDetils';
+import i18n from './services/i18n';
+import en from './lang/en.json';
+import zh from './lang/zh.json';
 import configureStore from './services/common/configStore';
 import { Provider } from 'react-redux';
 import CreatissuDrawerItem from './drawer/creatissu';

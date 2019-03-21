@@ -98,7 +98,6 @@ class ProblemStatistics extends Component {
     const scrollOffset = event.nativeEvent.contentOffset.y;
     const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
     const isContentFillPage = contentHeight >= scrollViewHeight;
-<<<<<<< 48b58fe58e897faa57f751d8766b9e2e5a2fab60
     if (this.state.page <= 1) {
       this.setState({
         page: 1,
@@ -110,8 +109,6 @@ class ProblemStatistics extends Component {
         });
       }
     }
-=======
->>>>>>> i18n
     if (isContentFillPage && isEndReached) {
       this.setState({
         page: this.state.page + 1,

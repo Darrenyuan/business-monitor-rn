@@ -17,6 +17,7 @@ export default {
     borderRadius: 6,
   },
   textInput: {
+    height: SCREEN_HEIGHT * 0.2,
     textAlignVertical: 'top',
     paddingVertical: 0,
     paddingLeft: SCREEN_WIDTH * 0.01,
