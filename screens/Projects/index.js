@@ -6,6 +6,7 @@ import * as actions from '../../services/redux/actions';
 import { ListItem, Header, Icon } from 'react-native-elements';
 import projectStyle from './projectlistStyle';
 import { t } from '../../services/i18n';
+import withLogin from '../../services/common/withLogin';
 import { toUnicode } from 'punycode';
 
 const styles = StyleSheet.create({ ...projectStyle });
@@ -130,4 +131,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Projects);
+)(withLogin(Projects));

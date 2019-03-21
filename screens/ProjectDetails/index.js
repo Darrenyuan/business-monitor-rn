@@ -1,22 +1,23 @@
-import React, { Component } from "react";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import * as actions from "../../services/redux/actions";
+import React, { Component } from 'react';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../../services/redux/actions';
 import { Button, Header, Icon } from 'react-native-elements';
-import detailStyle from "./detailStyle";
+import detailStyle from './detailStyle';
 import { t } from '../../services/i18n';
-import { apiFetchProject } from "../../services/axios/api";
+import { apiFetchProject } from '../../services/axios/api';
+import withLogin from '../../services/common/withLogin';
 const styles = StyleSheet.create({ ...detailStyle });
 
 class ProjectsDetails extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       name: t('drawer.projects_details'),
-      ProjectsDetails: ''
-    }
+      ProjectsDetails: '',
+    };
   }
 
   componentDidMount() {
@@ -24,12 +25,12 @@ class ProjectsDetails extends Component {
   }
   fetchProjectDetail() {
     apiFetchProject({
-      projectId: this.props.navigation.state.params.id
-    }).then((res) => {
+      projectId: this.props.navigation.state.params.id,
+    }).then(res => {
       this.setState({
-        ProjectsDetails: res.data.data
-      })
-    })
+        ProjectsDetails: res.data.data,
+      });
+    });
   }
   componentDidUpdate(prevProps) {
     if (prevProps.navigation.state.params.id !== this.props.navigation.state.params.id) {
@@ -52,74 +53,90 @@ class ProjectsDetails extends Component {
     let detailItem = this.state.ProjectsDetails;
     let startTime = new Date(detailItem.startTime);
     let endTime = new Date(detailItem.endTime);
-    let timeStart = startTime.getFullYear() + '/' + (startTime.getMonth() + 1) + '/' + startTime.getDate();
+    let timeStart =
+      startTime.getFullYear() + '/' + (startTime.getMonth() + 1) + '/' + startTime.getDate();
     let timeEnd = endTime.getFullYear() + '/' + (endTime.getMonth() + 1) + '/' + endTime.getDate();
     //TODO 修改lists
     let lists = [
       {
-        "工程名称:": detailItem.name
+        '工程名称:': detailItem.name,
       },
       {
-        "工期:": timeStart + '-' + timeEnd
+        '工期:': timeStart + '-' + timeEnd,
       },
       {
-        "工程造价:": detailItem.cost
+        '工程造价:': detailItem.cost,
       },
       {
-        "工程地点:": detailItem.location
+        '工程地点:': detailItem.location,
       },
       {
-        "工程概况:": detailItem.overview
+        '工程概况:': detailItem.overview,
       },
       {
-        "设计单位:": detailItem.designUnit
+        '设计单位:': detailItem.designUnit,
       },
       {
-        "监理单位:": detailItem.monitorUnit
+        '监理单位:': detailItem.monitorUnit,
       },
       {
-        "建设单位:": detailItem.constructionUnit
-      }
+        '建设单位:': detailItem.constructionUnit,
+      },
     ];
-    const arr = ["工程名称:", "工期:", "工程造价:", "工程地点:", "工程概况:", "设计单位:", "监理单位:", "建设单位:"]
+    const arr = [
+      '工程名称:',
+      '工期:',
+      '工程造价:',
+      '工程地点:',
+      '工程概况:',
+      '设计单位:',
+      '监理单位:',
+      '建设单位:',
+    ];
     if (this.props.monitor.projectList.fetchProjectListPending) {
       return (
         <View>
           <Text>loading...</Text>
         </View>
-      )
+      );
     }
     return (
       <View style={styles.worp}>
         <Header
-          leftComponent={<View >
-            <Text
-              onPress={this.goback.bind(this, "projectsStack")}
-              style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>{t('screen.problem_statistics_header_left_component')}</Text>
-          </View>}
+          leftComponent={
+            <View>
+              <Text
+                onPress={this.goback.bind(this, 'projectsStack')}
+                style={{ color: '#fff', fontSize: 18, marginLeft: 10 }}
+              >
+                {t('screen.problem_statistics_header_left_component')}
+              </Text>
+            </View>
+          }
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
-          rightComponent={<View >
-            <Icon name="home" color="#fff" size={28}
-              iconStyle={{ marginRight: 10 }}
-              onPress={this.goback.bind(this, "projectsStack")}
-            />
-
-          </View>}
+          rightComponent={
+            <View>
+              <Icon
+                name="home"
+                color="#fff"
+                size={28}
+                iconStyle={{ marginRight: 10 }}
+                onPress={this.goback.bind(this, 'projectsStack')}
+              />
+            </View>
+          }
         />
         <ScrollView>
           <View>
-            {
-              lists.map((item, i) => {
-                return <View key={i} style={styles.detailView}>
+            {lists.map((item, i) => {
+              return (
+                <View key={i} style={styles.detailView}>
                   <Text style={styles.detailText}>{arr[i]}</Text>
                   <Text style={styles.detailColor}>{item[arr[i]]}</Text>
                 </View>
-              })
-            }
-            <Button
-              title={t('screen.creatissu_issue')}
-              onPress={this.onperss.bind(this, id)}
-            />
+              );
+            })}
+            <Button title={t('screen.creatissu_issue')} onPress={this.onperss.bind(this, id)} />
           </View>
         </ScrollView>
       </View>
@@ -129,18 +146,18 @@ class ProjectsDetails extends Component {
 
 function mapStateToProps(state) {
   return {
-    monitor: state
+    monitor: state,
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    actions: bindActionCreators({ ...actions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(ProjectsDetails);
+  mapDispatchToProps,
+)(withLogin(ProjectsDetails));

@@ -21,6 +21,7 @@ import * as titleConstants from '../../constants/titleConstants';
 import TypeModal from './TypeModal';
 import StatusModal from './StatusModal';
 import InteractionModal from './InteractionModal';
+import withLogin from '../../services/common/withLogin';
 
 const styles = StyleSheet.create({ ...statisticsStyle });
 
@@ -369,4 +370,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ProblemStatistics);
+)(withLogin(ProblemStatistics));

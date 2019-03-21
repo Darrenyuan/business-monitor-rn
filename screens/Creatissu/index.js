@@ -11,6 +11,7 @@ import CreatissuStyle from './CreatissuStyle';
 import CameraScreen from './CameraScreen';
 import { URL } from '../../services/axios/api';
 import { apiCreateIssues, apiFetchforeman } from '../../services/axios/api';
+import withLogin from '../../services/common/withLogin';
 const styles = StyleSheet.create({ ...CreatissuStyle });
 class Creatissu extends Component {
   constructor(props) {
@@ -59,7 +60,7 @@ class Creatissu extends Component {
     }).then(
       res => {
         // console.log(res);
-        this.props.navigation.navigate('ProblemStatisticsStack')
+        this.props.navigation.navigate('ProblemStatisticsStack');
       },
       err => {
         // console.log(err);
@@ -191,4 +192,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Creatissu);
+)(withLogin(Creatissu));

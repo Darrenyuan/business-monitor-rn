@@ -10,6 +10,7 @@ import CreateCommentStyle from './CreateCommentStyle';
 import CameraScreen from '../Creatissu/CameraScreen';
 import { URL, apiCreatecomment, apiupdateIssueStatus } from '../../services/axios/api';
 import Toast from 'react-native-root-toast';
+import withLogin from '../../services/common/withLogin';
 const styles = StyleSheet.create({ ...CreateCommentStyle });
 
 class CreateComment extends Component {
@@ -39,7 +40,7 @@ class CreateComment extends Component {
           let toast = Toast.show('保存成功', {
             position: 240,
           });
-          setTimeout(function () {
+          setTimeout(function() {
             Toast.hide(toast);
             apiupdateIssueStatus({
               issueId: _this.props.navigation.state.params.issueId,
@@ -50,20 +51,19 @@ class CreateComment extends Component {
                 status: 2,
               });
               DeviceEventEmitter.emit('xxxName', true);
-              _this.props.navigation.navigate("ProblemStatisticsStack");
-            })
-
+              _this.props.navigation.navigate('ProblemStatisticsStack');
+            });
           }, 2000);
         } else {
           let toast = Toast.show('保存失败', {
             position: 240,
           });
-          setTimeout(function () {
+          setTimeout(function() {
             Toast.hide(toast);
           }, 2000);
         }
       },
-      err => { },
+      err => {},
     );
   }
   goback(text) {
@@ -150,4 +150,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CreateComment);
+)(withLogin(CreateComment));
