@@ -34,7 +34,7 @@ class ProblemStatistics extends Component {
       status: 0,
       interaction: showInteraction ? 0 : 2,
       page: 1,
-      pageSize: 10,
+      pageSize: 12,
       projectId: this.props.navigation.state.params.id,
       typeModalVisible: false,
       statusModalVisible: false,
@@ -68,32 +68,27 @@ class ProblemStatistics extends Component {
   componentDidMount() {
     this.fetchData();
   }
-  // loadMoreData(num) {
-  //   let pageNumber = this.state.pageNumber + num;
-  //   if (pageNumber < 1) {
-  //     pageNumber = 1;
-  //   }
-  //   this.props.actions.fetchProjectList({
-  //     page: pageNumber,
-  //     pageSize: 14,
-  //   });
-  //   this.setState({
-  //     pageNumber: pageNumber,
-  //   });
-  // }
   scrollHandle(event) {
     const contentHeight = event.nativeEvent.contentSize.height;
     const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
     const scrollOffset = event.nativeEvent.contentOffset.y;
     const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
     const isContentFillPage = contentHeight >= scrollViewHeight;
-    // if (this.state.pageNumber !== 1) {
-    //   if (scrollOffset < -30) {
-    //     this.loadMoreData(-1);
-    //   }
-    // }
+    if (this.state.page <= 1) {
+      this.setState({
+        page: 1,
+      });
+
+      if (scrollOffset < -50) {
+        this.setState({
+          page: this.state.page === 1 ? 1 : this.state.page - 1,
+        });
+      }
+    }
     if (isContentFillPage && isEndReached) {
-      this.setState({ pageSize: this.state.pageSize + this.state.pageSize });
+      this.setState({
+        page: this.state.page + 1,
+      });
     }
   }
   fetchData = () => {

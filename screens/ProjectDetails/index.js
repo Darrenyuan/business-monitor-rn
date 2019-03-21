@@ -6,6 +6,7 @@ import * as actions from "../../services/redux/actions";
 import { Button, Header, Icon } from 'react-native-elements';
 import detailStyle from "./detailStyle";
 import { t } from '../../services/i18n';
+import { apiFetchProject } from "../../services/axios/api";
 const styles = StyleSheet.create({ ...detailStyle });
 
 class ProjectsDetails extends Component {
@@ -13,10 +14,28 @@ class ProjectsDetails extends Component {
     super(props)
 
     this.state = {
-      name: t('drawer.projects_details')
+      name: t('drawer.projects_details'),
+      ProjectsDetails: ''
     }
   }
 
+  componentDidMount() {
+    this.fetchProjectDetail();
+  }
+  fetchProjectDetail() {
+    apiFetchProject({
+      projectId: this.props.navigation.state.params.id
+    }).then((res) => {
+      this.setState({
+        ProjectsDetails: res.data.data
+      })
+    })
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.navigation.state.params.id !== this.props.navigation.state.params.id) {
+      this.fetchProjectDetail();
+    }
+  }
   onperss(id) {
     this.props.navigation.navigate('ProblemStatisticsStack', {
       id: id,
@@ -30,7 +49,7 @@ class ProjectsDetails extends Component {
   render() {
     //TODO info 改为 id
     let id = this.props.navigation.state.params.id;
-    let detailItem = this.props.monitor.projectList.byId[id];
+    let detailItem = this.state.ProjectsDetails;
     let startTime = new Date(detailItem.startTime);
     let endTime = new Date(detailItem.endTime);
     let timeStart = startTime.getFullYear() + '/' + (startTime.getMonth() + 1) + '/' + startTime.getDate();
@@ -76,7 +95,7 @@ class ProjectsDetails extends Component {
           leftComponent={<View >
             <Text
               onPress={this.goback.bind(this, "projectsStack")}
-              style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>{t('screen.creatissu_return')}</Text>
+              style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>{t('screen.problem_statistics_header_left_component')}</Text>
           </View>}
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
           rightComponent={<View >

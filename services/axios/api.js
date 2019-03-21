@@ -140,7 +140,9 @@ export function apiFetchProjectList(args = {}) {
 export function apiFetchProject(args = {}) {
   return instance.get(`${baseUrl}/projects/${args.projectId}`);
 }
-
+export function apiIssueDetail(args = {}) {
+  return instance.get(`${baseUrl}/issues/${args.issueId}`);
+}
 export function apiFetchIssueList(args = {}) {
   return instance.get(
     `${baseUrl}/issues?projectId=${args.projectId}&page=${args.page}&pageSize=${
@@ -201,6 +203,3 @@ export function apiCreatecomment(args = {}) {
     imagePath: args.imagePaths
   });
 }
-// export function apiGetRole(args = {}){
-//   return instance.get(`${baseUrl}/role/under`);
-// }

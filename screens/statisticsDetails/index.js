@@ -7,8 +7,7 @@ import { Button, Header, Image, Icon, Overlay, Input } from 'react-native-elemen
 import staDetStyle from './staDetStyle';
 import { t } from '../../services/i18n';
 import { URL } from '../../services/axios/api';
-import { apiCreateReply } from '../../services/axios/api';
-import { apiupdateIssueStatus } from '../../services/axios/api';
+import { apiCreateReply, apiupdateIssueStatus, apiIssueDetail } from '../../services/axios/api';
 const styles = StyleSheet.create({ ...staDetStyle });
 
 class StatisticsDetails extends Component {
@@ -21,13 +20,25 @@ class StatisticsDetails extends Component {
       texts: "",
       bool: true,
       disabled: false,
-      replyList: []
+      replyList: [],
+      issueDetail: ''
     }
   }
 
   componentDidMount() {
     this.props.actions.fetchReplyList({
       issueId: this.props.navigation.state.params.issueId,
+    })
+    this.issueDetail();
+  }
+
+  issueDetail() {
+    apiIssueDetail({
+      issueId: this.props.navigation.state.params.issueId
+    }).then((res) => {
+      this.setState({
+        issueDetail: res.data.data
+      })
     })
   }
 
@@ -81,7 +92,11 @@ class StatisticsDetails extends Component {
         id: this.props.navigation.state.params.projectId
       });
     })
-
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.navigation.state.params.issueId !== this.props.navigation.state.params.issueId) {
+      this.issueDetail();
+    }
   }
   scrollHandle(event) {
     const scrollOffset = event.nativeEvent.contentOffset.y;
@@ -97,7 +112,7 @@ class StatisticsDetails extends Component {
     let whoseIusseReply = [];
     let imagePathReply = [];
     let issueId = this.props.navigation.state.params.issueId;
-    let iusseItem = this.props.monitor.issueList.byId[issueId];
+    let iusseItem = this.state.issueDetail;
     let status = this.props.navigation.state.params.status;
     let replyList = this.props.monitor.replyList.byId;
     for (const key in replyList) {
@@ -106,11 +121,9 @@ class StatisticsDetails extends Component {
     whoseIusseReply = issueReplyList.filter((item) => {
       return item.issueId === issueId && item.imagePath === "[]"
     })
-    console.log("whoseIusseReply", whoseIusseReply);
     imagePathReply = issueReplyList.filter((item) => {
       return item.imagePath !== "[]" && item.issueId === issueId
     })
-    console.log("imagePathReply", imagePathReply);
     buttonStatusText = status === t('screen.creatissu_modalDropdown4_item1') ? t('screen.creatissu_rectification') : t('screen.creatissu_confirm');
     if (this.props.monitor.replyList.fetchReplyListPending) {
       return (
@@ -169,8 +182,8 @@ class StatisticsDetails extends Component {
                         <View style={styles.issueStyle}>
                           <Text style={{ fontSize: 18 }}>整改描述:</Text>
                         </View>
-                        {JSON.parse(item.imagePath).map(item => {
-                          return <Image style={styles.img} source={{ uri: URL + item }} resizeMethod={'resize'} />;
+                        {JSON.parse(item.imagePath).map((item, i) => {
+                          return <Image key={i} style={styles.img} source={{ uri: URL + item }} resizeMethod={'resize'} />;
                         })}
                       </View>
                       <View style={styles.textStyle}>
