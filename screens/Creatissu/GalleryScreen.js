@@ -61,13 +61,13 @@ class GalleryScreen extends React.Component {
       });
 
       await Promise.all(promises);
-      alert(t('screen.creatissu_save'));
+      alert(t('screen.createissue_save'));
       console.log(remotePaths);
       FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos', { idempotent: true });
       this.props.actions.setIsInCamera({ isInCamera: false });
       this.props.actions.setImagePaths({ imagePaths: remotePaths });
     } else {
-      alert(t('screen.creatissu_nochoice'));
+      alert(t('screen.createissue_nochoice'));
     }
   };
 
@@ -87,7 +87,7 @@ class GalleryScreen extends React.Component {
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
-            <Text style={styles.whiteText}>{t('screen.creatissu_togallery')}</Text>
+            <Text style={styles.whiteText}>{t('screen.createissue_togallery')}</Text>
           </TouchableOpacity>
         </View>
         <ScrollView contentComponentStyle={{ flex: 1 }}>

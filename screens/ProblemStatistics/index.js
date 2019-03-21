@@ -98,6 +98,7 @@ class ProblemStatistics extends Component {
     const scrollOffset = event.nativeEvent.contentOffset.y;
     const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
     const isContentFillPage = contentHeight >= scrollViewHeight;
+<<<<<<< 48b58fe58e897faa57f751d8766b9e2e5a2fab60
     if (this.state.page <= 1) {
       this.setState({
         page: 1,
@@ -109,6 +110,8 @@ class ProblemStatistics extends Component {
         });
       }
     }
+=======
+>>>>>>> i18n
     if (isContentFillPage && isEndReached) {
       this.setState({
         page: this.state.page + 1,
@@ -149,7 +152,6 @@ class ProblemStatistics extends Component {
       this.fetchData();
     }
   }
-
   submint(interaction, type, status, issueId) {
     this.props.navigation.navigate('statisticsDetailsStack', {
       interaction: interaction,
@@ -226,6 +228,7 @@ class ProblemStatistics extends Component {
     interactionMap.set(0, t('screen.problem_statistics_interaction_all'));
     interactionMap.set(1, t('screen.problem_statistics_interaction_inner'));
     interactionMap.set(2, t('screen.problem_statistics_interaction_outer'));
+    console.log('this', this);
     if (this.props.monitor.issueList.fetchIssueListPending) {
       return (
         <View>
@@ -250,7 +253,7 @@ class ProblemStatistics extends Component {
                 onPress={this.goback.bind(this, 'ProjectDetailsStack')}
                 style={{ color: '#fff', fontSize: 18, marginLeft: 10 }}
               >
-                {t('screen.problem_statistics_header_left_component')}
+                {t('screen.header_return')}
               </Text>
             </View>
           }

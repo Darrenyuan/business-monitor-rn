@@ -43,9 +43,7 @@ class Creatissu extends Component {
           }),
         });
       },
-      err => {
-        // console.log(err);
-      },
+      err => {},
     );
   }
 
@@ -59,12 +57,9 @@ class Creatissu extends Component {
       imagePaths: JSON.stringify(this.props.monitor.imagePaths),
     }).then(
       res => {
-        // console.log(res);
         this.props.navigation.navigate('ProblemStatisticsStack');
       },
-      err => {
-        // console.log(err);
-      },
+      err => {},
     );
   }
 
@@ -88,7 +83,7 @@ class Creatissu extends Component {
                   onPress={this.goback.bind(this, 'ProblemStatisticsStack')}
                   style={{ color: '#fff', fontSize: 18, marginLeft: 10 }}
                 >
-                  {t('screen.creatissu_return')}
+                  {t('screen.header_return')}
                 </Text>
               </View>
             }
@@ -111,14 +106,14 @@ class Creatissu extends Component {
             value={this.state.title}
             placeholderTextColor={'#BBBBBB'}
             underlineColorAndroid={'transparent'}
-            placeholder={t('screen.creatissu_titleinput')}
+            placeholder={t('screen.createissue_titleinput')}
             style={styles.titleInput}
           />
           <View style={styles.inputContainer}>
             <TextInput
               value={this.state.description}
               onChangeText={description => this.setState({ description })}
-              placeholder={t('screen.creatissu_textinput')}
+              placeholder={t('screen.createissue_textinput')}
               placeholderTextColor={'#BBBBBB'}
               underlineColorAndroid={'transparent'}
               style={styles.textInput}
@@ -130,18 +125,18 @@ class Creatissu extends Component {
             <Image style={styles.img} source={{ uri: paths[1] }} resizeMethod={'resize'} />
             <Button
               onPress={this.processImage}
-              title={t('screen.creatissu_photo')}
+              title={t('screen.createissue_photo')}
               buttonStyle={styles.picture_upload}
             />
           </View>
           <View style={styles.modalDropdownContainer}>
             <ModalDropdown
-              defaultValue={t('screen.creatissu_modalDropdown1')}
+              defaultValue={t('screen.createissue_modalDropdown1')}
               options={[
-                t('screen.creatissu_modalDropdown1_item1'),
-                t('screen.creatissu_modalDropdown1_item2'),
-                t('screen.creatissu_modalDropdown1_item3'),
-                t('screen.creatissu_modalDropdown1_item4'),
+                t('screen.createissue_modalDropdown1_item1'),
+                t('screen.createissue_modalDropdown1_item2'),
+                t('screen.createissue_modalDropdown1_item3'),
+                t('screen.createissue_modalDropdown1_item4'),
               ]}
               style={styles.modalDropdown}
               textStyle={styles.textStyle}
@@ -155,7 +150,7 @@ class Creatissu extends Component {
               }}
             />
             <ModalDropdown
-              defaultValue={t('screen.creatissu_modalDropdown2')}
+              defaultValue={t('screen.createissue_modalDropdown2')}
               options={this.state.personnelArr}
               style={styles.modalDropdown}
               textStyle={styles.textStyle}
@@ -168,8 +163,8 @@ class Creatissu extends Component {
             />
           </View>
           <Button
-            onPress={this.createIssues.bind(this)}
-            title={t('screen.creatissu_submit')}
+            onPress={this.createIssues.bind(thicreateissues)}
+            title={t('screen.createissue_submit')}
             buttonStyle={styles.submit}
           />
         </View>

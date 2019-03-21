@@ -31,6 +31,7 @@ export default {
     textAlignVertical: 'top',
     paddingVertical: 0,
     paddingLeft: SCREEN_WIDTH * 0.01,
+    height: SCREEN_HEIGHT * 0.16,
     fontSize: 16,
   },
   imgContainer: {

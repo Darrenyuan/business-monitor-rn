@@ -87,7 +87,7 @@ class CreateComment extends Component {
                   onPress={this.goback.bind(this, 'ProblemStatisticsStack')}
                   style={{ color: '#fff', fontSize: 18, marginLeft: 10 }}
                 >
-                  {t('screen.creatissu_return')}
+                  {t('screen.header_return')}
                 </Text>
               </View>
             }
@@ -119,14 +119,14 @@ class CreateComment extends Component {
             <Image style={styles.img} source={{ uri: paths[0] }} resizeMethod={'resize'} />
             <Image style={styles.img} source={{ uri: paths[1] }} resizeMethod={'resize'} />
             <Button
-              title={t('screen.creatissu_photo')}
+              title={t('screen.createissue_photo')}
               buttonStyle={styles.picture_upload}
               onPress={this.processImage}
             />
           </View>
           <Button
             onPress={this.CreateComment.bind(this)}
-            title={t('screen.creatissu_submit')}
+            title={t('screen.submit')}
             buttonStyle={styles.submit}
           />
         </View>

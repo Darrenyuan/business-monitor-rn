@@ -13,10 +13,15 @@ const styles = StyleSheet.create({ ...detailStyle });
 class ProjectsDetails extends Component {
   constructor(props) {
     super(props);
+<<<<<<< 48b58fe58e897faa57f751d8766b9e2e5a2fab60
 
     this.state = {
       name: t('drawer.projects_details'),
       ProjectsDetails: '',
+=======
+    this.state = {
+      name: t('drawer.projects_details'),
+>>>>>>> i18n
     };
   }
 
@@ -48,7 +53,6 @@ class ProjectsDetails extends Component {
   }
 
   render() {
-    //TODO info 改为 id
     let id = this.props.navigation.state.params.id;
     let detailItem = this.state.ProjectsDetails;
     let startTime = new Date(detailItem.startTime);
@@ -56,6 +60,7 @@ class ProjectsDetails extends Component {
     let timeStart =
       startTime.getFullYear() + '/' + (startTime.getMonth() + 1) + '/' + startTime.getDate();
     let timeEnd = endTime.getFullYear() + '/' + (endTime.getMonth() + 1) + '/' + endTime.getDate();
+<<<<<<< 48b58fe58e897faa57f751d8766b9e2e5a2fab60
     //TODO 修改lists
     let lists = [
       {
@@ -93,6 +98,8 @@ class ProjectsDetails extends Component {
       '监理单位:',
       '建设单位:',
     ];
+=======
+>>>>>>> i18n
     if (this.props.monitor.projectList.fetchProjectListPending) {
       return (
         <View>
@@ -109,7 +116,11 @@ class ProjectsDetails extends Component {
                 onPress={this.goback.bind(this, 'projectsStack')}
                 style={{ color: '#fff', fontSize: 18, marginLeft: 10 }}
               >
+<<<<<<< 48b58fe58e897faa57f751d8766b9e2e5a2fab60
                 {t('screen.problem_statistics_header_left_component')}
+=======
+                {t('screen.header_return')}
+>>>>>>> i18n
               </Text>
             </View>
           }
@@ -127,6 +138,7 @@ class ProjectsDetails extends Component {
           }
         />
         <ScrollView>
+<<<<<<< 48b58fe58e897faa57f751d8766b9e2e5a2fab60
           <View>
             {lists.map((item, i) => {
               return (
@@ -137,7 +149,44 @@ class ProjectsDetails extends Component {
               );
             })}
             <Button title={t('screen.creatissu_issue')} onPress={this.onperss.bind(this, id)} />
+=======
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{t('screen.projectDetails_name')}</Text>
+            <Text style={styles.detailColor}>{detailItem.name}</Text>
           </View>
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{t('screen.projectDetails_date')}</Text>
+            <Text style={styles.detailColor}>{timeStart + '-' + timeEnd}</Text>
+          </View>
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{t('screen.projectDetails_cost')}</Text>
+            <Text style={styles.detailColor}>{detailItem.cost}</Text>
+          </View>
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{t('screen.projectDetails_site')}</Text>
+            <Text style={styles.detailColor}>{detailItem.location}</Text>
+          </View>
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{t('screen.projectDetails_overview')}</Text>
+            <Text style={styles.detailColor}>{detailItem.overview}</Text>
+          </View>
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{t('screen.projectDetails_designUnit')}</Text>
+            <Text style={styles.detailColor}>{detailItem.designUnit}</Text>
+          </View>
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{t('screen.projectDetails_supervisoryUnit')}</Text>
+            <Text style={styles.detailColor}>{detailItem.monitorUnit}</Text>
+          </View>
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{t('screen.projectDetails_constructionUnit')}</Text>
+            <Text style={styles.detailColor}>{detailItem.constructionUnit}</Text>
+>>>>>>> i18n
+          </View>
+          <Button
+            title={t('screen.projectDetails_issueInfo')}
+            onPress={this.onperss.bind(this, id)}
+          />
         </ScrollView>
       </View>
     );
@@ -150,7 +199,6 @@ function mapStateToProps(state) {
   };
 }
 
-/* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({ ...actions }, dispatch),
@@ -160,4 +208,8 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
+<<<<<<< 48b58fe58e897faa57f751d8766b9e2e5a2fab60
 )(withLogin(ProjectsDetails));
+=======
+)(ProjectsDetails);
+>>>>>>> i18n

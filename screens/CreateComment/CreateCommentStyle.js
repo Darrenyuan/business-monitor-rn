@@ -27,7 +27,6 @@ export default {
     width: SCREEN_WIDTH * 0.85,
     height: SCREEN_HEIGHT * 0.2,
     flexDirection: 'row',
-    // backgroundColor: 'red',
   },
   img: {
     borderWidth: 1,

@@ -21,7 +21,6 @@ const styles = StyleSheet.create({ ...staDetStyle });
 class StatisticsDetails extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       name: t('drawer.statistics_details'),
       isVisible: false,
@@ -51,7 +50,7 @@ class StatisticsDetails extends Component {
   }
 
   onperss(buttonStatusText) {
-    if (buttonStatusText === t('screen.creatissu_rectification')) {
+    if (buttonStatusText === t('screen.statisticsDetails_rectification')) {
       this.props.navigation.navigate('createCommentStack', {
         issueId: this.props.navigation.state.params.issueId,
       });
@@ -118,6 +117,7 @@ class StatisticsDetails extends Component {
     let issueId = this.props.navigation.state.params.issueId;
     let iusseItem = this.state.issueDetail;
     let status = this.props.navigation.state.params.status;
+    console.log('status', status);
     let replyList = this.props.monitor.replyList.byId;
     for (const key in replyList) {
       issueReplyList.push(replyList[key]);
@@ -125,13 +125,15 @@ class StatisticsDetails extends Component {
     whoseIusseReply = issueReplyList.filter(item => {
       return item.issueId === issueId && item.imagePath === '[]';
     });
+    console.log('whoseIusseReply', whoseIusseReply);
     imagePathReply = issueReplyList.filter(item => {
       return item.imagePath !== '[]' && item.issueId === issueId;
     });
+    console.log('imagePathReply', imagePathReply);
     buttonStatusText =
-      status === t('screen.creatissu_modalDropdown4_item1')
-        ? t('screen.creatissu_rectification')
-        : t('screen.creatissu_confirm');
+      status === 1
+        ? t('screen.statisticsDetails_rectification')
+        : t('screen.statisticsDetails_confirm');
     if (this.props.monitor.replyList.fetchReplyListPending) {
       return (
         <View>
@@ -148,7 +150,7 @@ class StatisticsDetails extends Component {
                 onPress={this.goback.bind(this, 'ProblemStatisticsStack')}
                 style={{ color: '#fff', fontSize: 18, marginLeft: 10 }}
               >
-                {t('screen.creatissu_return')}
+                {t('screen.statisticsDetails_return')}
               </Text>
             </View>
           }
@@ -185,8 +187,8 @@ class StatisticsDetails extends Component {
                   <Text style={{ lineHeight: 28, fontSize: 16 }}> {iusseItem.description}</Text>
                 </View>
               </View>
-              {status === t('screen.creatissu_modalDropdown4_item1') ? (
-                <Text />
+              {status === 1 ? (
+                <Text> " " </Text>
               ) : (
                 imagePathReply.map((item, i) => {
                   return (
@@ -228,18 +230,17 @@ class StatisticsDetails extends Component {
             })}
 
             <View style={styles.butViewStyle}>
-              {status === t('screen.creatissu_modalDropdown4_item3') ||
-              status === t('screen.creatissu_modalDropdown4_item1') ? (
-                <Text />
+              {status === 3 || status === 1 ? (
+                <Text> " " </Text>
               ) : (
                 <Button
-                  title={t('screen.creatissu_disagree')}
+                  title={t('screen.statisticsDetails_disagree')}
                   onPress={this.onpass.bind(this)}
                   containerStyle={styles.butStyle}
                 />
               )}
-              {status === t('screen.creatissu_modalDropdown4_item3') ? (
-                <Text />
+              {status === 3 ? (
+                <Text> " " </Text>
               ) : (
                 <Button
                   title={buttonStatusText}
@@ -256,13 +257,16 @@ class StatisticsDetails extends Component {
             >
               <View>
                 <Input
-                  placeholder={t('screen.creatissu_opinion')}
+                  placeholder={t('screen.statisticsDetails_opinion')}
                   containerStyle={styles.modulStyle}
                   onChangeText={this.onChangeText.bind(this)}
                   shake={true}
                   multiline={true}
                 />
-                <Button title={t('screen.creatissu_submit')} onPress={this.onVisible.bind(this)} />
+                <Button
+                  title={t('screen.statisticsDetails_submit')}
+                  onPress={this.onVisible.bind(this)}
+                />
               </View>
             </Overlay>
           </View>
