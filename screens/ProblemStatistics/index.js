@@ -139,6 +139,15 @@ class ProblemStatistics extends Component {
       issueId: issueId,
       projectId: this.state.projectId,
     });
+    this.setState({
+      issueStatus: false,
+    });
+  }
+  scrollHandle(event) {
+    const scrollOffset = event.nativeEvent.contentOffset.y;
+    if (scrollOffset < -40) {
+      this.fetchData();
+    }
   }
 
   jump() {

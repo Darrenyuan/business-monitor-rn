@@ -83,6 +83,14 @@ class StatisticsDetails extends Component {
     })
 
   }
+  scrollHandle(event) {
+    const scrollOffset = event.nativeEvent.contentOffset.y;
+    if (scrollOffset < -50) {
+      this.props.actions.fetchReplyList({
+        issueId: this.props.navigation.state.params.issueId,
+      })
+    }
+  }
   render() {
     let issueReplyList = [];
     let buttonStatusText = "";
@@ -128,7 +136,10 @@ class StatisticsDetails extends Component {
 
           </View>}
         />
-        <ScrollView>
+        <ScrollView
+          onScroll={(evt) => this.scrollHandle(evt)}
+          scrollEventThrottle={50}
+        >
           <View>
             <View style={styles.contenter}>
               <View style={styles.viewWorp}>

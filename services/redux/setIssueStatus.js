@@ -5,7 +5,6 @@
 import { MONITOR_SET_ISSUE_STATUS } from './constants';
 
 export function setIssueStatus(args = {}) {
-  console.log("args", args);
   return {
     type: MONITOR_SET_ISSUE_STATUS,
     data: args,
