@@ -26,9 +26,6 @@ class Projects extends Component {
   componentDidMount() {
     this.fetchData();
   }
-  getSnapshotBeforeUpdate() {
-    return this.rootNode.scrollHeight;
-  }
 
   // componentDidUpdate(prevProps, prevState, prevScrollHeight) {
   //   const scrollTop = this.rootNode.scrollTop;
@@ -65,7 +62,6 @@ class Projects extends Component {
   };
   componentDidUpdate(prevProps, prevState, prevScrollHeight) {
     if (prevState.pageNumber !== this.state.pageNumber) {
-      let projectList = [];
       let byId = this.props.monitor.projectList.byId;
       let items = this.props.monitor.projectList.items;
       let preById = this.state.preById;
@@ -83,9 +79,6 @@ class Projects extends Component {
       let mergedItems = Array.from(mergedSet);
       this.setState({ preById: mergedById, preItems: mergedItems });
       this.fetchData();
-      const scrollTop = this.rootNode.scrollTop;
-      if (scrollTop < 5) return;
-      this.rootNode.scrollTop = scrollTop + (this.rootNode.scrollHeight - prevScrollHeight);
     }
   }
   scrollHandle(event) {

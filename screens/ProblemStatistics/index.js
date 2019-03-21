@@ -205,11 +205,14 @@ class ProblemStatistics extends Component {
         </View>
       );
     }
-    const issueItemList = [];
-    this.props.monitor.issueList.items.forEach(id => {
-      issueItemList.push(this.props.monitor.issueList.byId[id]);
-    });
+    byId = this.props.monitor.issueList.byId;
+    items = this.props.monitor.issueList.items;
 
+    const issueItemList = [];
+    items.forEach(id => {
+      issueItemList.push(byId[id]);
+    });
+    console.log('issueItemList', JSON.stringify(issueItemList));
     return (
       <View style={styles.worp}>
         <Header
@@ -285,7 +288,7 @@ class ProblemStatistics extends Component {
           visible={this.state.interactionModalVisible}
           handleInteractionModalVisible={this.handleInteractionModalVisible}
           handleInteractionModalValue={this.handleInteractionModalValue}
-          interactionMap={statusMap}
+          interactionMap={interactionMap}
         />
         <View style={styles.headerNav}>
           <View key={makeUUID()} style={styles.listItem}>
