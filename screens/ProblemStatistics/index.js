@@ -201,6 +201,12 @@ class ProblemStatistics extends Component {
       issueStatus: false
     })
   }
+  scrollHandle(event) {
+    const scrollOffset = event.nativeEvent.contentOffset.y;
+    if (scrollOffset < -40) {
+      this.fetchData();
+    }
+  }
   jump() {
     this.props.navigation.navigate('creatissuStack', {
       projectId: this.props.navigation.state.params.id
@@ -363,7 +369,10 @@ class ProblemStatistics extends Component {
             })
           }
         </View>
-        <ScrollView>
+        <ScrollView
+          onScroll={(evt) => this.scrollHandle(evt)}
+          scrollEventThrottle={50}
+        >
           <View>
             {
               Issueres.map((item, i) => {

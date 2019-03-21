@@ -30,12 +30,6 @@ class Creatissu extends Component {
     this.props.actions.setIsInCamera({ isInCamera: true });
   };
 
-  // collectPersonnel = () => {
-  //   this.state.result.map(item => {
-  //     return item.nickname;
-  //   });
-  // };
-
   componentDidMount() {
     apiFetchforeman({ projectId: this.props.navigation.state.params.projectId }).then(
       res => {
@@ -60,13 +54,15 @@ class Creatissu extends Component {
       type: this.state.type,
       description: this.state.description,
       handerId: this.state.personnel,
+      projectId: this.props.navigation.state.params.projectId,
       imagePaths: JSON.stringify(this.props.monitor.imagePaths),
     }).then(
       res => {
-        console.log(res);
+        // console.log(res);
+        this.props.navigation.navigate('ProblemStatisticsStack')
       },
       err => {
-        console.log(err);
+        // console.log(err);
       },
     );
   }
@@ -85,23 +81,33 @@ class Creatissu extends Component {
       return (
         <View style={styles.container}>
           <Header
-            leftComponent={<View >
-              <Text
-                onPress={this.goback.bind(this, "ProblemStatisticsStack")}
-                style={{ color: "#fff", fontSize: 18, marginLeft: 10 }}>{t('screen.creatissu_return')}</Text>
-            </View>}
+            leftComponent={
+              <View>
+                <Text
+                  onPress={this.goback.bind(this, 'ProblemStatisticsStack')}
+                  style={{ color: '#fff', fontSize: 18, marginLeft: 10 }}
+                >
+                  {t('screen.creatissu_return')}
+                </Text>
+              </View>
+            }
             centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
-            rightComponent={<View >
-              <Icon name="home" color="#fff" size={28}
-                iconStyle={{ marginRight: 10 }}
-                onPress={this.goback.bind(this, "projectsStack")}
-              />
-
-            </View>}
+            rightComponent={
+              <View>
+                <Icon
+                  name="home"
+                  color="#fff"
+                  size={28}
+                  iconStyle={{ marginRight: 10 }}
+                  onPress={this.goback.bind(this, 'projectsStack')}
+                />
+              </View>
+            }
           />
           <TextInput
             returnKeyType="done"
             onChangeText={title => this.setState({ title })}
+            value={this.state.title}
             placeholderTextColor={'#BBBBBB'}
             underlineColorAndroid={'transparent'}
             placeholder={t('screen.creatissu_titleinput')}
@@ -109,7 +115,6 @@ class Creatissu extends Component {
           />
           <View style={styles.inputContainer}>
             <TextInput
-              returnKeyType="done"
               value={this.state.description}
               onChangeText={description => this.setState({ description })}
               placeholder={t('screen.creatissu_textinput')}
@@ -120,34 +125,12 @@ class Creatissu extends Component {
             />
           </View>
           <View style={styles.imgContainer}>
-            {/* {this.props.monitor.imagePaths.length !== 0 && (
-                <Image
-                  style={styles.img}
-                  source={{ uri: URL + this.props.monitor.imagePaths[0] }}
-                  resizeMode={'contain'}
-                />
-              ) && (
-                <Image
-                  style={styles.img}
-                  source={{ uri: URL + this.props.monitor.imagePaths[1] }}
-                  resizeMode={'contain'}
-                />
-              )} */}
-            {paths.map(item => {
-              return <Image style={styles.img} source={{ uri: item }} resizeMethod={'resize'} />;
-            })}
+            <Image style={styles.img} source={{ uri: paths[0] }} resizeMethod={'resize'} />
+            <Image style={styles.img} source={{ uri: paths[1] }} resizeMethod={'resize'} />
             <Button
               onPress={this.processImage}
-              title={t('screen.creatissu_submit')}
-              buttonStyle={{
-                height: 50,
-                width: 320,
-                borderWidth: 2,
-                borderColor: 'white',
-                borderRadius: 30,
-                marginLeft: 20,
-                marginTop: 105,
-              }}
+              title={t('screen.creatissu_photo')}
+              buttonStyle={styles.picture_upload}
             />
           </View>
           <View style={styles.modalDropdownContainer}>
@@ -186,18 +169,9 @@ class Creatissu extends Component {
           <Button
             onPress={this.createIssues.bind(this)}
             title={t('screen.creatissu_submit')}
-            buttonStyle={{
-              height: 50,
-              width: 320,
-              borderWidth: 2,
-              borderColor: 'white',
-              borderRadius: 30,
-              marginLeft: 20,
-              marginTop: 40,
-            }}
+            buttonStyle={styles.submit}
           />
         </View>
-
       );
   }
 }
