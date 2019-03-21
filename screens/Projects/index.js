@@ -18,8 +18,6 @@ class Projects extends Component {
       name: t('drawer.projects_list'),
       noMoreData: false,
       pageNumber: 1,
-      preById: {},
-      preItems: [],
     };
   }
   //TODO 上划加载
@@ -27,12 +25,6 @@ class Projects extends Component {
     this.fetchData();
   }
 
-  // componentDidUpdate(prevProps, prevState, prevScrollHeight) {
-  //   const scrollTop = this.rootNode.scrollTop;
-  //   if (scrollTop < 5) return;
-  //   this.rootNode.scrollTop =
-  //     scrollTop + (this.rootNode.scrollHeight - prevScrollHeight);
-  // }
   onpress(id) {
     this.props.navigation.navigate('ProjectDetailsStack', {
       id: id,
@@ -41,19 +33,19 @@ class Projects extends Component {
   goback(text) {
     this.props.navigation.navigate(text);
   }
-  // loadMoreData(num) {
-  //   let pageNumber = this.state.pageNumber + num;
-  //   if (pageNumber < 1) {
-  //     pageNumber = 1;
-  //   }
-  //   this.props.actions.fetchProjectList({
-  //     page: pageNumber,
-  //     pageSize: 14,
-  //   });
-  //   this.setState({
-  //     pageNumber: pageNumber,
-  //   });
-  // }
+  loadMoreData(num) {
+    let pageNumber = this.state.pageNumber + num;
+    if (pageNumber < 1) {
+      pageNumber = 1;
+    }
+    this.props.actions.fetchProjectList({
+      page: pageNumber,
+      pageSize: 14,
+    });
+    this.setState({
+      pageNumber: pageNumber,
+    });
+  }
   fetchData = () => {
     this.props.actions.fetchProjectList({
       page: this.state.pageNumber,
@@ -62,22 +54,22 @@ class Projects extends Component {
   };
   componentDidUpdate(prevProps, prevState, prevScrollHeight) {
     if (prevState.pageNumber !== this.state.pageNumber) {
-      let byId = this.props.monitor.projectList.byId;
-      let items = this.props.monitor.projectList.items;
-      let preById = this.state.preById;
-      let preItems = this.state.preItems;
-      let mergedById = {};
-      mergedById = { ...preById, ...byId };
-      let mergedSet = new Set();
-      preItems.forEach(item => {
-        mergedSet.add(item);
-      });
-      items.forEach(item => {
-        mergedSet.add(item);
-      });
+      // let byId = this.props.monitor.projectList.byId;
+      // let items = this.props.monitor.projectList.items;
+      // let preById = this.state.preById;
+      // let preItems = this.state.preItems;
+      // let mergedById = {};
+      // mergedById = { ...preById, ...byId };
+      // let mergedSet = new Set();
+      // preItems.forEach(item => {
+      //   mergedSet.add(item);
+      // });
+      // items.forEach(item => {
+      //   mergedSet.add(item);
+      // });
 
-      let mergedItems = Array.from(mergedSet);
-      this.setState({ preById: mergedById, preItems: mergedItems });
+      // let mergedItems = Array.from(mergedSet);
+      // this.setState({ preById: mergedById, preItems: mergedItems });
       this.fetchData();
     }
   }
@@ -87,11 +79,11 @@ class Projects extends Component {
     const scrollOffset = event.nativeEvent.contentOffset.y;
     const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
     const isContentFillPage = contentHeight >= scrollViewHeight;
-    // if (this.state.pageNumber !== 1) {
-    //   if (scrollOffset < -30) {
-    //     this.loadMoreData(-1);
-    //   }
-    // }
+    if (this.state.pageNumber !== 1) {
+      if (scrollOffset < -30) {
+        this.loadMoreData(-1);
+      }
+    }
     if (isContentFillPage && isEndReached) {
       this.setState({ pageNumber: this.state.pageNumber + 1 });
     }
@@ -105,13 +97,8 @@ class Projects extends Component {
       );
     }
     const projectList = [];
-    let byId = this.props.monitor.projectList.byId;
-    let items = this.props.monitor.projectList.items;
-    let preById = this.state.preById;
-    let preItems = this.state.preItems;
-    preItems.forEach(id => {
-      projectList.push(preById[id]);
-    });
+    const byId = this.props.monitor.projectList.byId;
+    const items = this.props.monitor.projectList.items;
     items.forEach(id => {
       projectList.push(byId[id]);
     });

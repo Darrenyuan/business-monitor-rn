@@ -77,39 +77,43 @@ export function reducer(state, action) {
       };
 
     case MONITOR_FETCH_ISSUE_LIST_SUCCESS:
-      let byId = {};
-      let items = [];
-      if (
-        action.data.type === state.issueList.type &&
-        action.data.interaction === state.issueList.interaction &&
-        action.data.status === state.issueList.status
-      ) {
-        let preById = state.issueList.byId;
-        let preItems = state.issueList.items;
-        let currentById = {};
-        let currentItems = [];
-        action.data.items.forEach(item => {
-          currentItems.push(item.id);
-          currentById[item.id] = item;
-        });
-        let mergedById = {};
-        let mergedSet = new Set();
-        preItems.forEach(id => {
-          mergedSet.add(id);
-          mergedById[id] = preById[id];
-        });
-        currentItems.forEach(id => {
-          mergedSet.add(id);
-          mergedById[id] = currentById[id];
-        });
-        byId = { ...mergedById };
-        items = Array.from(mergedSet);
-      } else {
-        action.data.items.forEach(item => {
-          items.push(item.id);
-          byId[item.id] = item;
-        });
-      }
+      const byId = {};
+      const items = [];
+      action.data.items.forEach(item => {
+        items.push(item.id);
+        byId[item.id] = item;
+      });
+      // if (
+      //   action.data.type === state.issueList.type &&
+      //   action.data.interaction === state.issueList.interaction &&
+      //   action.data.status === state.issueList.status
+      // ) {
+      //   let preById = state.issueList.byId;
+      //   let preItems = state.issueList.items;
+      //   let currentById = {};
+      //   let currentItems = [];
+      //   action.data.items.forEach(item => {
+      //     currentItems.push(item.id);
+      //     currentById[item.id] = item;
+      //   });
+      //   let mergedById = {};
+      //   let mergedSet = new Set();
+      //   preItems.forEach(id => {
+      //     mergedSet.add(id);
+      //     mergedById[id] = preById[id];
+      //   });
+      //   currentItems.forEach(id => {
+      //     mergedSet.add(id);
+      //     mergedById[id] = currentById[id];
+      //   });
+      //   byId = { ...mergedById };
+      //   items = Array.from(mergedSet);
+      // } else {
+      //   action.data.items.forEach(item => {
+      //     items.push(item.id);
+      //     byId[item.id] = item;
+      //   });
+      // }
       return {
         ...state,
         issueList: {
