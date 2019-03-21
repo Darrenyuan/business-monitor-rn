@@ -1,22 +1,63 @@
 // from https://gist.github.com/jed/982883
 export default function b(
-    a                  // placeholder
+  a, // placeholder
 ) {
-    return a           // if the placeholder was passed, return
-    ? (                // a random number from 0 to 15
-        a ^            // unless b is 8,
-        Math.random()  // in which case
-        * 16           // a random number from
-        >> a/4         // 8 to 11
-    ).toString(16)     // in hexadecimal
-    : (                // or otherwise a concatenated string:
-        [1e7] +        // 10000000 +
-        -1e3 +         // -1000 +
-        -4e3 +         // -4000 +
-        -8e3 +         // -80000000 +
-        -1e11          // -100000000000,
-    ).replace(         // replacing
-        /[018]/g,      // zeroes, ones, and eights with
-        b              // random hex digits
-    );
-};
+  return a // if the placeholder was passed, return
+    ? // a random number from 0 to 15
+      (
+        a ^ // unless b is 8,
+        ((Math.random() * // in which case
+          16) >> // a random number from
+          (a / 4))
+      ) // 8 to 11
+        .toString(16) // in hexadecimal
+    : // or otherwise a concatenated string:
+      (
+        [1e7] + // 10000000 +
+        -1e3 + // -1000 +
+        -4e3 + // -4000 +
+        -8e3 + // -80000000 +
+        -1e11
+      ) // -100000000000,
+        .replace(
+          // replacing
+          /[018]/g, // zeroes, ones, and eights with
+          b, // random hex digits
+        );
+}
+
+var hex = [];
+
+for (var i = 0; i < 256; i++) {
+  hex[i] = (i < 16 ? '0' : '') + i.toString(16);
+}
+
+export function makeUUID() {
+  var r = crypto.getRandomValues(new Uint8Array(16));
+
+  r[6] = (r[6] & 0x0f) | 0x40;
+  r[8] = (r[8] & 0x3f) | 0x80;
+
+  return (
+    hex[r[0]] +
+    hex[r[1]] +
+    hex[r[2]] +
+    hex[r[3]] +
+    '-' +
+    hex[r[4]] +
+    hex[r[5]] +
+    '-' +
+    hex[r[6]] +
+    hex[r[7]] +
+    '-' +
+    hex[r[8]] +
+    hex[r[9]] +
+    '-' +
+    hex[r[10]] +
+    hex[r[11]] +
+    hex[r[12]] +
+    hex[r[13]] +
+    hex[r[14]] +
+    hex[r[15]]
+  );
+}

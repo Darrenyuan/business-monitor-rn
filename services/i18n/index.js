@@ -1,11 +1,11 @@
-import i18next from "i18next";
-import { I18nManager as RNI18nManager } from "react-native";
+import i18next from 'i18next';
+import { I18nManager as RNI18nManager } from 'react-native';
 
-import * as config from "../../config/i18n";
+import * as config from '../../config/i18n';
 
-import date from "./date";
-import languageDetector from "./language-detector";
-import translationLoader from "./translation-loader";
+import date from './date';
+import languageDetector from './language-detector';
+import translationLoader from './translation-loader';
 
 const i18n = {
   /**
@@ -27,8 +27,8 @@ const i18n = {
                 if (value instanceof Date) {
                   return date.format(value, format);
                 }
-              }
-            }
+              },
+            },
           },
           error => {
             if (error) {
@@ -39,7 +39,7 @@ const i18n = {
               .init(i18next.language)
               .then(resolve)
               .catch(error => reject(error));
-          }
+          },
         );
     });
   },
@@ -90,10 +90,10 @@ const i18n = {
    * @returns {mixed}
    */
   select(map) {
-    const key = this.isRTL ? "rtl" : "ltr";
+    const key = this.isRTL ? 'rtl' : 'ltr';
 
     return map[key];
-  }
+  },
 };
 
 export const t = i18n.t;

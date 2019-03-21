@@ -1,53 +1,92 @@
-import React, { Component } from "react";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import * as actions from "../../services/redux/actions";
+import React, { Component } from 'react';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../../services/redux/actions';
 import { ListItem, Header, Icon } from 'react-native-elements';
 import projectStyle from './projectlistStyle';
 import { t } from '../../services/i18n';
-import { toUnicode } from "punycode";
+import { toUnicode } from 'punycode';
 
 const styles = StyleSheet.create({ ...projectStyle });
 
 class Projects extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     //TODO t函数
     this.state = {
       name: t('drawer.projects_list'),
       noMoreData: false,
       pageNumber: 1,
-      projectList: {},
-    }
+      preById: {},
+      preItems: [],
+    };
   }
   //TODO 上划加载
   componentDidMount() {
-    this.props.actions.fetchProjectList({
-      page: this.state.pageNumber,
-      pageSize: 14
-    });
+    this.fetchData();
   }
+  getSnapshotBeforeUpdate() {
+    return this.rootNode.scrollHeight;
+  }
+
+  // componentDidUpdate(prevProps, prevState, prevScrollHeight) {
+  //   const scrollTop = this.rootNode.scrollTop;
+  //   if (scrollTop < 5) return;
+  //   this.rootNode.scrollTop =
+  //     scrollTop + (this.rootNode.scrollHeight - prevScrollHeight);
+  // }
   onpress(id) {
     this.props.navigation.navigate('ProjectDetailsStack', {
-      id: id
-    })
+      id: id,
+    });
   }
   goback(text) {
     this.props.navigation.navigate(text);
   }
-  loadMoreData(num) {
-    let pageNumber = this.state.pageNumber + num
-    if (pageNumber < 1) {
-      pageNumber = 1;
-    }
+  // loadMoreData(num) {
+  //   let pageNumber = this.state.pageNumber + num;
+  //   if (pageNumber < 1) {
+  //     pageNumber = 1;
+  //   }
+  //   this.props.actions.fetchProjectList({
+  //     page: pageNumber,
+  //     pageSize: 14,
+  //   });
+  //   this.setState({
+  //     pageNumber: pageNumber,
+  //   });
+  // }
+  fetchData = () => {
     this.props.actions.fetchProjectList({
-      page: pageNumber,
-      pageSize: 14
+      page: this.state.pageNumber,
+      pageSize: 14,
     });
-    this.setState({
-      pageNumber: pageNumber
-    });
+  };
+  componentDidUpdate(prevProps, prevState, prevScrollHeight) {
+    if (prevState.pageNumber !== this.state.pageNumber) {
+      let projectList = [];
+      let byId = this.props.monitor.projectList.byId;
+      let items = this.props.monitor.projectList.items;
+      let preById = this.state.preById;
+      let preItems = this.state.preItems;
+      let mergedById = {};
+      mergedById = { ...preById, ...byId };
+      let mergedSet = new Set();
+      preItems.forEach(item => {
+        mergedSet.add(item);
+      });
+      items.forEach(item => {
+        mergedSet.add(item);
+      });
+
+      let mergedItems = Array.from(mergedSet);
+      this.setState({ preById: mergedById, preItems: mergedItems });
+      this.fetchData();
+      const scrollTop = this.rootNode.scrollTop;
+      if (scrollTop < 5) return;
+      this.rootNode.scrollTop = scrollTop + (this.rootNode.scrollHeight - prevScrollHeight);
+    }
   }
   scrollHandle(event) {
     const contentHeight = event.nativeEvent.contentSize.height;
@@ -55,13 +94,13 @@ class Projects extends Component {
     const scrollOffset = event.nativeEvent.contentOffset.y;
     const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
     const isContentFillPage = contentHeight >= scrollViewHeight;
-    if (this.state.pageNumber !== 1) {
-      if (scrollOffset < -30) {
-        this.loadMoreData(-1);
-      }
-    }
+    // if (this.state.pageNumber !== 1) {
+    //   if (scrollOffset < -30) {
+    //     this.loadMoreData(-1);
+    //   }
+    // }
     if (isContentFillPage && isEndReached) {
-      this.loadMoreData(1);
+      this.setState({ pageNumber: this.state.pageNumber + 1 });
     }
   }
   render() {
@@ -70,61 +109,71 @@ class Projects extends Component {
         <View>
           <Text>loading...</Text>
         </View>
-      )
+      );
     }
-    let projectList = [];
-    let projectListById = this.props.monitor.projectList.byId;
-    for (const key in projectListById) {
-      projectList.push(projectListById[key]);
-    }
+    const projectList = [];
+    let byId = this.props.monitor.projectList.byId;
+    let items = this.props.monitor.projectList.items;
+    let preById = this.state.preById;
+    let preItems = this.state.preItems;
+    preItems.forEach(id => {
+      projectList.push(preById[id]);
+    });
+    items.forEach(id => {
+      projectList.push(byId[id]);
+    });
+
     return (
       //TODO 修worp名字
       <View style={styles.worp}>
         <Header
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
-          rightComponent={<View >
-            <Icon name="home" color="#fff" size={28}
-              iconStyle={{ marginRight: 10 }}
-              onPress={this.goback.bind(this, "projectsStack")}
-            />
-
-          </View>}
+          rightComponent={
+            <View>
+              <Icon
+                name="home"
+                color="#fff"
+                size={28}
+                iconStyle={{ marginRight: 10 }}
+                onPress={this.goback.bind(this, 'projectsStack')}
+              />
+            </View>
+          }
         />
-        <ScrollView
-          onScroll={(evt) => this.scrollHandle(evt)}
-          scrollEventThrottle={50}
-        >
+        <ScrollView onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
           <View>
-            {
-              projectList.map((item, i) => {
-                return <ListItem key={i} title={item.name} rightIcon={{ name: 'chevron-right' }}
+            {projectList.map((item, i) => {
+              return (
+                <ListItem
+                  key={i}
+                  title={item.name}
+                  rightIcon={{ name: 'chevron-right' }}
                   containerStyle={styles.container}
                   onPress={this.onpress.bind(this, item.id)}
                 />
-              })
-            }
+              );
+            })}
           </View>
         </ScrollView>
       </View>
-
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    monitor: state
+    monitor: state,
   };
 }
 
 /* istanbul ignore next */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ ...actions }, dispatch)
+    actions: bindActionCreators({ ...actions }, dispatch),
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Projects);
