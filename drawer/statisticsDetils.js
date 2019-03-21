@@ -16,19 +16,7 @@ const statisticsDetailsDrawerItem = createStackNavigator(
 );
 
 statisticsDetailsDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t("drawer.projects_statistics"),
-  drawerIcon: ({ tintColor }) => {
-    return (
-      <Icon
-        name="user"
-        size={30}
-        iconStyle={{
-          width: 30,
-          height: 30 
-        }}
-        color={tintColor}
-      />
-    );
-  }
+  drawerLabel: () => null,
+  drawerIcon: () => null,
 });
 export default statisticsDetailsDrawerItem;

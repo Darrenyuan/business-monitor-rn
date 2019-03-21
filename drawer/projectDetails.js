@@ -16,19 +16,7 @@ const ProjectsDrawerItem = createStackNavigator(
 );
 
 ProjectsDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t("drawer.projects_label"),
-  drawerIcon: ({ tintColor }) => {
-    return (
-      <Icon
-        name="air"
-        size={30}
-        iconStyle={{
-          width: 30,
-          height: 30
-        }}
-        color={tintColor}
-      />
-    );
-  }
+  drawerLabel: () => null,
+  drawerIcon: () => null,
 });
 export default ProjectsDrawerItem;

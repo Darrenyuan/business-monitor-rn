@@ -16,19 +16,7 @@ const ProblemStatisticsDrawerItem = createStackNavigator(
 );
 
 ProblemStatisticsDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t("drawer.projects_statistics"),
-  drawerIcon: ({ tintColor }) => {
-    return (
-      <Icon
-        name="air"
-        size={30}
-        iconStyle={{
-          width: 30,
-          height: 30
-        }}
-        color={tintColor}
-      />
-    );
-  }
+  drawerLabel: () => null,
+  drawerIcon: () => null,
 });
 export default ProblemStatisticsDrawerItem;

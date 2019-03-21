@@ -33,12 +33,15 @@ class StatisticsDetails extends Component {
   }
 
   componentDidMount() {
+    this.fetchReply();
+    this.issueDetail();
+  }
+  fetchReply() {
     this.props.actions.fetchReplyList({
       issueId: this.props.navigation.state.params.issueId,
     });
     this.issueDetail();
   }
-
   issueDetail() {
     apiIssueDetail({
       issueId: this.props.navigation.state.params.issueId,
@@ -57,8 +60,8 @@ class StatisticsDetails extends Component {
     } else {
       apiupdateIssueStatus({
         issueId: this.props.navigation.state.params.issueId,
-        status: 1,
-      }).then(res => {
+        status: 3,
+      }).then((res) => {
         this.props.navigation.navigate('ProblemStatisticsStack', {
           id: this.props.navigation.state.params.projectId,
           issueStatus: 1,
@@ -104,9 +107,7 @@ class StatisticsDetails extends Component {
   scrollHandle(event) {
     const scrollOffset = event.nativeEvent.contentOffset.y;
     if (scrollOffset < -50) {
-      this.props.actions.fetchReplyList({
-        issueId: this.props.navigation.state.params.issueId,
-      });
+      this.fetchReply();
     }
   }
   render() {
@@ -114,11 +115,19 @@ class StatisticsDetails extends Component {
     let buttonStatusText = '';
     let whoseIusseReply = [];
     let imagePathReply = [];
+    let issueimagePath = [];
+    let sponsorId = false;
+    let foremanId = false;
     let issueId = this.props.navigation.state.params.issueId;
+    let roleId = this.props.monitor.loginData.roles[0].roleId;
     let iusseItem = this.state.issueDetail;
     let status = this.props.navigation.state.params.status;
-    console.log('status', status);
+    console.log("status", status);
     let replyList = this.props.monitor.replyList.byId;
+    console.log("this", this);
+    if (iusseItem.imagePath !== undefined) {
+      issueimagePath = (iusseItem.imagePath).split(",");
+    }
     for (const key in replyList) {
       issueReplyList.push(replyList[key]);
     }
@@ -130,10 +139,10 @@ class StatisticsDetails extends Component {
       return item.imagePath !== '[]' && item.issueId === issueId;
     });
     console.log('imagePathReply', imagePathReply);
-    buttonStatusText =
-      status === 1
-        ? t('screen.statisticsDetails_rectification')
-        : t('screen.statisticsDetails_confirm');
+
+    sponsorId = roleId === iusseItem.sponsorId ? true : false;
+    foremanId = roleId === iusseItem.handlerId ? true : false;
+    buttonStatusText = foremanId ? t('screen.creatissu_rectification') : t('screen.creatissu_confirm');
     if (this.props.monitor.replyList.fetchReplyListPending) {
       return (
         <View>
@@ -178,21 +187,18 @@ class StatisticsDetails extends Component {
                   <View style={styles.issueStyle}>
                     <Text style={{ fontSize: 18 }}>问题描述:</Text>
                   </View>
-                  <Image
-                    source={{ uri: 'Selection_003.png' }}
-                    PlaceholderContent={<ActivityIndicator />}
-                  />
+                  {issueimagePath.map((item, i) => {
+                    return <Image key={i} style={styles.img} source={{ uri: URL + item }} resizeMethod={'resize'} />;
+                  })}
                 </View>
                 <View style={styles.textStyle}>
                   <Text style={{ lineHeight: 28, fontSize: 16 }}> {iusseItem.description}</Text>
                 </View>
               </View>
-              {status === 1 ? (
-                <Text> " " </Text>
-              ) : (
-                imagePathReply.map((item, i) => {
-                  return (
-                    <View style={styles.viewWorps} key={i}>
+              {
+                status === 1 ? <Text></Text> : (
+                  imagePathReply.map((item, i) => {
+                    return <View style={styles.viewWorps} key={i}>
                       <View style={styles.imgStyle}>
                         <View style={styles.issueStyle}>
                           <Text style={{ fontSize: 18 }}>整改描述:</Text>
@@ -212,9 +218,9 @@ class StatisticsDetails extends Component {
                         <Text style={{ lineHeight: 28, fontSize: 16 }}> {item.content}</Text>
                       </View>
                     </View>
-                  );
-                })
-              )}
+                  })
+                )
+              }
             </View>
             {whoseIusseReply.map((item, i) => {
               return (
@@ -230,25 +236,27 @@ class StatisticsDetails extends Component {
             })}
 
             <View style={styles.butViewStyle}>
-              {status === 3 || status === 1 ? (
-                <Text> " " </Text>
-              ) : (
-                <Button
-                  title={t('screen.statisticsDetails_disagree')}
-                  onPress={this.onpass.bind(this)}
-                  containerStyle={styles.butStyle}
-                />
-              )}
-              {status === 3 ? (
-                <Text> " " </Text>
-              ) : (
-                <Button
-                  title={buttonStatusText}
+              {(status === 3 || status === 1 || (!sponsorId)) ? <Text></Text> : <Button
+                title={t('screen.creatissu_disagree')}
+                onPress={this.onpass.bind(this)}
+                containerStyle={styles.butStyle}
+              />}
+              {
+                (status === 3 || (!foremanId)) ? <Text></Text> : <Button
+                  title={t('screen.creatissu_rectification')}
                   disabled={this.state.disabled}
                   onPress={this.onperss.bind(this, buttonStatusText)}
                   containerStyle={styles.butStyle}
                 />
-              )}
+              }
+              {
+                (status === 3 || status === 1 || (!sponsorId)) ? <Text></Text> : <Button
+                  title={t('screen.creatissu_confirm')}
+                  disabled={this.state.disabled}
+                  onPress={this.onperss.bind(this, buttonStatusText)}
+                  containerStyle={styles.butStyle}
+                />
+              }
             </View>
             <Overlay
               isVisible={this.state.isVisible}

@@ -16,19 +16,7 @@ const CreatissuDrawerItem = createStackNavigator(
 );
 
 CreatissuDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t('drawer.creatissu_label'),
-  drawerIcon: ({ tintColor }) => {
-    return (
-      <Icon
-        name="bullseye"
-        size={30}
-        iconStyle={{
-          width: 30,
-          height: 30,
-        }}
-        color={tintColor}
-      />
-    );
-  },
+  drawerLabel: () => null,
+  drawerIcon: () => null,
 });
 export default CreatissuDrawerItem;
