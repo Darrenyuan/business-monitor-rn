@@ -283,7 +283,7 @@ class ProblemStatistics extends Component {
             title={statusMap.get(this.state.status)}
             onPress={() => this.handleStatusModalVisible(true)}
           />
-          {this.state.shouldShowInteraction && (
+          {this.state.showInteraction && (
             <Button
               key={makeUUID()}
               containerStyle={styles.arrStyle}
@@ -297,7 +297,7 @@ class ProblemStatistics extends Component {
             containerStyle={styles.arrStyle}
             onPress={this.resetAll}
           />
-          {this.state.shouldShowCreateIssue && (
+          {this.state.showCreateIssue && (
             <Button
               title={t('screen.problem_statistics_button_jump_drawer')}
               containerStyle={styles.arrStyle}
