@@ -197,6 +197,9 @@ class ProblemStatistics extends Component {
       issueId: issueId,
       projectId: this.state.projectId
     });
+    this.setState({
+      issueStatus: false
+    })
   }
   jump() {
     this.props.navigation.navigate('creatissuStack', {

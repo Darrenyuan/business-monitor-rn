@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, StyleSheet, Text, View } from 'react-native';
+import { TextInput, StyleSheet, Text, View, DeviceEventEmitter } from 'react-native';
 import { Button, Image, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '../../services/i18n';
@@ -50,6 +50,7 @@ class CreateComment extends Component {
                 issueId: _this.props.navigation.state.params.issueId,
                 status: 2,
               });
+              DeviceEventEmitter.emit('xxxName', true);
               _this.props.navigation.navigate("ProblemStatisticsStack");
             })
 
