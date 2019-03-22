@@ -43,7 +43,7 @@ class Creatissu extends Component {
           }),
         });
       },
-      err => {},
+      err => { },
     );
   }
 
@@ -59,7 +59,7 @@ class Creatissu extends Component {
       res => {
         this.props.navigation.navigate('ProblemStatisticsStack');
       },
-      err => {},
+      err => { },
     );
   }
 
@@ -163,8 +163,8 @@ class Creatissu extends Component {
             />
           </View>
           <Button
-            onPress={this.createIssues.bind(thicreateissues)}
-            title={t('screen.createissue_submit')}
+            onPress={this.createIssues.bind(this)}
+            title={t('screen.statisticsDetails_submit')}
             buttonStyle={styles.submit}
           />
         </View>

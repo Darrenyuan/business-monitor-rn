@@ -88,7 +88,9 @@ class ProjectsDetails extends Component {
             </View>
           }
         />
-        <ScrollView>
+        <ScrollView
+          bounces={true}
+        >
           <View style={styles.detailView}>
             <Text style={styles.detailText}>{t('screen.projectDetails_name')}</Text>
             <Text style={styles.detailColor}>{detailItem.name}</Text>

@@ -142,7 +142,7 @@ class StatisticsDetails extends Component {
 
     sponsorId = roleId === iusseItem.sponsorId ? true : false;
     foremanId = roleId === iusseItem.handlerId ? true : false;
-    buttonStatusText = foremanId ? t('screen.creatissu_rectification') : t('screen.creatissu_confirm');
+    buttonStatusText = foremanId ? t('screen.statisticsDetails_rectification') : t('screen.statisticsDetails_confirm');
     if (this.props.monitor.replyList.fetchReplyListPending) {
       return (
         <View>
@@ -237,13 +237,13 @@ class StatisticsDetails extends Component {
 
             <View style={styles.butViewStyle}>
               {(status === 3 || status === 1 || (!sponsorId)) ? <Text></Text> : <Button
-                title={t('screen.creatissu_disagree')}
+                title={t('screen.statisticsDetails_disagree')}
                 onPress={this.onpass.bind(this)}
                 containerStyle={styles.butStyle}
               />}
               {
                 (status === 3 || (!foremanId)) ? <Text></Text> : <Button
-                  title={t('screen.creatissu_rectification')}
+                  title={t('screen.statisticsDetails_rectification')}
                   disabled={this.state.disabled}
                   onPress={this.onperss.bind(this, buttonStatusText)}
                   containerStyle={styles.butStyle}
@@ -251,7 +251,7 @@ class StatisticsDetails extends Component {
               }
               {
                 (status === 3 || status === 1 || (!sponsorId)) ? <Text></Text> : <Button
-                  title={t('screen.creatissu_confirm')}
+                  title={t('screen.statisticsDetails_confirm')}
                   disabled={this.state.disabled}
                   onPress={this.onperss.bind(this, buttonStatusText)}
                   containerStyle={styles.butStyle}

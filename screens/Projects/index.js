@@ -3,18 +3,17 @@ import { ScrollView, Text, View, StyleSheet } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actions from "../../services/redux/actions";
-import { ListItem, Header, Icon } from 'react-native-elements';
+import { ListItem, Header, Icon, Button } from 'react-native-elements';
 import projectStyle from './projectlistStyle';
 import { t } from '../../services/i18n';
 import withLogin from '../../services/common/withLogin';
-import { toUnicode } from "punycode";
+import { toUnicode } from 'punycode';
 
 const styles = StyleSheet.create({ ...projectStyle });
 
 class Projects extends Component {
   constructor(props) {
     super(props);
-    //TODO t函数
     this.state = {
       name: t('drawer.projects_list'),
       noMoreData: false,
@@ -22,11 +21,10 @@ class Projects extends Component {
       projectList: {},
     };
   }
-  //TODO 上划加载
   componentDidMount() {
     this.props.actions.fetchProjectList({
       page: this.state.pageNumber,
-      pageSize: 14,
+      pageSize: 10,
     });
   }
   onpress(id) {
@@ -44,27 +42,37 @@ class Projects extends Component {
     }
     this.props.actions.fetchProjectList({
       page: pageNumber,
-      pageSize: 14,
+      pageSize: 10,
     });
     this.setState({
       pageNumber: pageNumber,
     });
   }
-  scrollHandle(event) {
-    const contentHeight = event.nativeEvent.contentSize.height;
-    const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
-    const scrollOffset = event.nativeEvent.contentOffset.y;
-    const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
-    const isContentFillPage = contentHeight >= scrollViewHeight;
-    if (this.state.pageNumber !== 1) {
-      if (scrollOffset < -30) {
-        this.loadMoreData(-1);
-      }
-    }
-    if (isContentFillPage && isEndReached) {
-      this.loadMoreData(1);
-    }
+  lastPage() {
+    this.loadMoreData(-1);
   }
+  nextPage() {
+    this.loadMoreData(1);
+  }
+  scrollHandle(event) {
+    // const contentHeight = event.nativeEvent.contentSize.height;
+    // const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
+    // const scrollOffset = event.nativeEvent.contentOffset.y;
+    // console.log('scrollOffset', scrollOffset);
+    // console.log('scrollViewHeight', scrollViewHeight);
+    // console.log('contentHeight', contentHeight);
+    // const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
+    // const isContentFillPage = contentHeight >= scrollViewHeight;
+    // if (this.state.pageNumber !== 1) {
+    //   if (scrollOffset < -30) {
+    //     this.loadMoreData(-1);
+    //   }
+    // }
+    // if (isContentFillPage && isEndReached) {
+    //   this.loadMoreData(1);
+    // }
+  }
+
   render() {
     if (this.props.monitor.projectList.fetchProjectListPending) {
       return (
@@ -80,7 +88,7 @@ class Projects extends Component {
     }
     return (
       //TODO 修worp名字
-      <View style={styles.worp}>
+      <View style={styles.wrap}>
         <Header
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
           rightComponent={
@@ -95,8 +103,14 @@ class Projects extends Component {
             </View>
           }
         />
-        <ScrollView onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
-          <View>
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            showsVerticalScrollIndicator={true}
+            canCancelContentTouches={true}
+            bounces={true}
+            contentContainerStyle={{ flexGrow: 1 }}
+            nestedScrollEnabled={true}
+            onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
             {projectList.map((item, i) => {
               return (
                 <ListItem
@@ -108,9 +122,26 @@ class Projects extends Component {
                 />
               );
             })}
+          </ScrollView>
+        </View>
+        <View style={styles.buttonViem}>
+          <View style={styles.rightbut}>
+            <Button
+              title="上一页"
+              containerStyle={styles.arrStyle}
+              onPress={this.lastPage.bind(this)}
+            />
           </View>
-        </ScrollView>
+          <View style={styles.leftbut}>
+            <Button
+              title="下一页"
+              containerStyle={styles.arrStyle}
+              onPress={this.nextPage.bind(this)}
+            />
+          </View>
+        </View>
       </View>
+
     );
   }
 }

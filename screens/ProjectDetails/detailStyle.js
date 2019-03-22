@@ -5,10 +5,11 @@ const SCREEN_WIDTH = Dimensions.get("window").width;
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const fontSzie = Dimensions.get("window").fontSize;
 export default {
-  worp:{
+  worp: {
+    flex: 1,
     height: SCREEN_HEIGHT
   },
-  detailView:{
+  detailView: {
     display: "flex",
     flexDirection: "row",
     alignContent: "center",
@@ -17,7 +18,7 @@ export default {
     borderStyle: "solid",
     borderBottomColor: "#A39F93",
   },
-  detailText:{
+  detailText: {
     width: SCREEN_WIDTH * 0.3,
     height: "100%",
     marginRight: 2,
@@ -28,7 +29,7 @@ export default {
     borderStyle: "solid",
     borderRightColor: "#A39F93",
   },
-  detailColor:{
+  detailColor: {
     width: SCREEN_WIDTH * 0.6,
     height: "100%",
     fontSize: 16,
