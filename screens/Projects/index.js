@@ -55,30 +55,24 @@ class Projects extends Component {
     this.loadMoreData(1);
   }
   scrollHandle(event) {
-    const contentHeight = event.nativeEvent.contentSize.height;
-    const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
-    const scrollOffset = event.nativeEvent.contentOffset.y;
-    console.log('scrollOffset', scrollOffset);
-    console.log('scrollViewHeight', scrollViewHeight);
-    console.log('contentHeight', contentHeight);
-    const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
-    const isContentFillPage = contentHeight >= scrollViewHeight;
-    if (this.state.pageNumber !== 1) {
-      if (scrollOffset < -30) {
-        this.loadMoreData(-1);
-      }
-    }
-    if (isContentFillPage && isEndReached) {
-      this.loadMoreData(1);
-    }
+    // const contentHeight = event.nativeEvent.contentSize.height;
+    // const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
+    // const scrollOffset = event.nativeEvent.contentOffset.y;
+    // console.log('scrollOffset', scrollOffset);
+    // console.log('scrollViewHeight', scrollViewHeight);
+    // console.log('contentHeight', contentHeight);
+    // const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
+    // const isContentFillPage = contentHeight >= scrollViewHeight;
+    // if (this.state.pageNumber !== 1) {
+    //   if (scrollOffset < -30) {
+    //     this.loadMoreData(-1);
+    //   }
+    // }
+    // if (isContentFillPage && isEndReached) {
+    //   this.loadMoreData(1);
+    // }
   }
 
-  ScrollEndDrag(e) {
-    console.log(1111111111111111111111111111111);
-  }
-  ScrollBeginDrag(e) {
-    console.log(22222222222222222222222222);
-  }
   render() {
     if (this.props.monitor.projectList.fetchProjectListPending) {
       return (
