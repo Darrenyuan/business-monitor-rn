@@ -14,7 +14,6 @@ const styles = StyleSheet.create({ ...projectStyle });
 class Projects extends Component {
   constructor(props) {
     super(props);
-    //TODO t函数
     this.state = {
       name: t('drawer.projects_list'),
       noMoreData: false,
@@ -22,7 +21,6 @@ class Projects extends Component {
       projectList: {},
     };
   }
-  //TODO 上划加载
   componentDidMount() {
     this.props.actions.fetchProjectList({
       page: this.state.pageNumber,
@@ -80,7 +78,7 @@ class Projects extends Component {
     }
     return (
       //TODO 修worp名字
-      <View style={styles.worp}>
+      <View style={styles.wrap}>
         <Header
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
           rightComponent={
