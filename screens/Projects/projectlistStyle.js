@@ -11,5 +11,27 @@ export default {
     borderBottomWidth: 1,
     borderStyle: "solid",
     borderBottomColor: "#A39F93"
+  },
+  buttonViem: {
+    display: "flex",
+    flexDirection: "row",
+    alignContent: "center",
+    justifyContent: "center",
+  },
+  arrStyle: {
+    width: SCREEN_WIDTH * 0.24,
+    marginLeft: SCREEN_WIDTH * 0.005,
+    marginRight: SCREEN_WIDTH * 0.005,
+  },
+  arrStyle: {
+    width: SCREEN_WIDTH * 0.24,
+    marginLeft: SCREEN_WIDTH * 0.005,
+    marginRight: SCREEN_WIDTH * 0.005,
+  },
+  rightbut: {
+    marginRight: SCREEN_WIDTH * 0.1,
+  },
+  leftbut: {
+    marginLeft: SCREEN_WIDTH * 0.1,
   }
 }

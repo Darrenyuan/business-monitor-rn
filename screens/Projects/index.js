@@ -3,7 +3,7 @@ import { ScrollView, Text, View, StyleSheet } from "react-native";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as actions from "../../services/redux/actions";
-import { ListItem, Header, Icon } from 'react-native-elements';
+import { ListItem, Header, Icon, Button } from 'react-native-elements';
 import projectStyle from './projectlistStyle';
 import { t } from '../../services/i18n';
 import withLogin from '../../services/common/withLogin';
@@ -47,6 +47,12 @@ class Projects extends Component {
     this.setState({
       pageNumber: pageNumber,
     });
+  }
+  lastPage() {
+    this.loadMoreData(-1);
+  }
+  nextPage() {
+    this.loadMoreData(1);
   }
   scrollHandle(event) {
     const contentHeight = event.nativeEvent.contentSize.height;
@@ -108,7 +114,24 @@ class Projects extends Component {
             })}
           </View>
         </ScrollView>
+        <View style={styles.buttonViem}>
+          <View style={styles.rightbut}>
+            <Button
+              title="上一页"
+              containerStyle={styles.arrStyle}
+              onPress={this.lastPage.bind(this)}
+            />
+          </View>
+          <View style={styles.leftbut}>
+            <Button
+              title="下一页"
+              containerStyle={styles.arrStyle}
+              onPress={this.nextPage.bind(this)}
+            />
+          </View>
+        </View>
       </View>
+
     );
   }
 }
