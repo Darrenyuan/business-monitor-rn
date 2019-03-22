@@ -24,7 +24,7 @@ class Projects extends Component {
   componentDidMount() {
     this.props.actions.fetchProjectList({
       page: this.state.pageNumber,
-      pageSize: 14,
+      pageSize: 10,
     });
   }
   onpress(id) {
@@ -42,7 +42,7 @@ class Projects extends Component {
     }
     this.props.actions.fetchProjectList({
       page: pageNumber,
-      pageSize: 14,
+      pageSize: 10,
     });
     this.setState({
       pageNumber: pageNumber,
@@ -58,6 +58,9 @@ class Projects extends Component {
     const contentHeight = event.nativeEvent.contentSize.height;
     const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
     const scrollOffset = event.nativeEvent.contentOffset.y;
+    console.log('scrollOffset', scrollOffset);
+    console.log('scrollViewHeight', scrollViewHeight);
+    console.log('contentHeight', contentHeight);
     const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
     const isContentFillPage = contentHeight >= scrollViewHeight;
     if (this.state.pageNumber !== 1) {
@@ -68,6 +71,13 @@ class Projects extends Component {
     if (isContentFillPage && isEndReached) {
       this.loadMoreData(1);
     }
+  }
+
+  ScrollEndDrag(e) {
+    console.log(1111111111111111111111111111111);
+  }
+  ScrollBeginDrag(e) {
+    console.log(22222222222222222222222222);
   }
   render() {
     if (this.props.monitor.projectList.fetchProjectListPending) {
@@ -99,8 +109,16 @@ class Projects extends Component {
             </View>
           }
         />
-        <ScrollView onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
-          <View>
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            onScrollBeginDrag={this.ScrollBeginDrag.bind(this)}
+            onScrollEndDrag={this.ScrollEndDrag.bind(this)}
+            showsVerticalScrollIndicator={true}
+            canCancelContentTouches={true}
+            bounces={true}
+            contentContainerStyle={{ flexGrow: 1 }}
+            nestedScrollEnabled={true}
+            onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
             {projectList.map((item, i) => {
               return (
                 <ListItem
@@ -112,8 +130,8 @@ class Projects extends Component {
                 />
               );
             })}
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
         <View style={styles.buttonViem}>
           <View style={styles.rightbut}>
             <Button
