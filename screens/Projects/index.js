@@ -7,7 +7,7 @@ import { ListItem, Header, Icon, Button } from 'react-native-elements';
 import projectStyle from './projectlistStyle';
 import { t } from '../../services/i18n';
 import withLogin from '../../services/common/withLogin';
-import { toUnicode } from "punycode";
+import { toUnicode } from 'punycode';
 
 const styles = StyleSheet.create({ ...projectStyle });
 
@@ -105,8 +105,6 @@ class Projects extends Component {
         />
         <View style={{ flex: 1 }}>
           <ScrollView
-            onScrollBeginDrag={this.ScrollBeginDrag.bind(this)}
-            onScrollEndDrag={this.ScrollEndDrag.bind(this)}
             showsVerticalScrollIndicator={true}
             canCancelContentTouches={true}
             bounces={true}
