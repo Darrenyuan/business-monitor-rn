@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "expo-react-native-business-monitor",
+    "name": "锐泛管理",
     "description": "business monitor for ios and android",
     "slug": "expo-react-native-business-monitor",
     "privacy": "public",
@@ -8,19 +8,23 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
-    "icon": "./assets/icons/app-icon.png",
+    "icon": "./assets/icons/refiner-icon.png",
     "loading": {
-      "icon": "./assets/icons/loading-icon.png"
+      "icon": "./assets/icons/refiner-loading.png"
     },
     "splash": {
-      "image": "./assets/icons/loading-icon-512.png",
+      "image": "./assets/icons/refiner-loading-512.png",
       "backgroundColor": "#FFAC2C"
     },
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.refiner.monitor"
+    },
+    "android": {
+      "package": "com.refiner.monitor"
     }
   }
 }

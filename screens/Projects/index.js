@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import * as actions from "../../services/redux/actions";
+import React, { Component } from 'react';
+import { ScrollView, Text, View, StyleSheet } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../../services/redux/actions';
 import { ListItem, Header, Icon } from 'react-native-elements';
 import projectStyle from './projectlistStyle';
 import { t } from '../../services/i18n';
 import withLogin from '../../services/common/withLogin';
-import { toUnicode } from "punycode";
+import { toUnicode } from 'punycode';
 
 const styles = StyleSheet.create({ ...projectStyle });
 

@@ -90,7 +90,7 @@ const CustomDrawerContentComponent = props => {
         }}
       >
         <Image
-          source={require('./assets/icons/app-icon.png')}
+          source={require('./assets/icons/draw_top.png')}
           style={{ width: SCREEN_WIDTH * 0.57 }}
           resizeMode="contain"
         />
