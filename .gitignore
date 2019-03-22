@@ -22,7 +22,6 @@ node_modules/**/*
 **/*.iml
 **/*.idea
 **/.history
-**.expo
 
 # MacOS
 **/.DS_Store

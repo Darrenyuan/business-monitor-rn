@@ -1,0 +1,90 @@
+{
+  "login": {
+    "welcome": "Welcome {{name}} to our localized app!"
+  },
+  "user_profile": {
+    "title": "Your Profile"
+  },
+  "drawer": {
+    "login_label": "login",
+    "projects_label": "projects",
+    "creatissu_label": "create issue",
+    "projects_details": "Project details",
+    "statistics_details": "issue details",
+    "problem_statistics": "issue statistics list",
+    "projects_list": "projects list",
+    "createcomment_label": "answer issue"
+  },
+  "screen": {
+    "header_return": "return",
+    "submit": "submit",
+
+    "login_username": "username",
+    "login_password": "password",
+    "login_button": "login",
+    "login_content_text1": "Welcome to Project ",
+    "login_content_text2": "HSE Management",
+    "login_content_text3": " System",
+
+    "problem_statistics_type_all": "problem types",
+    "problem_statistics_type_material": "material",
+    "problem_statistics_type_quality": "quality",
+    "problem_statistics_type_security": "security",
+    "problem_statistics_type_other": "other",
+    "problem_statistics_status_all": "status",
+    "problem_statistics_status_wait_feedback": "pending feedback",
+    "problem_statistics_status_wait_confirm": "to be confirmed",
+    "problem_statistics_status_already_confirmed": "confirmed",
+    "problem_statistics_interaction_all": "interaction",
+    "problem_statistics_interaction_inner": "inner",
+    "problem_statistics_interaction_outer": "outer",
+    "problem_statistics_button_jump_drawer": "create issue",
+    "problem_statistics_button_reset_all": "reset",
+    "problem_statistics_table_header_column1": "name",
+    "problem_statistics_table_header_column2": "interaction",
+    "problem_statistics_table_header_column3": "problem types",
+    "problem_statistics_table_header_column4": "status",
+
+    "createissue_modalDropdown5": "name",
+    "createissue_rectification": "rectification",
+    "createissueconfirm": "confirm",
+    "createissue_disagree": "disagree",
+    "createissue_opinion": "opinion",
+    "createissue_modalDropdown1_item1": "meterial",
+    "createissue_modalDropdown1_item2": "quality",
+    "createissue_modalDropdown1_item3": "security",
+    "createissue_modalDropdown1_item4": "else",
+    "createissue_modalDropdown2": "designated handler",
+    "createissue_issue": "project issue",
+    "createissue_nochoice": "No photos to save!",
+    "createissue_photo": "photo upload",
+    "createissue_togallery": "Save to gallery",
+    "createissue_save": "Successfully saved",
+    "createissue_modalDropdown1": "problem types",
+    "createissue_titleinput": "problem description",
+    "createissue_textinput": "problem description",
+    "createissue_submit": "submit",
+
+    "createcomment_titleinput": "problem reply",
+
+    "statisticsDetails_modalDropdown4_item1": "Pending feedback",
+    "statisticsDetails_modalDropdown4_item3": "Confirmed",
+    "statisticsDetails_rectification": "rectification",
+    "statisticsDetails_confirm": "confirm",
+    "statisticsDetails_disagree": "disagree",
+    "statisticsDetails_opinion": "opinion",
+    "statisticsDetails_return": "return",
+    "statisticsDetails_submit": "submit",
+
+    "projectDetails_name": "project name",
+    "projectDetails_date": "project date",
+    "projectDetails_cost": "project cost",
+    "projectDetails_site": "project site",
+    "projectDetails_overview": "project overview",
+    "projectDetails_designUnit": "project design unit",
+    "projectDetails_supervisoryUnit": "project supervisory unit",
+    "projectDetails_constructionUnit": "project construction unit",
+    "projectDetails_issueInfo": "project issue information"
+  },
+  "loading": "loading"
+}
