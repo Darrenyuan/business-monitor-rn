@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextInput, StyleSheet, Text, View, Image } from 'react-native';
+import { TextInput, StyleSheet, Text, View, Image, Modal } from 'react-native';
 import { Button, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '../../services/i18n';
@@ -12,6 +12,7 @@ import CameraScreen from './CameraScreen';
 import { URL } from '../../services/axios/api';
 import { apiCreateIssues, apiFetchforeman } from '../../services/axios/api';
 import withLogin from '../../services/common/withLogin';
+import ImageViewer from 'react-native-image-zoom-viewer';
 const styles = StyleSheet.create({ ...CreatissuStyle });
 class Creatissu extends Component {
   constructor(props) {
@@ -24,6 +25,8 @@ class Creatissu extends Component {
       personnel: '',
       personnelArr: [],
       result: [],
+      index: 0,
+      modalVisible: false,
     };
   }
 
@@ -43,7 +46,7 @@ class Creatissu extends Component {
           }),
         });
       },
-      err => { },
+      err => {},
     );
   }
 
@@ -59,23 +62,43 @@ class Creatissu extends Component {
       res => {
         this.props.navigation.navigate('ProblemStatisticsStack');
       },
-      err => { },
+      err => {},
     );
   }
 
   goback(text) {
     this.props.navigation.navigate(text);
   }
+  handleModelCancel = () => {
+    this.setState({ modalVisible: false });
+  };
+  showImageView = () => {
+    this.setState({ modalVisible: true });
+  };
+
   render() {
+    // const images = [{ url: 'http://aboutreact.com/wp-content/uploads/2018/07/sample_img.png' }];
     const paths = [];
-    this.props.monitor.imagePaths.forEach(element => {
-      paths.push(URL + element);
+    this.props.monitor.imagePaths.forEach(path => {
+      paths.push({ url: `${URL}?path=${path}&width=862&height=812` });
     });
+    console.log(paths);
     if (this.props.monitor.isInCamera) {
       return <CameraScreen />;
+    } else if (this.state.modalVisible && paths.length > 0) {
+      return (
+        <Modal
+          visible={this.state.modalVisible}
+          transparent={false}
+          onRequestClose={() => this.handleModelCancel()}
+        >
+          <ImageViewer imageUrls={paths} enableSwipeDown onLongPress={this.handleModelCancel} />
+        </Modal>
+      );
     } else
       return (
         <View style={styles.container}>
+          <View />
           <Header
             leftComponent={
               <View>
@@ -121,11 +144,15 @@ class Creatissu extends Component {
             />
           </View>
           <View style={styles.imgContainer}>
-            <Image style={styles.img} source={{ uri: paths[0] }} resizeMethod={'resize'} />
-            <Image style={styles.img} source={{ uri: paths[1] }} resizeMethod={'resize'} />
             <Button
               onPress={this.processImage}
               title={t('screen.createissue_photo')}
+              buttonStyle={styles.picture_upload}
+            />
+            <Button
+              onPress={this.showImageView}
+              title="图片浏览"
+              disabled={paths.length === 0}
               buttonStyle={styles.picture_upload}
             />
           </View>

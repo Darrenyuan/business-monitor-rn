@@ -29,7 +29,7 @@ const initialState = {
   projectList: {
     items: [],
     page: 1,
-    pageSize: 3,
+    pageSize: 10,
     total: 0,
     byId: {},
     listNeedReload: false,

@@ -1,6 +1,7 @@
 {
   "login": {
-    "welcome": "Welcome {{name}} to our localized app!"
+    "welcome": "Welcome {{name}} to our localized app!",
+    "input_warning": "please input a valid username"
   },
   "user_profile": {
     "title": "Your Profile"

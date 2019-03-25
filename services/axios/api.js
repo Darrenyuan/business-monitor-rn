@@ -1,19 +1,19 @@
 import axios from 'axios';
 import { logout } from '../redux/actions';
-let baseUrl = 'http://192.168.0.200:8080/imageserver';
+let baseUrl = 'http://192.168.0.102:8080';
 
-let imageUrl = 'http://192.168.0.200:9000/resources';
+let imageUrl = 'http://192.168.0.102:8080/imageThumbnail';
 let option = {
   baseURL: baseUrl,
-  timeout: 5000,
-  crossdomain: true,
+  timeout: 10000,
+  // crossdomain: true,
   withCredentials: true,
 };
-if (process.env.NODE_ENV === 'production') {
-  baseUrl = 'http://212.64.74.113/api';
-  imageUrl = 'http://212.64.74.113';
-  option = { ...option, crossdomain: false, timeout: 10000, baseURL: baseUrl };
-}
+// if (process.env.NODE_ENV === 'production') {
+//   baseUrl = 'http://212.64.74.113/api';
+//   imageUrl = 'http://212.64.74.113/api/image/imageThumbnail?';
+//   option = { ...option, crossdomain: false, timeout: 10000, baseURL: baseUrl };
+// }
 
 export const URL = imageUrl;
 

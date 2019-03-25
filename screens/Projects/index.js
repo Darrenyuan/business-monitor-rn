@@ -1,13 +1,15 @@
-import React, { Component } from "react";
-import { ScrollView, Text, View, StyleSheet } from "react-native";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import * as actions from "../../services/redux/actions";
+import React, { Component } from 'react';
+import { ScrollView, Text, View, StyleSheet, ListView, RefreshControl } from 'react-native';
+import InfiniteScrollView from 'react-native-infinite-scroll-view';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actions from '../../services/redux/actions';
 import { ListItem, Header, Icon, Button } from 'react-native-elements';
-import projectStyle from './projectlistStyle';
+import projectStyle, { SCREEN_HEIGHT, SCREEN_HEIGHT } from './projectlistStyle';
 import { t } from '../../services/i18n';
 import withLogin from '../../services/common/withLogin';
 import { toUnicode } from 'punycode';
+import moment from 'moment';
 
 const styles = StyleSheet.create({ ...projectStyle });
 
@@ -17,15 +19,36 @@ class Projects extends Component {
     this.state = {
       name: t('drawer.projects_list'),
       noMoreData: false,
-      pageNumber: 1,
-      projectList: {},
+      page: 1,
+      pageSize: 20,
+      projectItems: {},
+      dataSource: new ListView.DataSource({
+        rowHasChanged: this._rowHasChanged.bind(this),
+      }),
     };
+    // this.state.dataSource = this.state.dataSource.cloneWithRows([], []);
   }
   componentDidMount() {
     this.props.actions.fetchProjectList({
-      page: this.state.pageNumber,
-      pageSize: 10,
+      page: this.state.page,
+      pageSize: this.state.pageSize,
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // Trigger a re-render when receiving new props (when redux has more data).
+    this.setState({
+      dataSource: this.getUpdatedDataSource(nextProps),
+    });
+  }
+
+  getUpdatedDataSource(props) {
+    // See the ListView.DataSource documentation for more information on
+    // how to properly structure your data depending on your use case.
+    let items = { ...this.state.projectItems, ...props.monitor.projectList.byId };
+    let ids = Object.keys(items);
+    this.setState({ projectItems: items });
+    return this.state.dataSource.cloneWithRows(items, ids);
   }
   onpress(id) {
     this.props.navigation.navigate('ProjectDetailsStack', {
@@ -36,43 +59,78 @@ class Projects extends Component {
     this.props.navigation.navigate(text);
   }
   loadMoreData(num) {
-    let pageNumber = this.state.pageNumber + num;
-    if (pageNumber < 1) {
-      pageNumber = 1;
+    let page = this.state.page + num;
+    if (page < 1) {
+      page = 1;
     }
     this.props.actions.fetchProjectList({
-      page: pageNumber,
-      pageSize: 10,
+      page: page,
+      pageSize: this.state.pageSize,
     });
     this.setState({
-      pageNumber: pageNumber,
+      page: page,
     });
   }
-  lastPage() {
+  prevPage = () => {
     this.loadMoreData(-1);
-  }
-  nextPage() {
+  };
+  nextPage = () => {
     this.loadMoreData(1);
-  }
-  scrollHandle(event) {
-    // const contentHeight = event.nativeEvent.contentSize.height;
-    // const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
-    // const scrollOffset = event.nativeEvent.contentOffset.y;
-    // console.log('scrollOffset', scrollOffset);
-    // console.log('scrollViewHeight', scrollViewHeight);
-    // console.log('contentHeight', contentHeight);
-    // const isEndReached = scrollOffset + scrollViewHeight >= contentHeight + 50;
-    // const isContentFillPage = contentHeight >= scrollViewHeight;
-    // if (this.state.pageNumber !== 1) {
-    //   if (scrollOffset < -30) {
-    //     this.loadMoreData(-1);
-    //   }
-    // }
-    // if (isContentFillPage && isEndReached) {
-    //   this.loadMoreData(1);
-    // }
+  };
+  _rowHasChanged(r1, r2) {
+    // You might want to use a different comparison mechanism for performance.
+    return JSON.stringify(r1) !== JSON.stringify(r2);
   }
 
+  _fetchFirstPage = () => {
+    this.setState({
+      projectItems: {},
+      page: 1,
+    });
+    this.props.actions.fetchProjectList({
+      page: 1,
+      pageSize: this.state.pageSize,
+    });
+  };
+  _renderRefreshControl() {
+    // Reload all data
+    return (
+      <RefreshControl
+        refreshing={this.props.monitor.projectList.fetchProjectListPending}
+        onRefresh={this._fetchFirstPage}
+      />
+    );
+  }
+  _canLoadMore = () => {
+    const {
+      page,
+      pageSize,
+      total,
+      byId,
+      items,
+      fetchProjectListPending,
+    } = this.props.monitor.projectList;
+    const lastPage = total <= page * pageSize;
+
+    if (!fetchProjectListPending && !lastPage) {
+      return true;
+    }
+  };
+  _onEndReached = () => {
+    const {
+      page,
+      pageSize,
+      total,
+      byId,
+      items,
+      fetchProjectListPending,
+    } = this.props.monitor.projectList;
+    const lastPage = total <= page * pageSize;
+
+    if (!fetchProjectListPending && !lastPage) {
+      this.nextPage();
+    }
+  };
   render() {
     if (this.props.monitor.projectList.fetchProjectListPending) {
       return (
@@ -81,14 +139,15 @@ class Projects extends Component {
         </View>
       );
     }
-    let projectList = [];
-    let projectListById = this.props.monitor.projectList.byId;
-    for (const key in projectListById) {
-      projectList.push(projectListById[key]);
-    }
+    const loading = {
+      type: 'Loading',
+      loading: this.props.monitor.projectList.fetchProjectListPending,
+    };
+    // let rows = Object.values(this.props.monitor.projectList.byId);
+
+    // let data = this.state.dataSource.cloneWithRows([...rows, loading]);
     return (
-      //TODO 修worp名字
-      <View style={styles.wrap}>
+      <View>
         <Header
           centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
           rightComponent={
@@ -103,45 +162,47 @@ class Projects extends Component {
             </View>
           }
         />
-        <View style={{ flex: 1 }}>
-          <ScrollView
-            showsVerticalScrollIndicator={true}
-            canCancelContentTouches={true}
-            bounces={true}
-            contentContainerStyle={{ flexGrow: 1 }}
-            nestedScrollEnabled={true}
-            onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
-            {projectList.map((item, i) => {
+        <View>
+          <ListView
+            renderScrollComponent={props => <InfiniteScrollView {...props} />}
+            enableEmptySections={true}
+            automaticallyAdjustContentInsets={false}
+            dataSource={this.state.dataSource}
+            renderRow={(item, index) => {
+              var start = moment.utc(item.startTime).toDate();
+              var localStart = moment(start)
+                .local()
+                .format('YYYY/MM/DD');
+              var end = moment.utc(item.endTime).toDate();
+              var localEnd = moment(end)
+                .local()
+                .format('YYYY/MM/DD');
+              var renderText = localStart + '-' + localEnd;
               return (
                 <ListItem
-                  key={i}
+                  key={index}
                   title={item.name}
                   rightIcon={{ name: 'chevron-right' }}
                   containerStyle={styles.container}
+                  subtitle={
+                    <View style={styles.subtitleView}>
+                      <Text style={styles.ratingText}>{renderText}</Text>
+                    </View>
+                  }
                   onPress={this.onpress.bind(this, item.id)}
                 />
               );
-            })}
-          </ScrollView>
-        </View>
-        <View style={styles.buttonViem}>
-          <View style={styles.rightbut}>
-            <Button
-              title="上一页"
-              containerStyle={styles.arrStyle}
-              onPress={this.lastPage.bind(this)}
-            />
-          </View>
-          <View style={styles.leftbut}>
-            <Button
-              title="下一页"
-              containerStyle={styles.arrStyle}
-              onPress={this.nextPage.bind(this)}
-            />
-          </View>
+            }}
+            canLoadMore={this._canLoadMore}
+            onLoadMoreAsync={this._onEndReached}
+            // canLoadMore={() => {}}
+            // onLoadMoreAsync={this._onEndReached}
+            refreshControl={this._renderRefreshControl()}
+            onEndReached={() => this._onEndReached()}
+            onEndReachedThreshold={0}
+          />
         </View>
       </View>
-
     );
   }
 }
