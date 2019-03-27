@@ -1,7 +1,13 @@
 import React from 'react';
 import { Platform, Dimensions, View, Text, I18nManager as RNI18nManager } from 'react-native';
 import { Image, Icon } from 'react-native-elements';
-import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
+import {
+  createDrawerNavigator,
+  createAppContainer,
+  DrawerItems,
+  createBottomTabNavigator,
+  createStackNavigator,
+} from 'react-navigation';
 import PropTypes from 'prop-types';
 import LoginDrawerItem from './drawer/login';
 import LogoutDrawerItem from './drawer/logout';
@@ -16,6 +22,8 @@ import configureStore from './services/common/configStore';
 import { Provider } from 'react-redux';
 import CreatissuDrawerItem from './drawer/creatissu';
 import CreateCommentDrawerItem from './drawer/createcomment';
+import RouteConfig from './RouteConfig';
+import StackNavigatorConfig from './StackNavigatorConfig';
 
 const store = configureStore();
 
@@ -113,38 +121,7 @@ const RootTabs = props => {
   if (!props.isI18nInitialized) {
     return <View>loading</View>;
   }
-  const Root = createAppContainer(
-    createDrawerNavigator(
-      {
-        login: LoginDrawerItem,
-        logout: LogoutDrawerItem,
-        projects: ProjectsDrawerItem,
-        projectsDetails: ProjectsDetailsDrawerItem,
-        ProblemStatistics: ProblemStatisticsDrawerItem,
-        statisticsDetails: statisticsDetailsDrawerItem,
-        creatissu: CreatissuDrawerItem,
-        createcomment: CreateCommentDrawerItem,
-      },
-      {
-        initialRouteName: 'login',
-        contentOptions: {
-          activeTintColor: '#548ff7',
-          activeBackgroundColor: 'transparent',
-          inactiveTintColor: '#ffffff',
-          inactiveBackgroundColor: 'transparent',
-          labelStyle: {
-            fontSize: 15,
-            marginLeft: 0,
-          },
-        },
-        drawerWidth: SCREEN_WIDTH * 0.8,
-        contentComponent: CustomDrawerContentComponent,
-        drawerOpenRoute: 'DrawerOpen',
-        drawerCloseRoute: 'DrawerClose',
-        drawerToggleRoute: 'DrawerToggle',
-      },
-    ),
-  );
+  const Root = createAppContainer(createStackNavigator(RouteConfig, StackNavigatorConfig));
   return <Root />;
 };
 
