@@ -164,6 +164,7 @@ class StatisticsDetails extends Component {
       });
     });
     console.log('==>>>>提交了意见');
+    DeviceEventEmitter.emit('xxxName', true);
     this.setState({
       isVisible: false,
     });
@@ -177,7 +178,7 @@ class StatisticsDetails extends Component {
   }
   scrollHandle(event) {
     const scrollOffset = event.nativeEvent.contentOffset.y;
-    if (scrollOffset < -50) {
+    if (scrollOffset < -100) {
       this.fetchReply();
       this.issueDetail();
       this.fetchReplies();
@@ -379,14 +380,6 @@ class StatisticsDetails extends Component {
                       onPress={this.handleFeedBack.bind(this, t('screen.statisticsDetails_feedback'))}
                     /> : <Text />
                     //foremanId ? t('screen.statisticsDetails_feedback') : "查看反馈记录"
-                  }
-                  {
-                    whoseIusseReply.length !== 0 && (!foremanId) ? <Button
-                      buttonStyle={styles.confirmbutton}
-                      containerStyle={{ margin: 0, padding: 0 }}
-                      title={"查看反馈记录"}
-                      onPress={this.handlefetch.bind(this)}
-                    /> : <Text />
                   }
                 </View>
               </View>

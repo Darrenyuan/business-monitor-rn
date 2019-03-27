@@ -8,7 +8,8 @@ import {
   RefreshControl,
   TouchableOpacity,
   TouchableHighlight,
-  Image
+  Image,
+  DeviceEventEmitter
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -48,6 +49,7 @@ class ProblemStatistics extends Component {
       typeModalVisible: false,
       statusModalVisible: false,
       interactionModalVisible: false,
+      issueStatus: false
     };
   }
 
@@ -97,6 +99,11 @@ class ProblemStatistics extends Component {
   };
   componentDidMount() {
     this.fetchData();
+    this.listener = DeviceEventEmitter.addListener('xxxName', (msg) => {
+      this.setState({
+        issueStatus: msg
+      })
+    });
   }
   scrollHandle(event) {
     const contentHeight = event.nativeEvent.contentSize.height;
@@ -230,6 +237,11 @@ class ProblemStatistics extends Component {
       interactionnum: num,
     });
   }
+  componentWillUnmount() {
+    if (this.listener) {
+      this.listener.remove();
+    }
+  }
   resetAll = () => {
     this.setState({
       interaction: 0,
@@ -334,7 +346,7 @@ class ProblemStatistics extends Component {
           }
         />
         <View style={styles.buttonViem}>
-          {this.state.showInteraction ? <ModalDropdown
+          <ModalDropdown
             style={styles.modalDropdown}
             textStyle={styles.textStyle}
             defaultValue={typeMap.get(this.state.typenum)}
@@ -342,13 +354,7 @@ class ProblemStatistics extends Component {
             options={typeOptions}
             renderRow={this._dropdown_2_renderRow.bind(this)}
             onSelect={this.typeOnSelect.bind(this)}
-          /> : <Button
-              title={t('screen.problem_statistics_interaction_outer')}
-              titleStyle={styles.arrStyle}
-              disabled={true}
-            />
-
-          }
+          />
 
           <ModalDropdown
             style={styles.modalDropdown}
@@ -359,15 +365,22 @@ class ProblemStatistics extends Component {
             renderRow={this._dropdown_2_renderRow.bind(this)}
             onSelect={this.statusOnSelect.bind(this)}
           />
-          <ModalDropdown
-            style={styles.modalDropdown}
-            textStyle={styles.textStyle}
-            defaultValue={interactionMap.get(this.state.interactionnum)}
-            dropdownStyle={styles.dropdownPosition}
-            options={interactionOptions}
-            renderRow={this._dropdown_2_renderRow.bind(this)}
-            onSelect={this.interactionOnSelect.bind(this)}
-          />
+          {this.state.showInteraction ?
+            <ModalDropdown
+              style={styles.modalDropdown}
+              textStyle={styles.textStyle}
+              defaultValue={interactionMap.get(this.state.interactionnum)}
+              dropdownStyle={styles.dropdownPosition}
+              options={interactionOptions}
+              renderRow={this._dropdown_2_renderRow.bind(this)}
+              onSelect={this.interactionOnSelect.bind(this)}
+            /> : <Button
+              title={t('screen.problem_statistics_interaction_outer')}
+              titleStyle={styles.arrStyle}
+              disabled={true}
+            />
+
+          }
 
           {this.state.showInteraction ? this.state.type || this.state.status || this.state.interaction ? <Button
             title={t('screen.problem_statistics_button_reset_all')}
