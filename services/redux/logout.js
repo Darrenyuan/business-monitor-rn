@@ -28,7 +28,7 @@ export function logout(args = {}) {
         res => {
           dispatch({
             type: MONITOR_LOGOUT_SUCCESS,
-            data: res,
+            data: null,
           });
           resolve(res);
         },

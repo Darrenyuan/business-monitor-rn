@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../../services/redux/actions';
 import { ListItem, Header, Icon, Button } from 'react-native-elements';
-import projectStyle, { SCREEN_HEIGHT, SCREEN_HEIGHT } from './projectlistStyle';
+import projectStyle from './projectlistStyle';
 import { t } from '../../services/i18n';
 import withLogin from '../../services/common/withLogin';
 import { toUnicode } from 'punycode';
@@ -20,7 +20,7 @@ class Projects extends Component {
       name: t('drawer.projects_list'),
       noMoreData: false,
       page: 1,
-      pageSize: 20,
+      pageSize: 8,
       projectItems: {},
       dataSource: new ListView.DataSource({
         rowHasChanged: this._rowHasChanged.bind(this),

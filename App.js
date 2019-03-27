@@ -4,6 +4,7 @@ import { Image, Icon } from 'react-native-elements';
 import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation';
 import PropTypes from 'prop-types';
 import LoginDrawerItem from './drawer/login';
+import LogoutDrawerItem from './drawer/logout';
 import ProjectsDrawerItem from './drawer/projects';
 import ProjectsDetailsDrawerItem from './drawer/projectDetails';
 import ProblemStatisticsDrawerItem from './drawer/ProblemStatistics';
@@ -116,6 +117,7 @@ const RootTabs = props => {
     createDrawerNavigator(
       {
         login: LoginDrawerItem,
+        logout: LogoutDrawerItem,
         projects: ProjectsDrawerItem,
         projectsDetails: ProjectsDetailsDrawerItem,
         ProblemStatistics: ProblemStatisticsDrawerItem,

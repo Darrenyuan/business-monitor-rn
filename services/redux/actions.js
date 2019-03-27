@@ -24,5 +24,6 @@ export { fetchIssueList, dismissFetchIssueListError } from './fetchIssueList';
 export { syncStepState } from './syncStepState';
 export { setIsInCamera } from './setIsInCamera';
 export { setImagePaths } from './setImagePaths';
-export { fetchReplyList, dismissFetchReplyListError } from './fetchReplyList'
+export { fetchReplyList, dismissFetchReplyListError } from './fetchReplyList';
+export { fetchRepliesList, dismissFetchRepliesListError } from './fetchRepliesList';
 export { setIssueStatus } from './setIssueStatus';

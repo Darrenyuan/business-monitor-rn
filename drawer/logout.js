@@ -2,21 +2,21 @@ import React from 'react';
 import { StackNavigator, createStackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '../services/i18n';
-import Login from '../screens/Login';
-const LoginDrawerItem = createStackNavigator(
+import Logout from '../screens/Logout';
+const LogoutDrawerItem = createStackNavigator(
   {
-    loginStack: {
-      screen: Login,
+    logoutStack: {
+      screen: Logout,
     },
   },
   {
     headerMode: 'none',
-    initialRouteName: 'loginStack',
+    initialRouteName: 'logoutStack',
   },
 );
 
-LoginDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t('drawer.login_label'),
+LogoutDrawerItem.navigationOptions = ({ navigation }) => ({
+  drawerLabel: t('drawer.logout_label'),
   drawerIcon: ({ tintColor }) => {
     return (
       <Icon
@@ -31,4 +31,4 @@ LoginDrawerItem.navigationOptions = ({ navigation }) => ({
     );
   },
 });
-export default LoginDrawerItem;
+export default LogoutDrawerItem;

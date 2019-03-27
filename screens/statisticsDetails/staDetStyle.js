@@ -91,4 +91,73 @@ export default {
     height: 90,
     marginRight: 20,
   },
+  title: {
+    marginTop: SCREEN_HEIGHT * 0.02,
+  },
+  Detail: {
+    display: "flex",
+    flexDirection: 'row',
+    justifyContent: "flex-start",
+    flexWrap: "wrap"
+  },
+  peopel: {
+    width: SCREEN_WIDTH * 0.45,
+    marginTop: SCREEN_HEIGHT * 0.02,
+  },
+  time: {
+    width: SCREEN_WIDTH * 0.55,
+    marginTop: SCREEN_HEIGHT * 0.02,
+  },
+  name: {
+    width: SCREEN_WIDTH * 0.63,
+    marginTop: SCREEN_HEIGHT * 0.02,
+  },
+  status: {
+    width: SCREEN_WIDTH * 0.37,
+    marginTop: SCREEN_HEIGHT * 0.02,
+  },
+  fetchbutton: {
+    marginTop: SCREEN_HEIGHT * 0.005,
+    marginLeft: SCREEN_WIDTH * 0.1,
+  },
+  swiper: {
+    display: "flex",
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT * 0.35,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  texts: {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT * 0.3,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  issuecontenter: {
+    display: "flex",
+    marginTop: SCREEN_HEIGHT * 0.05,
+  },
+  History: {
+    marginTop: SCREEN_HEIGHT * 0.1
+  },
+  confirmbutton: {
+    marginTop: SCREEN_HEIGHT * 0.005,
+  },
+  showView: {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT * 0.05,
+  },
+  swiper1: {
+    height: SCREEN_HEIGHT * 0.35,
+    width: SCREEN_WIDTH,
+  },
+  swiperImage: {
+    flex: 1,
+  },
+
+}
+
+export {
+  SCREEN_HEIGHT,
+  SCREEN_WIDTH
 }

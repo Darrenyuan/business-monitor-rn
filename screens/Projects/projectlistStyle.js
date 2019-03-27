@@ -35,3 +35,5 @@ export default {
     marginLeft: SCREEN_WIDTH * 0.1,
   }
 }
+
+export { SCREEN_WIDTH, SCREEN_HEIGHT }

@@ -4,27 +4,30 @@ import {
   Text,
   View,
   StyleSheet,
-  Modal,
+  ListView,
+  RefreshControl,
   TouchableOpacity,
-  TouchableWithoutFeedback,
-  DeviceEventEmitter,
+  TouchableHighlight,
+  Image
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../../services/redux/actions';
-import { Header, Button, Icon } from 'react-native-elements';
+import { ListItem, Header, Button, Icon } from 'react-native-elements';
 import statisticsStyle from './statisticsStyle';
 import { t } from '../../services/i18n';
 import { makeUUID } from '../../utils/uuid';
 import statisticsDetails from '../statisticsDetails';
+import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import * as titleConstants from '../../constants/titleConstants';
 import TypeModal from './TypeModal';
 import StatusModal from './StatusModal';
+import ModalDropdown from 'react-native-modal-dropdown';
 import InteractionModal from './InteractionModal';
 import withLogin from '../../services/common/withLogin';
+import moment from 'moment';
 
 const styles = StyleSheet.create({ ...statisticsStyle });
-
 class ProblemStatistics extends Component {
   constructor(props) {
     super(props);
@@ -38,7 +41,7 @@ class ProblemStatistics extends Component {
       interaction: showInteraction ? 0 : 2,
       page: 1,
       pageSize: 12,
-      projectId: this.props.navigation.state.params.id,
+      projectId: this.props.navigation.state.params ? this.props.navigation.state.params.id : 0,
       typeModalVisible: false,
       statusModalVisible: false,
       interactionModalVisible: false,
@@ -116,6 +119,7 @@ class ProblemStatistics extends Component {
     }
   }
   fetchData = () => {
+    console.log('this.state.projectId', this.state.projectId);
     this.props.actions.fetchIssueList({
       page: this.state.page,
       pageSize: this.state.pageSize,
@@ -124,6 +128,7 @@ class ProblemStatistics extends Component {
       status: this.state.status,
       interaction: this.state.interaction,
     });
+
   };
 
   componentWillReceiveProps(nextProps) {
@@ -178,30 +183,47 @@ class ProblemStatistics extends Component {
     this.props.navigation.navigate(text);
   }
 
-  handleTypeModalVisible = visible => {
-    this.setState({ typeModalVisible: visible });
-  };
+  // handleTypeModalVisible = visible => {
+  //   this.setState({ typeModalVisible: visible });
+  // };
 
-  handleTypeModalValue = value => {
-    this.setState({ type: value });
-  };
+  // handleTypeModalValue = value => {
+  //   this.setState({ type: value });
+  // };
 
-  handleStatusModalVisible = visible => {
-    this.setState({ statusModalVisible: visible });
-  };
+  // handleStatusModalVisible = visible => {
+  //   this.setState({ statusModalVisible: visible });
+  // };
 
-  handleStatusModalValue = value => {
-    this.setState({ status: value });
-  };
+  // handleStatusModalValue = value => {
+  //   this.setState({ status: value });
+  // };
 
-  handleInteractionModalVisible = visible => {
-    this.setState({ interactionModalVisible: visible });
-  };
+  // handleInteractionModalVisible = visible => {
+  //   this.setState({ interactionModalVisible: visible });
+  // };
 
-  handleInteractionModalValue = value => {
-    this.setState({ interaction: value });
-  };
-
+  // handleInteractionModalValue = value => {
+  //   this.setState({ interaction: value });
+  // };
+  typeOnSelect(i, v) {
+    num = parseInt(i) + 1;
+    this.setState({
+      type: num,
+    });
+  }
+  statusOnSelect(i, v) {
+    num = parseInt(i) + 1;
+    this.setState({
+      status: num,
+    });
+  }
+  interactionOnSelect(i, v) {
+    num = parseInt(i) + 1;
+    this.setState({
+      interaction: num
+    });
+  }
   resetAll = () => {
     this.setState({
       interaction: 0,
@@ -209,6 +231,18 @@ class ProblemStatistics extends Component {
       type: 0,
     });
   };
+
+  _dropdown_2_renderRow(rowData, rowID, highlighted) {
+    return (
+      <TouchableOpacity >
+        <View style={styles.dropdownPosition}>
+          <Text style={styles.customtext}>
+            {rowData}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
   render() {
     const typeMap = new Map();
     typeMap.set(0, t('screen.problem_statistics_type_all'));
@@ -225,6 +259,21 @@ class ProblemStatistics extends Component {
     interactionMap.set(0, t('screen.problem_statistics_interaction_all'));
     interactionMap.set(1, t('screen.problem_statistics_interaction_inner'));
     interactionMap.set(2, t('screen.problem_statistics_interaction_outer'));
+    const typeOptions = [
+      t('screen.problem_statistics_type_material'),
+      t('screen.problem_statistics_type_quality'),
+      t('screen.problem_statistics_type_security'),
+      t('screen.problem_statistics_type_other'),
+    ];
+    const statusOptions = [
+      t('screen.problem_statistics_status_wait_feedback'),
+      t('screen.problem_statistics_status_wait_confirm'),
+      t('screen.problem_statistics_status_already_confirmed'),
+    ];
+    const interactionOptions = [
+      t('screen.problem_statistics_interaction_inner'),
+      t('screen.problem_statistics_interaction_outer'),
+    ];
     console.log('this', this);
     if (this.props.monitor.issueList.fetchIssueListPending) {
       return (
@@ -238,9 +287,14 @@ class ProblemStatistics extends Component {
 
     const issueItemList = [];
     items.forEach(id => {
-      issueItemList.push(byId[id]);
+      issueItemList.unshift(byId[id]);
     });
-    console.log('issueItemList', JSON.stringify(issueItemList));
+    issueItemList.map((item, i) => {
+      item.createTime = moment(item.createTime)
+        .local()
+        .format('YYYY-MM-DD');
+      return item
+    })
     return (
       <View style={styles.worp}>
         <Header
@@ -271,32 +325,39 @@ class ProblemStatistics extends Component {
           }
         />
         <View style={styles.buttonViem}>
-          <Button
-            key={makeUUID()}
-            containerStyle={styles.arrStyle}
-            title={typeMap.get(this.state.type)}
-            onPress={() => this.handleTypeModalVisible(true)}
+          <ModalDropdown
+            style={styles.modalDropdown}
+            textStyle={styles.textStyle}
+            defaultValue={t('screen.createissue_modalDropdown1')}
+            dropdownStyle={styles.dropdownPosition}
+            options={typeOptions}
+            renderRow={this._dropdown_2_renderRow.bind(this)}
+            onSelect={this.typeOnSelect.bind(this)}
           />
-          <Button
-            key={makeUUID()}
-            containerStyle={styles.arrStyle}
-            title={statusMap.get(this.state.status)}
-            onPress={() => this.handleStatusModalVisible(true)}
+          <ModalDropdown
+            style={styles.modalDropdown}
+            textStyle={styles.textStyle}
+            defaultValue={t('screen.problem_statistics_status_all')}
+            dropdownStyle={styles.dropdownPosition}
+            options={statusOptions}
+            renderRow={this._dropdown_2_renderRow.bind(this)}
+            onSelect={this.statusOnSelect.bind(this)}
           />
-          {this.state.showInteraction && (
-            <Button
-              key={makeUUID()}
-              containerStyle={styles.arrStyle}
-              title={interactionMap.get(this.state.interaction)}
-              onPress={() => this.handleInteractionModalVisible(true)}
-            />
-          )}
+          <ModalDropdown
+            style={styles.modalDropdown}
+            textStyle={styles.textStyle}
+            defaultValue={t('screen.problem_statistics_interaction_all')}
+            dropdownStyle={styles.dropdownPosition}
+            options={interactionOptions}
+            renderRow={this._dropdown_2_renderRow.bind(this)}
+            onSelect={this.interactionOnSelect.bind(this)}
+          />
 
-          <Button
+          {this.state.type || this.state.status || this.state.interaction ? <Button
             title={t('screen.problem_statistics_button_reset_all')}
             containerStyle={styles.arrStyle}
             onPress={this.resetAll}
-          />
+          /> : <Text />}
           {this.state.showCreateIssue && (
             <Button
               title={t('screen.problem_statistics_button_jump_drawer')}
@@ -305,7 +366,7 @@ class ProblemStatistics extends Component {
             />
           )}
         </View>
-        <TypeModal
+        {/* <TypeModal
           visible={this.state.typeModalVisible}
           handleTypeModalVisible={this.handleTypeModalVisible}
           handleTypeModalValue={this.handleTypeModalValue}
@@ -322,58 +383,25 @@ class ProblemStatistics extends Component {
           handleInteractionModalVisible={this.handleInteractionModalVisible}
           handleInteractionModalValue={this.handleInteractionModalValue}
           interactionMap={interactionMap}
-        />
-        <View style={styles.headerNav}>
-          <View key={makeUUID()} style={styles.listItem}>
-            <Text style={styles.navText1}>
-              {t('screen.problem_statistics_table_header_column1')}
-            </Text>
-          </View>
-          <View key={makeUUID()} style={styles.listItem}>
-            <Text style={styles.navText1}>
-              {t('screen.problem_statistics_table_header_column2')}
-            </Text>
-          </View>
-          <View key={makeUUID()} style={styles.listItem}>
-            <Text style={styles.navText1}>
-              {t('screen.problem_statistics_table_header_column3')}
-            </Text>
-          </View>
-          <View key={makeUUID()} style={styles.listItem}>
-            <Text style={styles.navText1}>
-              {t('screen.problem_statistics_table_header_column4')}
-            </Text>
-          </View>
-        </View>
+        /> */}
         <ScrollView onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
           <View>
             {issueItemList.map((item, i) => {
-              return (
-                <TouchableOpacity
-                  key={i}
-                  onPress={this.submint.bind(
-                    this,
-                    item.interaction,
-                    item.type,
-                    item.status,
-                    item.id,
-                  )}
-                  style={styles.headerNav}
-                >
-                  <View style={styles.viewList}>
-                    <Text style={styles.navText}>{item.name}</Text>
+              return <ListItem
+                key={i}
+                title={item.name}
+                rightIcon={{ name: 'chevron-right' }}
+                containerStyle={styles.itemIssue}
+                subtitle={
+                  <View style={styles.ItemLists}>
+                    <Text style={styles.ratingText1}>{item.createTime}</Text>
+                    <Text style={styles.ratingText3}>{typeMap.get(item.type)}</Text>
+                    <Text style={styles.ratingText2}>{interactionMap.get(item.interaction)}</Text>
+                    <Text style={styles.ratingText}>{statusMap.get(item.status)}</Text>
                   </View>
-                  <View style={styles.viewList}>
-                    <Text style={styles.navText}>{interactionMap.get(item.interaction)}</Text>
-                  </View>
-                  <View style={styles.viewList}>
-                    <Text style={styles.typeText}>{typeMap.get(item.type)}</Text>
-                  </View>
-                  <View style={styles.viewList}>
-                    <Text style={styles.statusText}>{statusMap.get(item.status)}</Text>
-                  </View>
-                </TouchableOpacity>
-              );
+                }
+                onPress={this.submint.bind(this, item.interaction, item.type, item.status, item.id)}
+              />
             })}
           </View>
         </ScrollView>

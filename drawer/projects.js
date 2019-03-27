@@ -16,8 +16,8 @@ const ProjectsDrawerItem = createStackNavigator(
 );
 
 ProjectsDrawerItem.navigationOptions = ({ navigation }) => ({
-  drawerLabel: t("drawer.projects_label"),
-  drawerIcon: ({ tintColor }) => {
+  tabBarLabel: t("drawer.projects_label"),
+  tabBarIcon: ({ tintColor }) => {
     return (
       <Icon
         name="book"

@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { TextInput, StyleSheet, Text, View, Image, Modal } from 'react-native';
+import {
+  TextInput, StyleSheet, Text, View, Image, Modal, TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView
+} from 'react-native';
 import { Button, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '../../services/i18n';
@@ -7,9 +12,12 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../services/redux/actions';
 import { connect } from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
+import Swiper from 'react-native-swiper';
 import CreatissuStyle from './CreatissuStyle';
 import CameraScreen from './CameraScreen';
 import { URL } from '../../services/axios/api';
+import Toast from 'react-native-root-toast';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from './CreatissuStyle';
 import { apiCreateIssues, apiFetchforeman } from '../../services/axios/api';
 import withLogin from '../../services/common/withLogin';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -26,6 +34,7 @@ class Creatissu extends Component {
       personnelArr: [],
       result: [],
       index: 0,
+      visible: false,
       modalVisible: false,
     };
   }
@@ -46,11 +55,12 @@ class Creatissu extends Component {
           }),
         });
       },
-      err => {},
+      err => { },
     );
   }
 
   createIssues() {
+    let _this = this;
     apiCreateIssues({
       name: this.state.title,
       type: this.state.type,
@@ -60,9 +70,34 @@ class Creatissu extends Component {
       imagePaths: JSON.stringify(this.props.monitor.imagePaths),
     }).then(
       res => {
-        this.props.navigation.navigate('ProblemStatisticsStack');
+        if (res.data.status === 200) {
+          let toast = Toast.show(t('screen.successfully saved'), {
+            position: SCREEN_HEIGHT * 0.45,
+          });
+          setTimeout(function () {
+            Toast.hide(toast);
+            _this.setState({
+              title: '',
+              description: '',
+              type: null,
+              personnel: '',
+              personnelArr: [],
+              result: [],
+              index: 0,
+            });
+            _this.props.actions.setImagePaths({ imagePaths: [] });
+            _this.props.navigation.navigate('ProblemStatisticsStack');
+          }, 2000);
+        } else {
+          let toast = Toast.show(t('screen.save failed'), {
+            position: 240,
+          });
+          setTimeout(function () {
+            Toast.hide(toast);
+          }, 2000);
+        }
       },
-      err => {},
+      err => { },
     );
   }
 
@@ -82,7 +117,6 @@ class Creatissu extends Component {
     this.props.monitor.imagePaths.forEach(path => {
       paths.push({ url: `${URL}?path=${path}&width=862&height=812` });
     });
-    console.log(paths);
     if (this.props.monitor.isInCamera) {
       return <CameraScreen />;
     } else if (this.state.modalVisible && paths.length > 0) {
@@ -92,13 +126,17 @@ class Creatissu extends Component {
           transparent={false}
           onRequestClose={() => this.handleModelCancel()}
         >
-          <ImageViewer imageUrls={paths} enableSwipeDown onLongPress={this.handleModelCancel} />
+          <ImageViewer
+            imageUrls={paths}
+            enableSwipeDown
+            onLongPress={this.handleModelCancel}
+            onClick={this.handleModelCancel.bind(this)}
+          />
         </Modal>
       );
     } else
       return (
         <View style={styles.container}>
-          <View />
           <Header
             leftComponent={
               <View>
@@ -110,7 +148,10 @@ class Creatissu extends Component {
                 </Text>
               </View>
             }
-            centerComponent={{ text: this.state.name, style: { color: '#fff', fontSize: 18 } }}
+            centerComponent={{
+              text: t('screen.problem_statistics_button_jump_drawer'),
+              style: { color: '#fff', fontSize: 18 },
+            }}
             rightComponent={
               <View>
                 <Icon
@@ -123,77 +164,93 @@ class Creatissu extends Component {
               </View>
             }
           />
-          <TextInput
-            returnKeyType="done"
-            onChangeText={title => this.setState({ title })}
-            value={this.state.title}
-            placeholderTextColor={'#BBBBBB'}
-            underlineColorAndroid={'transparent'}
-            placeholder={t('screen.createissue_titleinput')}
-            style={styles.titleInput}
-          />
-          <View style={styles.inputContainer}>
-            <TextInput
-              value={this.state.description}
-              onChangeText={description => this.setState({ description })}
-              placeholder={t('screen.createissue_textinput')}
-              placeholderTextColor={'#BBBBBB'}
-              underlineColorAndroid={'transparent'}
-              style={styles.textInput}
-              multiline
-            />
-          </View>
-          <View style={styles.imgContainer}>
-            <Button
-              onPress={this.processImage}
-              title={t('screen.createissue_photo')}
-              buttonStyle={styles.picture_upload}
-            />
-            <Button
-              onPress={this.showImageView}
-              title="图片浏览"
-              disabled={paths.length === 0}
-              buttonStyle={styles.picture_upload}
-            />
-          </View>
-          <View style={styles.modalDropdownContainer}>
-            <ModalDropdown
-              defaultValue={t('screen.createissue_modalDropdown1')}
-              options={[
-                t('screen.createissue_modalDropdown1_item1'),
-                t('screen.createissue_modalDropdown1_item2'),
-                t('screen.createissue_modalDropdown1_item3'),
-                t('screen.createissue_modalDropdown1_item4'),
-              ]}
-              style={styles.modalDropdown}
-              textStyle={styles.textStyle}
-              // dropdownStyle={styles.dropdownStyle}
-              adjustFrame={styles.dropdownPosition}
-              // dropdownTextStyle={styles.dropdownText}
-              onSelect={(i, v) => {
-                this.setState({
-                  type: +i + 1,
-                });
-              }}
-            />
-            <ModalDropdown
-              defaultValue={t('screen.createissue_modalDropdown2')}
-              options={this.state.personnelArr}
-              style={styles.modalDropdown}
-              textStyle={styles.textStyle}
-              dropdownStyle={styles.dropdownStyle}
-              onSelect={(i, v) => {
-                this.setState({
-                  personnel: this.state.result[i].userId,
-                });
-              }}
-            />
-          </View>
-          <Button
-            onPress={this.createIssues.bind(this)}
-            title={t('screen.statisticsDetails_submit')}
-            buttonStyle={styles.submit}
-          />
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+            <KeyboardAvoidingView style={styles.container} behavior="padding">
+              <TextInput
+                returnKeyType="done"
+                onChangeText={title => this.setState({ title })}
+                value={this.state.title}
+                placeholderTextColor={'#BBBBBB'}
+                underlineColorAndroid={'transparent'}
+                placeholder={t('screen.createissue_titleinput')}
+                style={styles.titleInput}
+                autoFocus={true}
+                multiline={true}
+              />
+              <ModalDropdown
+                defaultValue={t('screen.createissue_modalDropdown1')}
+                options={[
+                  t('screen.createissue_modalDropdown1_item1'),
+                  t('screen.createissue_modalDropdown1_item2'),
+                  t('screen.createissue_modalDropdown1_item3'),
+                  t('screen.createissue_modalDropdown1_item4'),
+                ]}
+                style={styles.modalDropdown}
+                textStyle={styles.textStyle}
+                showsVerticalScrollIndicator={false}
+                adjustFrame={res => {
+                  console.log(res);
+                }}
+                dropdownStyle={styles.dropdownStyle}
+                dropdownTextStyle={styles.dropdownTextStyle}
+                dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
+                onSelect={(i, v) => {
+                  this.setState({
+                    type: +i + 1,
+                  });
+                }}
+              />
+              <ModalDropdown
+                defaultValue={t('screen.createissue_modalDropdown2')}
+                options={this.state.personnelArr}
+                style={styles.modalDropdown}
+                textStyle={styles.textStyle}
+                showsVerticalScrollIndicator={false}
+                // adjustFrame={() => {
+                //   top: 0;
+                // }}
+                dropdownStyle={styles.dropdownStyle}
+                dropdownTextStyle={styles.dropdownTextStyle}
+                dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
+                onSelect={(i, v) => {
+                  this.setState({
+                    personnel: this.state.result[i].userId,
+                  });
+                }}
+              />
+              <View style={styles.inputContainer}>
+                <TextInput
+                  returnKeyType="done"
+                  value={this.state.description}
+                  onChangeText={description => this.setState({ description })}
+                  placeholder={t('screen.createissue_textinput')}
+                  placeholderTextColor={'#BBBBBB'}
+                  underlineColorAndroid={'transparent'}
+                  style={styles.textInput}
+                  multiline={true}
+                />
+              </View>
+
+              {paths.length !== 0 && (
+                <TouchableOpacity onPress={this.showImageView}>
+                  <Image style={styles.image} resizeMode="cover" source={{ uri: paths[0].url }} />
+                </TouchableOpacity>
+              )}
+
+              <View style={styles.btnContainer}>
+                <Button
+                  onPress={this.processImage}
+                  title={t('screen.createissue_photo')}
+                  buttonStyle={styles.picture_upload}
+                />
+                <Button
+                  onPress={this.createIssues.bind(this)}
+                  title={t('screen.statisticsDetails_submit')}
+                  buttonStyle={styles.picture_upload}
+                />
+              </View>
+            </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
         </View>
       );
   }

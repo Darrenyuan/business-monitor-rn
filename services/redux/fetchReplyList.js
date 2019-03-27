@@ -27,6 +27,7 @@ export function fetchReplyList(args = {}) {
       const doRequest = apiFetchReplyList(args);
       doRequest.then(
         res => {
+          console.log('ReplyList', res.data.data);
           dispatch({
             type: MONITOR_FETCH_REPLY_LIST_SUCCESS,
             data: {

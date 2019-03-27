@@ -57,6 +57,12 @@ const initialState = {
     fetchReplyListPending: false,
     fetchReplyListError: null,
   },
+  repliesList: {
+    items: [],
+    byId: {},
+    fetchRepliesListPending: false,
+    fetchRepliesListError: null,
+  },
   stepState: {
     nameExist: true,
   },

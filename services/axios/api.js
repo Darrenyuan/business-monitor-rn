@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { logout } from '../redux/actions';
-let baseUrl = 'http://192.168.0.102:8080';
+let baseUrl = 'http://192.168.0.200:8080/imageserver';
 
-let imageUrl = 'http://192.168.0.102:8080/imageThumbnail';
+let imageUrl = 'http://192.168.0.200:8080/imageserver/imageThumbnail';
 let option = {
   baseURL: baseUrl,
   timeout: 10000,
@@ -96,9 +96,11 @@ export function apiCreateReply(args = {}) {
 }
 
 export function apiFetchReplyList(args = {}) {
-  return instance.get(`${baseUrl}/issues/${args.issueId}/comments`);
+  return instance.get(`${baseUrl}/issues/${args.issueId}/feedback`);
 }
-
+export function apiFetchRepliesList(args = {}) {
+  return instance.get(`${baseUrl}/issues/${args.issueId}/replies`);
+}
 export function apiGetAvailableProjectIssues(args = {}) {
   if (!args.current) {
     args = { ...args, current: 1 };
@@ -141,7 +143,7 @@ export function apiIssueDetail(args = {}) {
 export function apiFetchIssueList(args = {}) {
   return instance.get(
     `${baseUrl}/issues?projectId=${args.projectId}&page=${args.page}&pageSize=${
-      args.pageSize
+    args.pageSize
     }&type=${args.type}&status=${args.status}&interaction=${args.interaction}`,
   );
 }
@@ -196,5 +198,6 @@ export function apiCreatecomment(args = {}) {
     username: args.username,
     content: args.content,
     imagePath: args.imagePaths,
+    replyToId: args.replyToId,
   });
 }
