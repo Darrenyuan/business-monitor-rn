@@ -37,8 +37,11 @@ class ProblemStatistics extends Component {
       showInteraction: showInteraction,
       showCreateIssue: showCreateIssue,
       type: 0,
+      typenum: 0,
       status: 0,
+      statusnum: 0,
       interaction: showInteraction ? 0 : 2,
+      interactionnum: 0,
       page: 1,
       pageSize: 12,
       projectId: this.props.navigation.state.params ? this.props.navigation.state.params.id : 0,
@@ -210,18 +213,21 @@ class ProblemStatistics extends Component {
     num = parseInt(i) + 1;
     this.setState({
       type: num,
+      typenum: num,
     });
   }
   statusOnSelect(i, v) {
     num = parseInt(i) + 1;
     this.setState({
       status: num,
+      statusnum: num,
     });
   }
   interactionOnSelect(i, v) {
     num = parseInt(i) + 1;
     this.setState({
-      interaction: num
+      interaction: num,
+      interactionnum: num,
     });
   }
   resetAll = () => {
@@ -229,6 +235,9 @@ class ProblemStatistics extends Component {
       interaction: 0,
       status: 0,
       type: 0,
+      interactionnum: 0,
+      statusnum: 0,
+      typenum: 0
     });
   };
 
@@ -325,19 +334,26 @@ class ProblemStatistics extends Component {
           }
         />
         <View style={styles.buttonViem}>
-          <ModalDropdown
+          {this.state.showInteraction ? <ModalDropdown
             style={styles.modalDropdown}
             textStyle={styles.textStyle}
-            defaultValue={t('screen.createissue_modalDropdown1')}
+            defaultValue={typeMap.get(this.state.typenum)}
             dropdownStyle={styles.dropdownPosition}
             options={typeOptions}
             renderRow={this._dropdown_2_renderRow.bind(this)}
             onSelect={this.typeOnSelect.bind(this)}
-          />
+          /> : <Button
+              title={t('screen.problem_statistics_interaction_outer')}
+              titleStyle={styles.arrStyle}
+              disabled={true}
+            />
+
+          }
+
           <ModalDropdown
             style={styles.modalDropdown}
             textStyle={styles.textStyle}
-            defaultValue={t('screen.problem_statistics_status_all')}
+            defaultValue={statusMap.get(this.state.statusnum)}
             dropdownStyle={styles.dropdownPosition}
             options={statusOptions}
             renderRow={this._dropdown_2_renderRow.bind(this)}
@@ -346,22 +362,29 @@ class ProblemStatistics extends Component {
           <ModalDropdown
             style={styles.modalDropdown}
             textStyle={styles.textStyle}
-            defaultValue={t('screen.problem_statistics_interaction_all')}
+            defaultValue={interactionMap.get(this.state.interactionnum)}
             dropdownStyle={styles.dropdownPosition}
             options={interactionOptions}
             renderRow={this._dropdown_2_renderRow.bind(this)}
             onSelect={this.interactionOnSelect.bind(this)}
           />
 
-          {this.state.type || this.state.status || this.state.interaction ? <Button
+          {this.state.showInteraction ? this.state.type || this.state.status || this.state.interaction ? <Button
             title={t('screen.problem_statistics_button_reset_all')}
             containerStyle={styles.arrStyle}
             onPress={this.resetAll}
-          /> : <Text />}
+          /> : <Text /> : this.state.type || this.state.status ? <Button
+            title={t('screen.problem_statistics_button_reset_all')}
+            titleStyle={styles.arrStyle}
+            onPress={this.resetAll}
+          /> : <Text />
+
+
+          }
           {this.state.showCreateIssue && (
             <Button
               title={t('screen.problem_statistics_button_jump_drawer')}
-              containerStyle={styles.arrStyle}
+              titleStyle={styles.arrStyle}
               onPress={this.jump.bind(this)}
             />
           )}

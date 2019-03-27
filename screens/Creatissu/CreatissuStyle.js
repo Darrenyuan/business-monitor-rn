@@ -18,7 +18,7 @@ export default {
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#ccc',
-    color: '#aaa',
+    color: '#000',
   },
   inputContainer: {
     borderWidth: 1,
@@ -35,7 +35,7 @@ export default {
     paddingVertical: 0,
     paddingLeft: SCREEN_WIDTH * 0.02,
     fontSize: 16,
-    color: '#aaa',
+    color: '#000',
   },
   btnContainer: {
     position: 'absolute',
@@ -64,7 +64,7 @@ export default {
     marginTop: SCREEN_HEIGHT * 0.01,
   },
   textStyle: {
-    color: '#aaa',
+    color: '#000',
     fontSize: 16,
   },
   dropdownStyle: {

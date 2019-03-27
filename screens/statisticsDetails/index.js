@@ -53,6 +53,10 @@ class StatisticsDetails extends Component {
     this.fetchReply();
     this.issueDetail();
     this.fetchReplies();
+    this.setState({
+      scrollX: 0,
+      scrollY: 0,
+    });
   }
   fetchReply() {
     this.props.actions.fetchReplyList({
@@ -175,6 +179,7 @@ class StatisticsDetails extends Component {
     const scrollOffset = event.nativeEvent.contentOffset.y;
     if (scrollOffset < -50) {
       this.fetchReply();
+      this.issueDetail();
       this.fetchReplies();
     }
   }
@@ -190,15 +195,14 @@ class StatisticsDetails extends Component {
   };
   //反馈按钮
   handleFeedBack(feedBackButtonText) {
-    if (feedBackButtonText === "查看反馈记录") {
-      this.setState({
-        scrollY: 600
-      })
-    } else {
-      this.props.navigation.navigate('createCommentStack', {
-        issueId: this.props.navigation.state.params.issueId,
-      });
-    }
+    this.props.navigation.navigate('createCommentStack', {
+      issueId: this.props.navigation.state.params.issueId,
+    });
+  }
+  handlefetch() {
+    this.setState({
+      scrollY: 600
+    })
   }
   render() {
     const typeMap = new Map();
@@ -222,20 +226,27 @@ class StatisticsDetails extends Component {
     let imagePathReply = [];
     let issueImagePath = [];
     let issueRepliesList = [];
+    let feedBackButton = '';
+    let historyimagePathReply = [];
     let sponsorId = false;
     let foremanId = false;
     let issueId = this.props.navigation.state.params.issueId;
-    let roleId = this.props.monitor.loginData.roles[0].roleId;
+    console.log('issueId', issueId);
+    let userId = this.props.monitor.loginData.userId;
     let issueItem = this.state.issueDetail;
     let status = this.props.navigation.state.params.status;
-    console.log('status', status);
+    let feedBackStatus = status === 1 ? false : true;
     let replyList = this.props.monitor.replyList.byId;
     let repliesList = this.props.monitor.repliesList.byId;
     console.log('this', this);
+    if (issueItem) {
+      sponsorId = userId === issueItem.sponsorId ? true : false;
+      foremanId = userId === issueItem.handlerId ? true : false;
+      feedBackButton = foremanId ? t('screen.statisticsDetails_feedback') : "查看反馈记录"
+    }
     if (issueItem.imagePath) {
       issueImagePath = JSON.parse(issueItem.imagePath);
     }
-    console.log('issueImagePath', issueImagePath);
     if (replyList) {
       for (const key in replyList) {
         issueReplyList.unshift(replyList[key]);
@@ -252,7 +263,6 @@ class StatisticsDetails extends Component {
           item.createTime = moment(item.createTime)
             .local()
             .format('YYYY-MM-DD hh:mm');
-          console.log('item.imagePath', typeof item.imagePath);
           if (typeof (item.imagePath) === "string") {
             JsonImagePath = JSON.parse(item.imagePath);
             JsonImagePath.forEach(path => {
@@ -274,8 +284,19 @@ class StatisticsDetails extends Component {
     }
     console.log('issueRepliesList', issueRepliesList);
     console.log('whoseIusseReplies', whoseIusseReplies);
-    console.log('imagePathReply', whoseIusseReply);
-    let historyimagePathReply = whoseIusseReply.splice(1);
+    console.log('whoseIusseReply', whoseIusseReply);
+    let length;
+    if (whoseIusseReply && whoseIusseReplies) {
+      length = whoseIusseReply.length - whoseIusseReplies.length;
+    }
+    console.log('length', length);
+    if ((status === 2 && length === 1) || status === 3) {
+      let copy = JSON.parse(JSON.stringify(whoseIusseReply))
+      historyimagePathReply = copy.splice(1);
+    } else if (status === 1 && length === 0) {
+      historyimagePathReply = whoseIusseReply;
+    }
+
     console.log('imagePathReply=>>>>>', whoseIusseReply);
     console.log("historyimagePathReply", historyimagePathReply);
     const paths = [];
@@ -289,9 +310,6 @@ class StatisticsDetails extends Component {
     var localcreate = moment(create)
       .local()
       .format('YYYY-MM-DD hh:mm');
-    sponsorId = roleId === issueItem.sponsorId ? true : false;
-    foremanId = roleId === issueItem.handlerId ? true : false;
-    feedBackButton = foremanId ? t('screen.statisticsDetails_feedback') : "查看反馈记录"
     if (this.props.monitor.replyList.fetchReplyListPending) {
       return (
         <View>
@@ -354,13 +372,21 @@ class StatisticsDetails extends Component {
                 </View>
                 <View style={styles.fetchbutton}>
                   {//如果你是指定工长，才是反馈，
-                    foremanId && <Button
+                    status === 1 && foremanId ? <Button
                       buttonStyle={styles.confirmbutton}
                       containerStyle={{ margin: 0, padding: 0 }}
-                      title={feedBackButton}
-                      onPress={this.handleFeedBack.bind(this, feedBackButton)}
-                    />
+                      title={t('screen.statisticsDetails_feedback')}
+                      onPress={this.handleFeedBack.bind(this, t('screen.statisticsDetails_feedback'))}
+                    /> : <Text />
                     //foremanId ? t('screen.statisticsDetails_feedback') : "查看反馈记录"
+                  }
+                  {
+                    whoseIusseReply.length !== 0 && (!foremanId) ? <Button
+                      buttonStyle={styles.confirmbutton}
+                      containerStyle={{ margin: 0, padding: 0 }}
+                      title={"查看反馈记录"}
+                      onPress={this.handlefetch.bind(this)}
+                    /> : <Text />
                   }
                 </View>
               </View>
@@ -397,14 +423,17 @@ class StatisticsDetails extends Component {
             </View>
             <View style={styles.issue}>
               {
-                whoseIusseReply.length === 0 ? (<View style={styles.no}>
+                whoseIusseReply.length === 0 && (<View style={styles.no}>
                   <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                     问题反馈记录
                 </Text>
                   <Text style={{ marginTop: (SCREEN_HEIGHT * 0.02), textAlign: "center" }}>
                     暂无
                 </Text>
-                </View>) : (<View style={styles.current}>
+                </View>)
+              }
+              {
+                (whoseIusseReply.length === 1 && whoseIusseReplies.length === 0) || (status === 2 && length === 1) || (status === 3 && whoseIusseReply.length > 0) ? (<View style={styles.current}>
                   <View>
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                       问题反馈记录
@@ -412,7 +441,7 @@ class StatisticsDetails extends Component {
                   </View>
                   <View style={styles.Detail}>
                     <View style={styles.name}>
-                      <Text style={{ fontSize: 16 }}>反馈人员: {whoseIusseReply[0].username}</Text>
+                      <Text style={{ fontSize: 16 }}>反馈人员: {whoseIusseReply[0].nickname}</Text>
                     </View>
                     <View style={styles.status}>
                       <Text style={{ fontSize: 16 }}>反馈状态: {statusMap.get(status)}
@@ -424,7 +453,7 @@ class StatisticsDetails extends Component {
                     <View style={styles.confirmbutton}>
                       {
 
-                        status === 3 || (!sponsorId) ? <Text></Text> : <Button
+                        status !== 2 || (!sponsorId) ? <Text></Text> : <Button
                           buttonStyle={{ width: SCREEN_WIDTH * 0.15, marginLeft: SCREEN_WIDTH * 0.15 }}
                           containerStyle={{ margin: 0, padding: 0 }}
                           title={t('screen.createssue_confirm')}
@@ -469,11 +498,11 @@ class StatisticsDetails extends Component {
                       </Text>
                     </View>
                   </View>
-                </View>)
+                </View>) : <Text />
               }
 
               {
-                whoseIusseReply.length === 1 && status === 1 ? <Text /> : (
+                (whoseIusseReply.length === 1 && whoseIusseReplies.length === 1) || (status === 1 && length === 0) || (status === 2 && length === 1) || status === 3 ? (
 
                   historyimagePathReply.length !== 0 ? (historyimagePathReply.map((item, i) => {
                     return <View style={styles.History} key={i}>
@@ -538,7 +567,7 @@ class StatisticsDetails extends Component {
                       </View>
                     </View>
                   })) : <Text></Text>
-                )
+                ) : <Text />
               }
             </View>
             <View>

@@ -186,7 +186,7 @@ export function apiCreateIssues(args = {}) {
     type: args.type,
     status: 1,
     description: args.description,
-    handerId: args.handerId,
+    handlerId: args.handerId,
     projectId: args.projectId,
     imagePath: args.imagePaths,
   });

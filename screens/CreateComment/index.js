@@ -171,13 +171,16 @@ class CreateComment extends Component {
                         source={{ uri: paths[0].url }}
                       />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={this.showImageView}>
-                      <Image
-                        style={styles.img}
-                        resizeMethod={'resize'}
-                        source={{ uri: paths[1].url }}
-                      />
-                    </TouchableOpacity>
+                    {
+                      paths.length > 1 && <TouchableOpacity onPress={this.showImageView}>
+                        <Image
+                          style={styles.img}
+                          resizeMethod={'resize'}
+                          source={{ uri: paths[1].url }}
+                        />
+                      </TouchableOpacity>
+                    }
+
                   </View>
                 )}
                 <TouchableOpacity onPress={this.processImage}>

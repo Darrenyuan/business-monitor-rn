@@ -36,6 +36,8 @@ class Creatissu extends Component {
       index: 0,
       visible: false,
       modalVisible: false,
+      typenum: 0,
+      userName: t('screen.createissue_modalDropdown2')
     };
   }
 
@@ -46,6 +48,7 @@ class Creatissu extends Component {
   componentDidMount() {
     apiFetchforeman({ projectId: this.props.navigation.state.params.projectId }).then(
       res => {
+        console.log('res.data.data', res.data.data);
         this.setState({
           result: res.data.data,
         });
@@ -61,6 +64,7 @@ class Creatissu extends Component {
 
   createIssues() {
     let _this = this;
+    console.log('this.state.personnel', this.state.personnel)
     apiCreateIssues({
       name: this.state.title,
       type: this.state.type,
@@ -117,6 +121,14 @@ class Creatissu extends Component {
     this.props.monitor.imagePaths.forEach(path => {
       paths.push({ url: `${URL}?path=${path}&width=862&height=812` });
     });
+    const typeMap = new Map();
+    typeMap.set(0, t('screen.problem_statistics_type_all'));
+    typeMap.set(1, t('screen.problem_statistics_type_material'));
+    typeMap.set(2, t('screen.problem_statistics_type_quality'));
+    typeMap.set(3, t('screen.problem_statistics_type_security'));
+    typeMap.set(4, t('screen.problem_statistics_type_other'));
+    const statusMap = new Map();
+    console.log("thiscreatissue", this);
     if (this.props.monitor.isInCamera) {
       return <CameraScreen />;
     } else if (this.state.modalVisible && paths.length > 0) {
@@ -174,11 +186,11 @@ class Creatissu extends Component {
                 underlineColorAndroid={'transparent'}
                 placeholder={t('screen.createissue_titleinput')}
                 style={styles.titleInput}
-                autoFocus={true}
-                multiline={true}
+              // autoFocus={true}
+              // multiline={true}
               />
               <ModalDropdown
-                defaultValue={t('screen.createissue_modalDropdown1')}
+                defaultValue={typeMap.get(this.state.typenum)}
                 options={[
                   t('screen.createissue_modalDropdown1_item1'),
                   t('screen.createissue_modalDropdown1_item2'),
@@ -197,11 +209,12 @@ class Creatissu extends Component {
                 onSelect={(i, v) => {
                   this.setState({
                     type: +i + 1,
+                    typenum: +i + 1
                   });
                 }}
               />
               <ModalDropdown
-                defaultValue={t('screen.createissue_modalDropdown2')}
+                defaultValue={this.state.userName}
                 options={this.state.personnelArr}
                 style={styles.modalDropdown}
                 textStyle={styles.textStyle}
@@ -213,8 +226,10 @@ class Creatissu extends Component {
                 dropdownTextStyle={styles.dropdownTextStyle}
                 dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
                 onSelect={(i, v) => {
+                  console.log('iiiiiiii=>>>', i);
                   this.setState({
                     personnel: this.state.result[i].userId,
+                    userName: v,
                   });
                 }}
               />
