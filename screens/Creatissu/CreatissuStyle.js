@@ -19,10 +19,6 @@ export default {
     borderStyle: 'dashed',
     borderColor: '#ccc',
     color: '#000',
-<<<<<<< f9b1bbe7d30316249fca0d66488a0e5411d38b5e
-=======
-    marginBottom: SCREEN_HEIGHT * 0.01,
->>>>>>> bug
   },
   inputContainer: {
     borderWidth: 1,
