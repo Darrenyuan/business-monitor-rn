@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import {
-  TextInput, StyleSheet, Text, View, Image, Modal, TouchableOpacity,
+  TextInput,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Modal,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from 'react-native';
 import { Button, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -58,7 +64,7 @@ class Creatissu extends Component {
           }),
         });
       },
-      err => { },
+      err => {},
     );
   }
 
@@ -78,7 +84,7 @@ class Creatissu extends Component {
           let toast = Toast.show(t('screen.successfully saved'), {
             position: SCREEN_HEIGHT * 0.45,
           });
-          setTimeout(function () {
+          setTimeout(function() {
             Toast.hide(toast);
             _this.setState({
               title: '',
@@ -94,19 +100,28 @@ class Creatissu extends Component {
           }, 2000);
         } else {
           let toast = Toast.show(t('screen.save failed'), {
-            position: 240,
+            position: SCREEN_HEIGHT * 0.45,
           });
-          setTimeout(function () {
+          setTimeout(function() {
             Toast.hide(toast);
           }, 2000);
         }
       },
-      err => { },
+      err => {},
     );
   }
 
   goback(text) {
     this.props.navigation.navigate(text);
+    this.setState({
+      title: '',
+      description: '',
+      type: null,
+      personnel: '',
+      personnelArr: [],
+      result: [],
+      index: 0,
+    });
   }
   handleModelCancel = () => {
     this.setState({ modalVisible: false });
@@ -114,6 +129,15 @@ class Creatissu extends Component {
   showImageView = () => {
     this.setState({ modalVisible: true });
   };
+
+  _dropdown_renderRow(rowData, rowID) {
+    let evenRow = rowID % 2;
+    return (
+      <View style={[styles.dropdown_row]}>
+        <Text style={[styles.dropdown_row_text]}>{`${rowData}`}</Text>
+      </View>
+    );
+  }
 
   render() {
     // const images = [{ url: 'http://aboutreact.com/wp-content/uploads/2018/07/sample_img.png' }];
@@ -176,7 +200,7 @@ class Creatissu extends Component {
               </View>
             }
           />
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <KeyboardAvoidingView style={styles.container} behavior="padding">
               <TextInput
                 returnKeyType="done"
@@ -200,12 +224,13 @@ class Creatissu extends Component {
                 style={styles.modalDropdown}
                 textStyle={styles.textStyle}
                 showsVerticalScrollIndicator={false}
-                adjustFrame={res => {
-                  console.log(res);
+                adjustFrame={pos => {
+                  return pos;
                 }}
-                dropdownStyle={styles.dropdownStyle}
+                dropdownStyle={{ height: SCREEN_HEIGHT * 0.18 }}
                 dropdownTextStyle={styles.dropdownTextStyle}
-                dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
+                // dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
+                renderRow={this._dropdown_renderRow.bind(this)}
                 onSelect={(i, v) => {
                   this.setState({
                     type: +i + 1,
@@ -213,18 +238,26 @@ class Creatissu extends Component {
                   });
                 }}
               />
+              <Text
+                style={{
+                  height: SCREEN_HEIGHT * 0.01,
+                  width: SCREEN_WIDTH * 0.95,
+                  backgroundColor: 'red',
+                }}
+              />
               <ModalDropdown
                 defaultValue={this.state.userName}
                 options={this.state.personnelArr}
                 style={styles.modalDropdown}
                 textStyle={styles.textStyle}
-                showsVerticalScrollIndicator={false}
-                // adjustFrame={() => {
-                //   top: 0;
-                // }}
-                dropdownStyle={styles.dropdownStyle}
+                // showsVerticalScrollIndicator={false}
+                adjustFrame={pos => {
+                  return pos;
+                }}
+                dropdownStyle={{ height: SCREEN_HEIGHT * 0.18 }}
                 dropdownTextStyle={styles.dropdownTextStyle}
                 dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
+                renderRow={this._dropdown_renderRow.bind(this)}
                 onSelect={(i, v) => {
                   console.log('iiiiiiii=>>>', i);
                   this.setState({

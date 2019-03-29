@@ -9,11 +9,12 @@ import {
   Modal,
   TouchableWithoutFeedback,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from 'react-native';
 import { Button, Image, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { t } from '../../services/i18n';
+import { SCREEN_HEIGHT } from './CreateCommentStyle';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../services/redux/actions';
 import { connect } from 'react-redux';
@@ -52,9 +53,9 @@ class CreateComment extends Component {
       res => {
         if (res.data.status === 200) {
           let toast = Toast.show(t('screen.successfully saved'), {
-            position: 400,
+            position: SCREEN_HEIGHT * 0.45,
           });
-          setTimeout(function () {
+          setTimeout(function() {
             Toast.hide(toast);
             _this.setState({
               description: '',
@@ -75,18 +76,22 @@ class CreateComment extends Component {
           }, 2000);
         } else {
           let toast = Toast.show(t('screen.save failed'), {
-            position: 400,
+            position: SCREEN_HEIGHT * 0.45,
           });
-          setTimeout(function () {
+          setTimeout(function() {
             Toast.hide(toast);
           }, 2000);
         }
       },
-      err => { },
+      err => {},
     );
   }
   goback(text) {
     this.props.navigation.navigate(text);
+    this.setState({
+      description: '',
+      visible: false,
+    });
   }
   handleModelCancel = () => {
     this.setState({ modalVisible: false });
@@ -146,7 +151,7 @@ class CreateComment extends Component {
               </View>
             }
           />
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <KeyboardAvoidingView style={styles.container} behavior="padding">
               <View style={styles.inputContainer}>
                 <TextInput
