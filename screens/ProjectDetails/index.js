@@ -8,6 +8,7 @@ import detailStyle from './detailStyle';
 import { t } from '../../services/i18n';
 import { apiFetchProject } from '../../services/axios/api';
 import withLogin from '../../services/common/withLogin';
+import { Cell, Section, TableView } from 'react-native-tableview-simple';
 
 const styles = StyleSheet.create({ ...detailStyle });
 
@@ -62,6 +63,21 @@ class ProjectsDetails extends Component {
         </View>
       );
     }
+    const CellVariant = props => (
+      <Cell
+        {...props}
+        cellContentView={
+          <View style={{ alignItems: 'left', flexDirection: 'row', flex: 1, paddingVertical: 10 }}>
+            <Text allowFontScaling numberOfLines={1} style={{ flex: 1, fontSize: 20 }}>
+              {props.title}
+            </Text>
+            <Text allowFontScaling numberOfLines={1} style={{ flex: 1, fontSize: 20 }}>
+              {props.title}
+            </Text>
+          </View>
+        }
+      />
+    );
     return (
       <View style={styles.worp}>
         <Header
@@ -88,41 +104,51 @@ class ProjectsDetails extends Component {
             </View>
           }
         />
-        <ScrollView
-          bounces={true}
-        >
-          <View style={styles.detailView}>
-            <Text style={styles.detailText}>{t('screen.projectDetails_name')}</Text>
-            <Text style={styles.detailColor}>{detailItem.name}</Text>
-          </View>
-          <View style={styles.detailView}>
-            <Text style={styles.detailText}>{t('screen.projectDetails_date')}</Text>
-            <Text style={styles.detailColor}>{timeStart + '-' + timeEnd}</Text>
-          </View>
-          <View style={styles.detailView}>
-            <Text style={styles.detailText}>{t('screen.projectDetails_cost')}</Text>
-            <Text style={styles.detailColor}>{detailItem.cost}</Text>
-          </View>
-          <View style={styles.detailView}>
-            <Text style={styles.detailText}>{t('screen.projectDetails_site')}</Text>
-            <Text style={styles.detailColor}>{detailItem.location}</Text>
-          </View>
-          <View style={styles.detailView}>
-            <Text style={styles.detailText}>{t('screen.projectDetails_overview')}</Text>
-            <Text style={styles.detailColor}>{detailItem.overview}</Text>
-          </View>
-          <View style={styles.detailView}>
-            <Text style={styles.detailText}>{t('screen.projectDetails_designUnit')}</Text>
-            <Text style={styles.detailColor}>{detailItem.designUnit}</Text>
-          </View>
-          <View style={styles.detailView}>
-            <Text style={styles.detailText}>{t('screen.projectDetails_supervisoryUnit')}</Text>
-            <Text style={styles.detailColor}>{detailItem.monitorUnit}</Text>
-          </View>
-          <View style={styles.detailView}>
-            <Text style={styles.detailText}>{t('screen.projectDetails_constructionUnit')}</Text>
-            <Text style={styles.detailColor}>{detailItem.constructionUnit}</Text>
-          </View>
+        <ScrollView bounces={true}>
+          <TableView>
+            <Section>
+              <Cell
+                cellStyle="Subtitle"
+                title={t('screen.projectDetails_name')}
+                detail={detailItem.name}
+              />
+              <Cell
+                cellStyle="Subtitle"
+                title={t('screen.projectDetails_date')}
+                detail={timeStart + '-' + timeEnd}
+              />
+              <Cell
+                cellStyle="Subtitle"
+                title={t('screen.projectDetails_cost')}
+                detail={detailItem.cost}
+              />
+              <Cell
+                cellStyle="Subtitle"
+                title={t('screen.projectDetails_site')}
+                detail={detailItem.location}
+              />
+              <Cell
+                cellStyle="Subtitle"
+                title={t('screen.projectDetails_designUnit')}
+                detail={detailItem.designUnit}
+              />
+              <Cell
+                cellStyle="Subtitle"
+                title={t('screen.projectDetails_supervisoryUnit')}
+                detail={detailItem.monitorUnit}
+              />
+              <Cell
+                cellStyle="Subtitle"
+                title={t('screen.projectDetails_constructionUnit')}
+                detail={detailItem.constructionUnit}
+              />
+              <Cell
+                cellStyle="Subtitle"
+                title={t('screen.projectDetails_overview')}
+                detail={detailItem.overview}
+              />
+            </Section>
+          </TableView>
           <Button
             title={t('screen.projectDetails_issueInfo')}
             onPress={this.onperss.bind(this, id)}

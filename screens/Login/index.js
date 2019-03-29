@@ -78,8 +78,7 @@ class Login extends Component {
     const { navigate } = this.props.navigation;
     console.log('loginData=%s', JSON.stringify(loginData));
     if (loginData) {
-      console.log('navigate to next screen:projects');
-      return <MainTab />;
+      navigate('projectsStack');
     }
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
