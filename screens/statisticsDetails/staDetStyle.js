@@ -1,33 +1,32 @@
-import { Dimensions } from "react-native";
+import { Dimensions } from 'react-native';
 
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
-const fsc = SCREEN_HEIGHT - 180
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const fsc = SCREEN_HEIGHT - 180;
 export default {
   worp: {
-    height: SCREEN_HEIGHT
+    height: SCREEN_HEIGHT,
   },
   viewWorp: {
-    width: "100%",
+    width: '100%',
     borderBottomWidth: 1,
-    borderStyle: "solid",
-    borderBottomColor: "#A39F93",
+    borderStyle: 'solid',
+    borderBottomColor: '#A39F93',
   },
   viewWorps: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
     borderBottomWidth: 1,
-    borderStyle: "solid",
-    borderBottomColor: "#A39F93",
+    borderStyle: 'solid',
+    borderBottomColor: '#A39F93',
   },
   butViewStyle: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginTop: SCREEN_HEIGHT * 0.03,
   },
   butStyle: {
@@ -37,20 +36,20 @@ export default {
     marginBottom: SCREEN_WIDTH * 0.06,
   },
   contenter: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     width: SCREEN_WIDTH,
   },
   henderView: {
-    height: SCREEN_HEIGHT * 0.04
+    height: SCREEN_HEIGHT * 0.04,
   },
   henderText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     lineHeight: SCREEN_HEIGHT * 0.07,
-    textAlign: "center",
+    textAlign: 'center',
   },
   imgStyle: {
     width: SCREEN_WIDTH * 0.5,
@@ -65,24 +64,24 @@ export default {
     borderWidth: 1,
   },
   issueStyle: {
-    position: "relative",
+    position: 'relative',
     left: -SCREEN_WIDTH * 0.23,
   },
   modulStyle: {
     marginTop: fsc * 0.3,
     marginBottom: fsc * 0.1,
-    fontSize: 18
+    fontSize: 18,
   },
   OpinionStyle: {
     width: SCREEN_WIDTH * 0.8,
     lineHeight: 18,
-    color: "red",
+    color: 'red',
   },
   OpinStyle: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   img: {
     borderWidth: 1,
@@ -96,10 +95,10 @@ export default {
     marginTop: SCREEN_HEIGHT * 0.02,
   },
   Detail: {
-    display: "flex",
+    display: 'flex',
     flexDirection: 'row',
-    justifyContent: "flex-start",
-    flexWrap: "wrap"
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
   },
   peopel: {
     width: SCREEN_WIDTH * 0.45,
@@ -124,7 +123,7 @@ export default {
     marginLeft: SCREEN_WIDTH * 0.1,
   },
   swiper: {
-    display: "flex",
+    display: 'flex',
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT * 0.35,
     borderWidth: 1,
@@ -137,11 +136,11 @@ export default {
     borderColor: '#ccc',
   },
   issuecontenter: {
-    display: "flex",
+    display: 'flex',
     marginTop: SCREEN_HEIGHT * 0.05,
   },
   History: {
-    marginTop: SCREEN_HEIGHT * 0.1
+    marginTop: SCREEN_HEIGHT * 0.1,
   },
   confirmbutton: {
     width: SCREEN_WIDTH * 0.3,
@@ -158,10 +157,6 @@ export default {
   swiperImage: {
     flex: 1,
   },
+};
 
-}
-
-export {
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH
-}
+export { SCREEN_HEIGHT, SCREEN_WIDTH };
