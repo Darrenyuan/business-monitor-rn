@@ -11,6 +11,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  TextInput,
 } from 'react-native';
 import ActionSheet from 'react-native-actionsheet';
 import Accordion from 'react-native-collapsible/Accordion';
@@ -33,12 +34,12 @@ class StatisticsDetails extends Component {
     this.state = {
       name: t('drawer.statistics_details'),
       isVisible: false,
-      texts: '',
       disabled: false,
       replyList: [],
       issueDetail: '',
+      description: '',
       imageIndex: 1,
-      status: 2,
+      status: this.props.navigation.state.params.status,
       language: "",
       modalVisible: false,
       swiperShow: false,
@@ -80,37 +81,12 @@ class StatisticsDetails extends Component {
 
   onperss() {
     this.ActionSheet.show();
-    // if (buttonStatusText === t('screen.statisticsDetails_rectification')) {
-    //   this.props.navigation.navigate('createCommentStack', {
-    //     issueId: this.props.navigation.state.params.issueId,
-    //   });
-    // } else {
-    //   apiupdateIssueStatus({
-    //     issueId: this.props.navigation.state.params.issueId,
-    //     status: 3,
-    //   }).then(res => {
-    //     this.props.navigation.navigate('ProblemStatisticsStack', {
-    //       id: this.props.navigation.state.params.projectId,
-    //       issueStatus: 1,
-    //     });
-    //     this.setState({
-    //       status: 3,
-    //     });
-    //     DeviceEventEmitter.emit('xxxName', true);
-    //   });
-    // }
   }
   goback(text) {
     this.props.navigation.navigate(text);
   }
-  onChangeText(tex) {
-    this.setState({
-      texts: tex,
-    });
-  }
   //确认按钮
   onVisible(index) {
-    console.log('index', index);
     if (index === 0) {
       apiupdateIssueStatus({
         issueId: this.props.navigation.state.params.issueId,
@@ -125,35 +101,20 @@ class StatisticsDetails extends Component {
         });
         DeviceEventEmitter.emit('xxxName', true);
       });
-      console.log('=>>>>>>>>>>>>>>>>>>>>确认了');
     } else if (index === 1) {
-      console.log('==>>>>>>>>>>>>>>不通过，继续反馈');
       this.setState({
         isVisible: true,
       });
     }
     //index等于0 已确认，跳转问题列表
     //index等于1 待反馈 ，给出意见，跳转问题列表
-    //index等于2 取消，什么都不做，
-    // apiCreateReply({
-    //   issueId: this.props.navigation.state.params.issueId,
-    //   username: this.props.monitor.loginData.username,
-    //   content: this.state.texts,
-    // }).then(res => {
-    //   apiupdateIssueStatus({
-    //     issueId: this.props.navigation.state.params.issueId,
-    //     status: 1,
-    //   });
-    //   this.props.navigation.navigate('ProblemStatisticsStack', {
-    //     id: this.props.navigation.state.params.projectId,
-    //   });
-    // });
+    //index等于2 取消，什么都不做，;
   }
   onSubmit() {
     apiCreateReply({
       issueId: this.props.navigation.state.params.issueId,
       username: this.props.monitor.loginData.username,
-      content: this.state.texts,
+      content: this.state.description,
     }).then(res => {
       apiupdateIssueStatus({
         issueId: this.props.navigation.state.params.issueId,
@@ -163,14 +124,15 @@ class StatisticsDetails extends Component {
         id: this.props.navigation.state.params.projectId,
       });
     });
-    console.log('==>>>>提交了意见');
     DeviceEventEmitter.emit('xxxName', true);
     this.setState({
       isVisible: false,
     });
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.navigation.state.params.issueId !== this.props.navigation.state.params.issueId) {
+    if (prevProps.navigation.state.params.issueId !== this.props.navigation.state.params.issueId ||
+      prevProps.navigation.state.params.status !== this.props.navigation.state.params.status
+    ) {
       this.fetchReply();
       this.issueDetail();
       this.fetchReplies();
@@ -184,9 +146,8 @@ class StatisticsDetails extends Component {
       this.fetchReplies();
     }
   }
-  handleShowView(commentId) {
+  handleShowView() {
     this.setState({ showView: true });
-    console.log('commentId', commentId);
   }
   handleModelCancel = () => {
     this.setState({ modalVisible: false });
@@ -195,7 +156,7 @@ class StatisticsDetails extends Component {
     this.setState({ modalVisible: true });
   };
   //反馈按钮
-  handleFeedBack(feedBackButtonText) {
+  handleFeedBack() {
     this.props.navigation.navigate('createCommentStack', {
       issueId: this.props.navigation.state.params.issueId,
     });
@@ -221,14 +182,12 @@ class StatisticsDetails extends Component {
     interactionMap.set(0, t('screen.problem_statistics_interaction_all'));
     interactionMap.set(1, t('screen.problem_statistics_interaction_inner'));
     interactionMap.set(2, t('screen.problem_statistics_interaction_outer'));
-    let issueReplyList = [];
-    let whoseIusseReply = [];
+    let issueFeedBackList = [];
+    let whoseIusseFeedBack = [];
     let whoseIusseReplies = [];
-    let imagePathReply = [];
     let issueImagePath = [];
     let issueRepliesList = [];
-    let feedBackButton = '';
-    let historyimagePathReply = [];
+    let historyIusseFeedBack = [];
     let sponsorId = false;
     let foremanId = false;
     let issueId = this.props.navigation.state.params.issueId;
@@ -236,29 +195,27 @@ class StatisticsDetails extends Component {
     let userId = this.props.monitor.loginData.userId;
     let issueItem = this.state.issueDetail;
     let status = this.props.navigation.state.params.status;
-    let feedBackStatus = status === 1 ? false : true;
-    let replyList = this.props.monitor.replyList.byId;
+    let feedBackList = this.props.monitor.replyList.byId;
     let repliesList = this.props.monitor.repliesList.byId;
     console.log('this', this);
     if (issueItem) {
       sponsorId = userId === issueItem.sponsorId ? true : false;
       foremanId = userId === issueItem.handlerId ? true : false;
-      feedBackButton = foremanId ? t('screen.statisticsDetails_feedback') : "查看反馈记录"
     }
     if (issueItem.imagePath) {
       issueImagePath = JSON.parse(issueItem.imagePath);
     }
-    if (replyList) {
-      for (const key in replyList) {
-        issueReplyList.unshift(replyList[key]);
+    if (feedBackList) {
+      for (const key in feedBackList) {
+        issueFeedBackList.unshift(feedBackList[key]);
       }
-      console.log('issueReplyList', issueReplyList);
-      whoseIusseReply = issueReplyList.filter(item => {
+      console.log('issueFeedBackList', issueFeedBackList);
+      whoseIusseFeedBack = issueFeedBackList.filter(item => {
         return item.issueId === issueId;
       });
-      console.log('whoseIusseReply', whoseIusseReply);
-      if (whoseIusseReply.length !== 0) {
-        whoseIusseReply = whoseIusseReply.map((item, i) => {
+      console.log('whoseIusseFeedBack', whoseIusseFeedBack);
+      if (whoseIusseFeedBack.length !== 0) {
+        whoseIusseFeedBack = whoseIusseFeedBack.map((item, i) => {
           let imagePath = [];
           let JsonImagePath = [];
           item.createTime = moment(item.createTime)
@@ -285,21 +242,21 @@ class StatisticsDetails extends Component {
     }
     console.log('issueRepliesList', issueRepliesList);
     console.log('whoseIusseReplies', whoseIusseReplies);
-    console.log('whoseIusseReply', whoseIusseReply);
+    console.log('whoseIusseFeedBack', whoseIusseFeedBack);
     let length;
-    if (whoseIusseReply && whoseIusseReplies) {
-      length = whoseIusseReply.length - whoseIusseReplies.length;
+    if (whoseIusseFeedBack && whoseIusseReplies) {
+      length = whoseIusseFeedBack.length - whoseIusseReplies.length;
     }
     console.log('length', length);
     if ((status === 2 && length === 1) || status === 3) {
-      let copy = JSON.parse(JSON.stringify(whoseIusseReply))
-      historyimagePathReply = copy.splice(1);
+      let copy = JSON.parse(JSON.stringify(whoseIusseFeedBack))
+      historyIusseFeedBack = copy.splice(1);
     } else if (status === 1 && length === 0) {
-      historyimagePathReply = whoseIusseReply;
+      historyIusseFeedBack = whoseIusseFeedBack;
     }
 
-    console.log('imagePathReply=>>>>>', whoseIusseReply);
-    console.log("historyimagePathReply", historyimagePathReply);
+    console.log('whoseIusseFeedBack=>>>>>', whoseIusseFeedBack);
+    console.log("historyimagePathReply", historyIusseFeedBack);
     const paths = [];
     if (issueItem.imagePath) {
       issueImagePath.forEach(path => {
@@ -355,31 +312,33 @@ class StatisticsDetails extends Component {
               </View>
               <View style={styles.Detail}>
                 <View style={styles.peopel}>
-                  <Text style={{ fontSize: 16 }}>创建人: {issueItem.sponsorName}</Text>
+                  <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_founder')}: {issueItem.sponsorName}</Text>
                 </View>
                 <View style={styles.time}>
-                  <Text style={{ fontSize: 16 }}>创建时间: {localcreate}
+                  <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_creationTime')}: {localcreate}
                   </Text>
                 </View>
                 <View style={styles.peopel}>
-                  <Text style={{ fontSize: 16 }}>问题类型: {typeMap.get(issueItem.type)}</Text>
+                  <Text style={{ fontSize: 16 }}>{t('screen.createissue_modalDropdown1')}: {typeMap.get(issueItem.type)}</Text>
                 </View>
                 <View style={styles.time}>
-                  <Text style={{ fontSize: 16 }}>交互类型: {interactionMap.get(issueItem.interaction)}
+                  <Text style={{ fontSize: 16 }}>{t('screen.problem_statistics_table_header_column2')}: {interactionMap.get(issueItem.interaction)}
                   </Text>
                 </View>
                 <View style={styles.peopel}>
-                  <Text style={{ fontSize: 16 }}>当前状态: {statusMap.get(issueItem.status)}</Text>
+                  <Text style={{ fontSize: 16 }}>{t('screen.problem_statistics_status_all')}: {statusMap.get(issueItem.status)}</Text>
+                </View>
+                <View style={styles.time}>
+                  <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_designatedProcessor')}: {issueItem.handlerName}</Text>
                 </View>
                 <View style={styles.fetchbutton}>
-                  {//如果你是指定工长，才是反馈，
+                  {//如果你是指定工长，才是反馈，status === 1 && foremanId ?
                     status === 1 && foremanId ? <Button
                       buttonStyle={styles.confirmbutton}
                       containerStyle={{ margin: 0, padding: 0 }}
                       title={t('screen.statisticsDetails_feedback')}
                       onPress={this.handleFeedBack.bind(this, t('screen.statisticsDetails_feedback'))}
                     /> : <Text />
-                    //foremanId ? t('screen.statisticsDetails_feedback') : "查看反馈记录"
                   }
                 </View>
               </View>
@@ -416,36 +375,35 @@ class StatisticsDetails extends Component {
             </View>
             <View style={styles.issue}>
               {
-                whoseIusseReply.length === 0 && (<View style={styles.no}>
+                whoseIusseFeedBack.length === 0 && (<View style={styles.no}>
                   <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                    问题反馈记录
-                </Text>
+                    {t('screen.statisticsDetails_questionFeedbackRecord')}
+                  </Text>
                   <Text style={{ marginTop: (SCREEN_HEIGHT * 0.02), textAlign: "center" }}>
-                    暂无
-                </Text>
+                    {t('screen.statisticsDetails_notAvailable')}
+                  </Text>
                 </View>)
               }
               {
-                (whoseIusseReply.length === 1 && whoseIusseReplies.length === 0) || (status === 2 && length === 1) || (status === 3 && whoseIusseReply.length > 0) ? (<View style={styles.current}>
+                (whoseIusseFeedBack.length === 1 && whoseIusseReplies.length === 0) || (status === 2 && length === 1) || (status === 3 && whoseIusseFeedBack.length > 0) ? (<View style={styles.current}>
                   <View>
                     <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                      问题反馈记录
-                  </Text>
+                      {t('screen.statisticsDetails_questionFeedbackRecord')}
+                    </Text>
                   </View>
                   <View style={styles.Detail}>
                     <View style={styles.name}>
-                      <Text style={{ fontSize: 16 }}>反馈人员: {whoseIusseReply[0].nickname}</Text>
+                      <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_feedbackStaff')}: {whoseIusseFeedBack[0].nickname}</Text>
                     </View>
                     <View style={styles.status}>
-                      <Text style={{ fontSize: 16 }}>反馈状态: {statusMap.get(status)}
+                      <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_feedbackStatus')}: {statusMap.get(status)}
                       </Text>
                     </View>
                     <View style={styles.time}>
-                      <Text style={{ fontSize: 16 }}>反馈时间: {whoseIusseReply[0].createTime}</Text>
+                      <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_feedbackTime')}: {whoseIusseFeedBack[0].createTime}</Text>
                     </View>
                     <View style={styles.confirmbutton}>
                       {
-
                         status !== 2 || (!sponsorId) ? <Text></Text> : <Button
                           buttonStyle={{ width: SCREEN_WIDTH * 0.15, marginLeft: SCREEN_WIDTH * 0.15 }}
                           containerStyle={{ margin: 0, padding: 0 }}
@@ -454,40 +412,43 @@ class StatisticsDetails extends Component {
                         />
                       }
                     </View>
-                    <View style={styles.swiper}>
-                      <TouchableOpacity onPress={this.showImageView}>
-                        <View style={styles.swiper1}>
-                          <Swiper
-                            showsPagination={true}
-                            dotColor="white"
-                            horizontal={true}
-                            loop={true}
-                            style={{ flex: 1 }}
-                            paginationStyle={{ bottom: 10 }}
-                          >
-                            {whoseIusseReply[0].imagePath.map((item, index) => {
-                              return (
-                                <Image
-                                  style={styles.swiperImage}
-                                  key={index}
-                                  resizeMode="cover"
-                                  source={{ uri: item.url }}
-                                />
-                              );
-                            })}
-                          </Swiper>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
+                    {
+                      whoseIusseFeedBack[0].imagePath.length === 0 ? <Text /> : <View style={styles.swiper}>
+                        <TouchableOpacity onPress={this.showImageView}>
+                          <View style={styles.swiper1}>
+                            <Swiper
+                              showsPagination={true}
+                              dotColor="white"
+                              horizontal={true}
+                              loop={true}
+                              style={{ flex: 1 }}
+                              paginationStyle={{ bottom: 10 }}
+                            >
+                              {whoseIusseFeedBack[0].imagePath.map((item, index) => {
+                                return (
+                                  <Image
+                                    style={styles.swiperImage}
+                                    key={index}
+                                    resizeMode="cover"
+                                    source={{ uri: item.url }}
+                                  />
+                                );
+                              })}
+                            </Swiper>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    }
+
                     <Modal
                       visible={this.state.modalVisible}
                       transparent={false}
                     >
-                      <ImageViewer imageUrls={whoseIusseReply[0].imagePath} enableSwipeDown onLongPress={this.handleModelCancel} onClick={this.handleModelCancel.bind(this)} />
+                      <ImageViewer imageUrls={whoseIusseFeedBack[0].imagePath} enableSwipeDown onLongPress={this.handleModelCancel} onClick={this.handleModelCancel.bind(this)} />
                     </Modal>
                     <View style={styles.texts}>
                       <Text style={{ fontSize: 16 }}>
-                        {whoseIusseReply[0].content}
+                        {whoseIusseFeedBack[0].content}
                       </Text>
                     </View>
                   </View>
@@ -495,79 +456,83 @@ class StatisticsDetails extends Component {
               }
 
               {
-                (whoseIusseReply.length === 1 && whoseIusseReplies.length === 1) || (status === 1 && length === 0) || (status === 2 && length === 1) || status === 3 ? (
-
-                  historyimagePathReply.length !== 0 ? (historyimagePathReply.map((item, i) => {
-                    return <View style={styles.History} key={i}>
-                      <View>
-                        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                          历史反馈记录
+                (whoseIusseFeedBack.length === 1 && whoseIusseReplies.length === 1) || (status === 1 && length === 0) || (status === 2 && length === 1) || status === 3 ? (
+                  <View style={styles.History}>
+                    <View>
+                      <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                        历史反馈记录
                       </Text>
-                      </View>
-                      <View style={styles.Detail}>
-                        <View style={styles.name}>
-                          <Text style={{ fontSize: 16 }}>反馈人员: {item.nickname}</Text>
-                        </View>
-                        <View style={styles.status}>
-                          <Text style={{ fontSize: 16 }}>反馈状态: 不通过</Text>
-                        </View>
-                        <View style={styles.time}>
-                          <Text style={{ fontSize: 16 }}>反馈时间: {item.createTime}</Text>
-                        </View>
-                        {
-                          whoseIusseReplies.length !== 0 ? <View style={styles.showView}>
-                            <Text style={{ fontSize: 18, color: "red", lineHeight: SCREEN_HEIGHT * 0.05 }}> 原因: {whoseIusseReplies[i].content}</Text>
-                          </View> : <Text />
-                        }
-
-                        <View style={styles.swiper}>
-                          <TouchableOpacity onPress={this.showImageView}>
-                            <View style={styles.swiper1}>
-                              <Swiper
-                                showsPagination={true}
-                                dotColor="white"
-                                horizontal={true}
-                                loop={true}
-                                style={{ flex: 1 }}
-                                paginationStyle={{ bottom: 10 }}
-                              >
-                                {item.imagePath.map((item, index) => {
-                                  return (
-                                    <Image
-                                      style={styles.swiperImage}
-                                      key={index}
-                                      resizeMode="cover"
-                                      source={{ uri: item.url }}
-                                    />
-                                  );
-                                })}
-                              </Swiper>
-                            </View>
-                          </TouchableOpacity>
-                        </View>
-                        <Modal
-                          visible={this.state.modalVisible}
-                          transparent={false}
-                          onRequestClose={() => this.handleModelCancel()}
-                        >
-                          <ImageViewer imageUrls={item.imagePath} enableSwipeDown onLongPress={this.handleModelCancel} onClick={this.handleModelCancel.bind(this)} />
-                        </Modal>
-                        <View style={styles.texts}>
-                          <Text style={{ fontSize: 16 }}>
-                            {item.content}
-                          </Text>
-                        </View>
-                      </View>
                     </View>
-                  })) : <Text></Text>
+                    {
+                      historyIusseFeedBack.length !== 0 ? (historyIusseFeedBack.map((item, i) => {
+                        return <View style={styles.Detail} key={i}>
+                          <View style={styles.name}>
+                            <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_feedbackStaff')}: {item.nickname}</Text>
+                          </View>
+                          <View style={styles.status}>
+                            <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_feedbackStatus')}: {t('screen.statisticsDetails_notPass')}</Text>
+                          </View>
+                          <View style={styles.time}>
+                            <Text style={{ fontSize: 16 }}>{t('screen.statisticsDetails_feedbackTime')}: {item.createTime}</Text>
+                          </View>
+                          {
+                            whoseIusseReplies.length !== 0 ? <View style={styles.showView}>
+                              <Text style={{ fontSize: 18, color: "red", lineHeight: SCREEN_HEIGHT * 0.05 }}> 原因: {whoseIusseReplies[i].content}</Text>
+                            </View> : <Text />
+                          }
+                          {
+                            item.imagePath.length === 0 ? <Text /> : <View style={styles.swiper}>
+                              <TouchableOpacity onPress={this.showImageView}>
+                                <View style={styles.swiper1}>
+                                  <Swiper
+                                    showsPagination={true}
+                                    dotColor="white"
+                                    horizontal={true}
+                                    loop={true}
+                                    style={{ flex: 1 }}
+                                    paginationStyle={{ bottom: 10 }}
+                                  >
+                                    {item.imagePath.map((item, index) => {
+                                      return (
+                                        <Image
+                                          style={styles.swiperImage}
+                                          key={index}
+                                          resizeMode="cover"
+                                          source={{ uri: item.url }}
+                                        />
+                                      );
+                                    })}
+                                  </Swiper>
+                                </View>
+                              </TouchableOpacity>
+                            </View>
+                          }
+
+                          <Modal
+                            visible={this.state.modalVisible}
+                            transparent={false}
+                            onRequestClose={() => this.handleModelCancel()}
+                          >
+                            <ImageViewer imageUrls={item.imagePath} enableSwipeDown onLongPress={this.handleModelCancel} onClick={this.handleModelCancel.bind(this)} />
+                          </Modal>
+                          <View style={styles.texts}>
+                            <Text style={{ fontSize: 16 }}>
+                              {item.content}
+                            </Text>
+                          </View>
+                        </View>
+                      })) : <Text></Text>
+                    }
+
+                  </View>
                 ) : <Text />
               }
             </View>
             <View>
               <ActionSheet
                 ref={o => this.ActionSheet = o}
-                title={'确认您反馈的问题已经被完全解决?'}
-                options={['已彻底解决', '未完全解决，继续反馈', '取消']}
+                title={t('screen.statisticsDetails_acknowledgmentFeedback')}
+                options={[t('screen.statisticsDetails_resolved'), t('screen.statisticsDetails_Unsolved'), t('screen.logout_content_text2')]}
                 cancelButtonIndex={2}
                 destructiveButtonIndex={1}
                 onPress={this.onVisible.bind(this)}
@@ -581,11 +546,14 @@ class StatisticsDetails extends Component {
                   overlayBackgroundColor="#fff"
                 >
                   <View>
-                    <Input
+                    <TextInput
+                      returnKeyType="done"
+                      value={this.state.description}
+                      onChangeText={description => this.setState({ description })}
                       placeholder={t('screen.statisticsDetails_opinion')}
-                      containerStyle={styles.modulStyle}
-                      onChangeText={this.onChangeText.bind(this)}
-                      shake={true}
+                      placeholderTextColor={'#BBBBBB'}
+                      underlineColorAndroid={'transparent'}
+                      style={styles.modulStyle}
                       multiline={true}
                     />
                     <Button

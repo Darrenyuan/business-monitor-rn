@@ -71,6 +71,7 @@ export default {
   modulStyle: {
     marginTop: fsc * 0.3,
     marginBottom: fsc * 0.1,
+    fontSize: 18
   },
   OpinionStyle: {
     width: SCREEN_WIDTH * 0.8,
@@ -117,6 +118,8 @@ export default {
     marginTop: SCREEN_HEIGHT * 0.02,
   },
   fetchbutton: {
+    position: 'relative',
+    left: SCREEN_WIDTH * 0.57,
     marginTop: SCREEN_HEIGHT * 0.005,
     marginLeft: SCREEN_WIDTH * 0.1,
   },
@@ -141,6 +144,7 @@ export default {
     marginTop: SCREEN_HEIGHT * 0.1
   },
   confirmbutton: {
+    width: SCREEN_WIDTH * 0.3,
     marginTop: SCREEN_HEIGHT * 0.005,
   },
   showView: {

@@ -193,29 +193,6 @@ class ProblemStatistics extends Component {
     this.props.navigation.navigate(text);
   }
 
-  // handleTypeModalVisible = visible => {
-  //   this.setState({ typeModalVisible: visible });
-  // };
-
-  // handleTypeModalValue = value => {
-  //   this.setState({ type: value });
-  // };
-
-  // handleStatusModalVisible = visible => {
-  //   this.setState({ statusModalVisible: visible });
-  // };
-
-  // handleStatusModalValue = value => {
-  //   this.setState({ status: value });
-  // };
-
-  // handleInteractionModalVisible = visible => {
-  //   this.setState({ interactionModalVisible: visible });
-  // };
-
-  // handleInteractionModalValue = value => {
-  //   this.setState({ interaction: value });
-  // };
   typeOnSelect(i, v) {
     num = parseInt(i) + 1;
     this.setState({
@@ -402,24 +379,6 @@ class ProblemStatistics extends Component {
             />
           )}
         </View>
-        {/* <TypeModal
-          visible={this.state.typeModalVisible}
-          handleTypeModalVisible={this.handleTypeModalVisible}
-          handleTypeModalValue={this.handleTypeModalValue}
-          typeMap={typeMap}
-        />
-        <StatusModal
-          visible={this.state.statusModalVisible}
-          handleStatusModalVisible={this.handleStatusModalVisible}
-          handleStatusModalValue={this.handleStatusModalValue}
-          statusMap={statusMap}
-        />
-        <InteractionModal
-          visible={this.state.interactionModalVisible}
-          handleInteractionModalVisible={this.handleInteractionModalVisible}
-          handleInteractionModalValue={this.handleInteractionModalValue}
-          interactionMap={interactionMap}
-        /> */}
         <ScrollView onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
           <View>
             {issueItemList.map((item, i) => {

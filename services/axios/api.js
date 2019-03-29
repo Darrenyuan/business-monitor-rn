@@ -9,11 +9,11 @@ let option = {
   // crossdomain: true,
   withCredentials: true,
 };
-if (process.env.NODE_ENV === 'production') {
-  baseUrl = 'http://212.64.74.113/api';
-  imageUrl = 'http://212.64.74.113/api/imageThumbnail';
-  option = { ...option, crossdomain: false, timeout: 10000, baseURL: baseUrl };
-}
+// if (process.env.NODE_ENV === 'production') {
+//   baseUrl = 'http://212.64.74.113/api';
+//   imageUrl = 'http://212.64.74.113/api/imageThumbnail';
+//   option = { ...option, crossdomain: false, timeout: 10000, baseURL: baseUrl };
+// }
 
 export const URL = imageUrl;
 
@@ -143,7 +143,7 @@ export function apiIssueDetail(args = {}) {
 export function apiFetchIssueList(args = {}) {
   return instance.get(
     `${baseUrl}/issues?projectId=${args.projectId}&page=${args.page}&pageSize=${
-      args.pageSize
+    args.pageSize
     }&type=${args.type}&status=${args.status}&interaction=${args.interaction}`,
   );
 }

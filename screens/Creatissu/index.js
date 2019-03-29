@@ -91,6 +91,7 @@ class Creatissu extends Component {
             });
             _this.props.actions.setImagePaths({ imagePaths: [] });
             _this.props.navigation.navigate('ProblemStatisticsStack');
+            DeviceEventEmitter.emit('xxxName', true);
           }, 2000);
         } else {
           let toast = Toast.show(t('screen.save failed'), {
@@ -226,7 +227,6 @@ class Creatissu extends Component {
                 dropdownTextStyle={styles.dropdownTextStyle}
                 dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
                 onSelect={(i, v) => {
-                  console.log('iiiiiiii=>>>', i);
                   this.setState({
                     personnel: this.state.result[i].userId,
                     userName: v,
