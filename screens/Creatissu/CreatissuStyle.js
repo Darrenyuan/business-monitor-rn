@@ -19,6 +19,7 @@ export default {
     borderStyle: 'dashed',
     borderColor: '#ccc',
     color: '#000',
+    marginBottom: SCREEN_HEIGHT * 0.01,
   },
   inputContainer: {
     borderWidth: 1,

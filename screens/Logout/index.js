@@ -36,11 +36,8 @@ class Logout extends Component {
       <View style={styles.container}>
         <Avatar
           size="large"
-          title="LW"
+          icon={{ name: 'home' }}
           rounded
-          // source={{
-          //   uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-          // }}
           containerStyle={{ marginTop: 115 }}
           activeOpacity={0.7}
         />

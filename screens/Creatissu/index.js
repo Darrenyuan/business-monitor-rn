@@ -18,7 +18,6 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../../services/redux/actions';
 import { connect } from 'react-redux';
 import ModalDropdown from 'react-native-modal-dropdown';
-import Swiper from 'react-native-swiper';
 import CreatissuStyle from './CreatissuStyle';
 import CameraScreen from './CameraScreen';
 import { URL } from '../../services/axios/api';
@@ -43,7 +42,7 @@ class Creatissu extends Component {
       visible: false,
       modalVisible: false,
       typenum: 0,
-      userName: t('screen.createissue_modalDropdown2')
+      userName: t('screen.createissue_modalDropdown2'),
     };
   }
 
@@ -70,7 +69,7 @@ class Creatissu extends Component {
 
   createIssues() {
     let _this = this;
-    console.log('this.state.personnel', this.state.personnel)
+    console.log('this.state.personnel', this.state.personnel);
     apiCreateIssues({
       name: this.state.title,
       type: this.state.type,
@@ -140,7 +139,6 @@ class Creatissu extends Component {
   }
 
   render() {
-    // const images = [{ url: 'http://aboutreact.com/wp-content/uploads/2018/07/sample_img.png' }];
     const paths = [];
     this.props.monitor.imagePaths.forEach(path => {
       paths.push({ url: `${URL}?path=${path}&width=862&height=812` });
@@ -152,7 +150,7 @@ class Creatissu extends Component {
     typeMap.set(3, t('screen.problem_statistics_type_security'));
     typeMap.set(4, t('screen.problem_statistics_type_other'));
     const statusMap = new Map();
-    console.log("thiscreatissue", this);
+    console.log('thiscreatissue', this);
     if (this.props.monitor.isInCamera) {
       return <CameraScreen />;
     } else if (this.state.modalVisible && paths.length > 0) {
@@ -210,8 +208,8 @@ class Creatissu extends Component {
                 underlineColorAndroid={'transparent'}
                 placeholder={t('screen.createissue_titleinput')}
                 style={styles.titleInput}
-              // autoFocus={true}
-              // multiline={true}
+                // autoFocus={true}
+                // multiline={true}
               />
               <ModalDropdown
                 defaultValue={typeMap.get(this.state.typenum)}
@@ -234,7 +232,7 @@ class Creatissu extends Component {
                 onSelect={(i, v) => {
                   this.setState({
                     type: +i + 1,
-                    typenum: +i + 1
+                    typenum: +i + 1,
                   });
                 }}
               />
@@ -250,16 +248,15 @@ class Creatissu extends Component {
                 options={this.state.personnelArr}
                 style={styles.modalDropdown}
                 textStyle={styles.textStyle}
-                // showsVerticalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
                 adjustFrame={pos => {
                   return pos;
                 }}
                 dropdownStyle={{ height: SCREEN_HEIGHT * 0.18 }}
                 dropdownTextStyle={styles.dropdownTextStyle}
-                dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
+                // dropdownTextHighlightStyle={styles.dropdownTextHighlightStyle}
                 renderRow={this._dropdown_renderRow.bind(this)}
                 onSelect={(i, v) => {
-                  console.log('iiiiiiii=>>>', i);
                   this.setState({
                     personnel: this.state.result[i].userId,
                     userName: v,

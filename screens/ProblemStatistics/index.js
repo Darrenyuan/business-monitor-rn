@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   Image,
-  DeviceEventEmitter
+  DeviceEventEmitter,
 } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -49,7 +49,7 @@ class ProblemStatistics extends Component {
       typeModalVisible: false,
       statusModalVisible: false,
       interactionModalVisible: false,
-      issueStatus: false
+      issueStatus: false,
     };
   }
 
@@ -99,10 +99,10 @@ class ProblemStatistics extends Component {
   };
   componentDidMount() {
     this.fetchData();
-    this.listener = DeviceEventEmitter.addListener('xxxName', (msg) => {
+    this.listener = DeviceEventEmitter.addListener('xxxName', msg => {
       this.setState({
-        issueStatus: msg
-      })
+        issueStatus: msg,
+      });
     });
   }
   scrollHandle(event) {
@@ -138,7 +138,6 @@ class ProblemStatistics extends Component {
       status: this.state.status,
       interaction: this.state.interaction,
     });
-
   };
 
   componentWillReceiveProps(nextProps) {
@@ -249,17 +248,15 @@ class ProblemStatistics extends Component {
       type: 0,
       interactionnum: 0,
       statusnum: 0,
-      typenum: 0
+      typenum: 0,
     });
   };
 
   _dropdown_2_renderRow(rowData, rowID, highlighted) {
     return (
-      <TouchableOpacity >
+      <TouchableOpacity>
         <View style={styles.dropdownPosition}>
-          <Text style={styles.customtext}>
-            {rowData}
-          </Text>
+          <Text style={styles.customtext}>{rowData}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -314,8 +311,8 @@ class ProblemStatistics extends Component {
       item.createTime = moment(item.createTime)
         .local()
         .format('YYYY-MM-DD');
-      return item
-    })
+      return item;
+    });
     return (
       <View style={styles.worp}>
         <Header
@@ -347,6 +344,7 @@ class ProblemStatistics extends Component {
         />
         <View style={styles.buttonViem}>
           <ModalDropdown
+            showsVerticalScrollIndicator={false}
             style={styles.modalDropdown}
             textStyle={styles.textStyle}
             defaultValue={typeMap.get(this.state.typenum)}
@@ -365,7 +363,7 @@ class ProblemStatistics extends Component {
             renderRow={this._dropdown_2_renderRow.bind(this)}
             onSelect={this.statusOnSelect.bind(this)}
           />
-          {this.state.showInteraction ?
+          {this.state.showInteraction ? (
             <ModalDropdown
               style={styles.modalDropdown}
               textStyle={styles.textStyle}
@@ -374,26 +372,34 @@ class ProblemStatistics extends Component {
               options={interactionOptions}
               renderRow={this._dropdown_2_renderRow.bind(this)}
               onSelect={this.interactionOnSelect.bind(this)}
-            /> : <Button
+            />
+          ) : (
+            <Button
               title={t('screen.problem_statistics_interaction_outer')}
               titleStyle={styles.arrStyle}
               disabled={true}
             />
+          )}
 
-          }
-
-          {this.state.showInteraction ? this.state.type || this.state.status || this.state.interaction ? <Button
-            title={t('screen.problem_statistics_button_reset_all')}
-            containerStyle={styles.arrStyle}
-            onPress={this.resetAll}
-          /> : <Text /> : this.state.type || this.state.status ? <Button
-            title={t('screen.problem_statistics_button_reset_all')}
-            titleStyle={styles.arrStyle}
-            onPress={this.resetAll}
-          /> : <Text />
-
-
-          }
+          {this.state.showInteraction ? (
+            this.state.type || this.state.status || this.state.interaction ? (
+              <Button
+                title={t('screen.problem_statistics_button_reset_all')}
+                containerStyle={styles.arrStyle}
+                onPress={this.resetAll}
+              />
+            ) : (
+              <Text />
+            )
+          ) : this.state.type || this.state.status ? (
+            <Button
+              title={t('screen.problem_statistics_button_reset_all')}
+              titleStyle={styles.arrStyle}
+              onPress={this.resetAll}
+            />
+          ) : (
+            <Text />
+          )}
           {this.state.showCreateIssue && (
             <Button
               title={t('screen.problem_statistics_button_jump_drawer')}
@@ -423,21 +429,29 @@ class ProblemStatistics extends Component {
         <ScrollView onScroll={evt => this.scrollHandle(evt)} scrollEventThrottle={50}>
           <View>
             {issueItemList.map((item, i) => {
-              return <ListItem
-                key={i}
-                title={item.name}
-                rightIcon={{ name: 'chevron-right' }}
-                containerStyle={styles.itemIssue}
-                subtitle={
-                  <View style={styles.ItemLists}>
-                    <Text style={styles.ratingText1}>{item.createTime}</Text>
-                    <Text style={styles.ratingText3}>{typeMap.get(item.type)}</Text>
-                    <Text style={styles.ratingText2}>{interactionMap.get(item.interaction)}</Text>
-                    <Text style={styles.ratingText}>{statusMap.get(item.status)}</Text>
-                  </View>
-                }
-                onPress={this.submint.bind(this, item.interaction, item.type, item.status, item.id)}
-              />
+              return (
+                <ListItem
+                  key={i}
+                  title={item.name}
+                  rightIcon={{ name: 'chevron-right' }}
+                  containerStyle={styles.itemIssue}
+                  subtitle={
+                    <View style={styles.ItemLists}>
+                      <Text style={styles.ratingText1}>{item.createTime}</Text>
+                      <Text style={styles.ratingText3}>{typeMap.get(item.type)}</Text>
+                      <Text style={styles.ratingText2}>{interactionMap.get(item.interaction)}</Text>
+                      <Text style={styles.ratingText}>{statusMap.get(item.status)}</Text>
+                    </View>
+                  }
+                  onPress={this.submint.bind(
+                    this,
+                    item.interaction,
+                    item.type,
+                    item.status,
+                    item.id,
+                  )}
+                />
+              );
             })}
           </View>
         </ScrollView>
