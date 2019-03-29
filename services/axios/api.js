@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { logout } from '../redux/actions';
 let baseUrl = 'http://192.168.0.200:8080/imageserver';
 
 let imageUrl = 'http://192.168.0.200:8080/imageserver/imageThumbnail';
@@ -19,13 +18,7 @@ export const URL = imageUrl;
 
 const instance = axios.create(option);
 instance.interceptors.response.use(res => {
-  if (res.data.status === 500) {
-    logout();
-    window.location.href = '/monitor/login';
-    return;
-  } else {
-    return res;
-  }
+  return res;
 });
 
 export function apiLongin(args = {}) {

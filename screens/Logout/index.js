@@ -24,11 +24,12 @@ class Logout extends Component {
         this.props.actions.logout();
         this.props.navigation.navigate('loginStack');
       },
-      err => { },
+      err => {},
     );
   }
   render() {
     if (!this.props.monitor.loginData) {
+      this.props.navigation.navigate('loginStack');
       return <View />;
     }
     return (
