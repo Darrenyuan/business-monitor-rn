@@ -19,6 +19,7 @@ export default {
     borderStyle: 'dashed',
     borderColor: '#ccc',
     color: '#000',
+    marginBottom: SCREEN_HEIGHT * 0.01,
   },
   inputContainer: {
     borderWidth: 1,
@@ -60,25 +61,22 @@ export default {
     height: SCREEN_HEIGHT * 0.06,
     borderRadius: 3,
     justifyContent: 'center',
-    paddingLeft: SCREEN_WIDTH * 0.01,
-    marginTop: SCREEN_HEIGHT * 0.01,
+    alignItems: 'center',
   },
   textStyle: {
     color: '#000',
     fontSize: 16,
   },
-  dropdownStyle: {
-    width: SCREEN_WIDTH * 0.3,
+  dropdown_row: {
+    paddingLeft: SCREEN_WIDTH * 0.08,
+    paddingRight: SCREEN_WIDTH * 0.08,
+    height: SCREEN_HEIGHT * 0.06,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  dropdownTextStyle: {
+  dropdown_row_text: {
     color: '#aaa',
     fontSize: 16,
-  },
-  dropdownTextHighlightStyle: {
-    color: '#FFCF40',
-    fontSize: 18,
   },
   image: {
     height: SCREEN_HEIGHT * 0.24,

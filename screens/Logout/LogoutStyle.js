@@ -5,7 +5,6 @@ export default {
   container: {
     flex: 1,
     alignItems: 'center',
-    // backgroundColor: '#ccc',
   },
   mineItemContainer: {
     marginTop: SCREEN_HEIGHT * 0.05,

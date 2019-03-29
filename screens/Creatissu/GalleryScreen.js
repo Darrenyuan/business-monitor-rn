@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../../services/redux/actions';
 import { apiUploadImage } from '../../services/axios/api';
+import Toast from 'react-native-root-toast';
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from './CreatissuStyle';
 
 const PHOTOS_DIR = FileSystem.documentDirectory + 'photos';
 
@@ -34,41 +36,96 @@ class GalleryScreen extends React.Component {
     this.setState({ selected });
   };
 
-  saveToGallery = async () => {
-    console.log(this.state);
-    const photos = this.state.selected;
+  // saveToGallery = async () => {
+  //   // console.log(this.state);
+  //   const photos = this.state.selected;
 
-    if (photos.length > 0) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  //   if (photos.length > 0) {
+  //     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
-      if (status !== 'granted') {
-        throw new Error('Denied CAMERA_ROLL permissions!');
-      }
-      let remotePaths = [];
-      const promises = photos.map(photoUri => {
-        return new Promise((resolve, reject) => {
-          apiUploadImage({ uri: photoUri })
-            .then(response => response.json())
-            .then(responseJson => {
-              remotePaths.push(responseJson.data);
-              return resolve(responseJson.data);
-            })
-            .catch(error => {
-              console.error(error);
-              return reject(error);
-            });
+  //     if (status !== 'granted') {
+  //       throw new Error('Denied CAMERA_ROLL permissions!');
+  //     }
+  //     let remotePaths = [];
+  //     const promises = photos.map(photoUri => {
+  //       return new Promise((resolve, reject) => {
+  //         apiUploadImage({ uri: photoUri })
+  //           .then(response => response.json())
+  //           .then(responseJson => {
+  //             remotePaths.push(responseJson.data);
+  //             return resolve(responseJson.data);
+  //           })
+  //           .catch(error => {
+  //             console.error(error);
+  //             return reject(error);
+  //           });
+  //       });
+  //     });
+
+  //     await Promise.all(promises);
+  //     let toast = Toast.show(t('screen.createissue_save'));
+  //     setTimeout(function() {
+  //       Toast.hide(toast);
+  //     }, 2000);
+  //     FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos', { idempotent: true });
+  //     this.props.actions.setIsInCamera({ isInCamera: false });
+  //     this.props.actions.setImagePaths({ imagePaths: remotePaths });
+  //   } else {
+  //     let toast = Toast.show(t('screen.createissue_nochoice'), {
+  //       position: SCREEN_HEIGHT * 0.45,
+  //     });
+  //     setTimeout(function() {
+  //       Toast.hide(toast);
+  //     }, 2000);
+  //   }
+  // };
+
+  throttling = () => {
+    let _this = this;
+    setTimeout(async () => {
+      const photos = _this.state.selected;
+
+      if (photos.length > 0) {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+        if (status !== 'granted') {
+          throw new Error('Denied CAMERA_ROLL permissions!');
+        }
+        let remotePaths = [];
+        const promises = photos.map(photoUri => {
+          return new Promise((resolve, reject) => {
+            apiUploadImage({ uri: photoUri })
+              .then(response => response.json())
+              .then(responseJson => {
+                remotePaths.push(responseJson.data);
+                return resolve(responseJson.data);
+              })
+              .catch(error => {
+                console.error(error);
+                return reject(error);
+              });
+          });
         });
-      });
 
-      await Promise.all(promises);
-      alert(t('screen.createissue_save'));
-      console.log(remotePaths);
-      FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos', { idempotent: true });
-      this.props.actions.setIsInCamera({ isInCamera: false });
-      this.props.actions.setImagePaths({ imagePaths: remotePaths });
-    } else {
-      alert(t('screen.createissue_nochoice'));
-    }
+        await Promise.all(promises);
+        let toast = Toast.show(t('screen.createissue_save'), {
+          position: SCREEN_HEIGHT * 0.45,
+        });
+        setTimeout(function() {
+          Toast.hide(toast);
+        }, 2000);
+        FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos', { idempotent: true });
+        _this.props.actions.setIsInCamera({ isInCamera: false });
+        _this.props.actions.setImagePaths({ imagePaths: remotePaths });
+      } else {
+        let toast = Toast.show(t('screen.createissue_nochoice'), {
+          position: SCREEN_HEIGHT * 0.45,
+        });
+        setTimeout(function() {
+          Toast.hide(toast);
+        }, 2000);
+      }
+    }, 3000);
   };
 
   renderPhoto = fileName => (
@@ -86,7 +143,7 @@ class GalleryScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
+          <TouchableOpacity style={styles.button} onPress={this.throttling}>
             <Text style={styles.whiteText}>{t('screen.createissue_togallery')}</Text>
           </TouchableOpacity>
         </View>

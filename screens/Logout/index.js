@@ -24,22 +24,20 @@ class Logout extends Component {
         this.props.actions.logout();
         this.props.navigation.navigate('loginStack');
       },
-      err => { },
+      err => {},
     );
   }
   render() {
     if (!this.props.monitor.loginData) {
+      this.props.navigation.navigate('loginStack');
       return <View />;
     }
     return (
       <View style={styles.container}>
         <Avatar
           size="large"
-          title="LW"
+          icon={{ name: 'home' }}
           rounded
-          // source={{
-          //   uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-          // }}
           containerStyle={{ marginTop: 115 }}
           activeOpacity={0.7}
         />

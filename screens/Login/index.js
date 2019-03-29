@@ -19,6 +19,7 @@ import * as actions from '../../services/redux/actions';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Projects from '../Projects';
+import MainTab from '../../tab/TabNavigation';
 
 const BG_IMAGE = require('../../assets/images/login_bg_screen.jpg');
 
@@ -68,8 +69,6 @@ class Login extends Component {
       // username: '',
       // password: '',
     });
-
-    this.props.navigation.navigate('projectsStack');
   }
 
   render() {
@@ -80,11 +79,7 @@ class Login extends Component {
     console.log('loginData=%s', JSON.stringify(loginData));
     if (loginData) {
       console.log('navigate to next screen:projects');
-      return (
-        <View style={styles.container}>
-          <Projects />
-        </View>
-      );
+      return <MainTab />;
     }
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
