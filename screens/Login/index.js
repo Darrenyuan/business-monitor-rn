@@ -7,7 +7,7 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Font } from 'expo';
@@ -87,8 +87,8 @@ class Login extends Component {
       );
     }
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <ImageBackground source={BG_IMAGE} style={styles.bgImage}>
             {this.state.fontLoaded ? (
               <View style={styles.loginView}>
@@ -104,48 +104,52 @@ class Login extends Component {
                   </View>
                 </View>
                 <View style={styles.loginInput}>
-                  <Input
-                    leftIcon={<Icon name="user-o" color="rgba(171, 189, 219, 1)" size={25} />}
-                    containerStyle={{ marginVertical: 10 }}
-                    onChangeText={username => this.setState({ username })}
-                    value={username}
-                    inputStyle={{ marginLeft: 10, color: 'white' }}
-                    keyboardAppearance="light"
-                    placeholder={t('screen.login_username')}
-                    autoFocus={false}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="email-address"
-                    returnKeyType="done"
-                    ref={this.usernameInput}
-                    onSubmitEditing={() => {
-                      this.setState({
-                        username_valid: this.validateUsername(username),
-                      });
-                      this.passwordInput.current.focus();
-                    }}
-                    blurOnSubmit={false}
-                    placeholderTextColor="white"
-                    errorStyle={{ textAlign: 'center', fontSize: 12 }}
-                    errorMessage={username_valid ? null : t('login.input_warning')}
-                  />
-                  <Input
-                    leftIcon={<Icon name="lock" color="rgba(171, 189, 219, 1)" size={25} />}
-                    containerStyle={{ marginVertical: 10 }}
-                    onChangeText={password => this.setState({ password })}
-                    value={password}
-                    inputStyle={{ marginLeft: 10, color: 'white' }}
-                    secureTextEntry={true}
-                    keyboardAppearance="light"
-                    placeholder={t('screen.login_password')}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType="default"
-                    returnKeyType="done"
-                    ref={this.passwordInput}
-                    blurOnSubmit={true}
-                    placeholderTextColor="white"
-                  />
+                  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <Input
+                      leftIcon={<Icon name="user-o" color="rgba(171, 189, 219, 1)" size={25} />}
+                      containerStyle={{ marginVertical: 10 }}
+                      onChangeText={username => this.setState({ username })}
+                      value={username}
+                      inputStyle={{ marginLeft: 10, color: 'white' }}
+                      keyboardAppearance="light"
+                      placeholder={t('screen.login_username')}
+                      autoFocus={false}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="email-address"
+                      returnKeyType="done"
+                      ref={this.usernameInput}
+                      onSubmitEditing={() => {
+                        this.setState({
+                          username_valid: this.validateUsername(username),
+                        });
+                        this.passwordInput.current.focus();
+                      }}
+                      blurOnSubmit={false}
+                      placeholderTextColor="white"
+                      errorStyle={{ textAlign: 'center', fontSize: 12 }}
+                      errorMessage={username_valid ? null : t('login.input_warning')}
+                    />
+                  </TouchableWithoutFeedback>
+                  <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                    <Input
+                      leftIcon={<Icon name="lock" color="rgba(171, 189, 219, 1)" size={25} />}
+                      containerStyle={{ marginVertical: 10 }}
+                      onChangeText={password => this.setState({ password })}
+                      value={password}
+                      inputStyle={{ marginLeft: 10, color: 'white' }}
+                      secureTextEntry={true}
+                      keyboardAppearance="light"
+                      placeholder={t('screen.login_password')}
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      keyboardType="default"
+                      returnKeyType="done"
+                      ref={this.passwordInput}
+                      blurOnSubmit={true}
+                      placeholderTextColor="white"
+                    />
+                  </TouchableWithoutFeedback>
                 </View>
                 <Button
                   title={t('common:screen.login_button')}
@@ -167,11 +171,11 @@ class Login extends Component {
                 />
               </View>
             ) : (
-                <Text>{t('loading')}Loading...</Text>
-              )}
+              <Text>{t('loading')}Loading...</Text>
+            )}
           </ImageBackground>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
 }
