@@ -71,15 +71,19 @@ class Login extends Component {
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.monitor.loginData !== this.props.monitor.loginData)
+      if (this.props.monitor.loginData) {
+        this.props.navigation.navigate('projectsStack');
+      }
+  }
+
   render() {
     const { username, password, username_valid } = this.state;
     const showLoading = Boolean(this.props.monitor.loginPending);
     const loginData = this.props.monitor.loginData;
     const { navigate } = this.props.navigation;
     console.log('loginData=%s', JSON.stringify(loginData));
-    if (loginData) {
-      navigate('projectsStack');
-    }
     return (
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
