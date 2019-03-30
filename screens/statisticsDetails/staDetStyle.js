@@ -5,6 +5,7 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const fsc = SCREEN_HEIGHT - 180;
 export default {
   worp: {
+    flex: 1,
     height: SCREEN_HEIGHT,
   },
   viewWorp: {
@@ -36,6 +37,7 @@ export default {
     marginBottom: SCREEN_WIDTH * 0.06,
   },
   contenter: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -109,7 +111,7 @@ export default {
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
     marginTop: SCREEN_HEIGHT * 0.02,
-    height: "100%"
+    height: '100%',
   },
   peopel: {
     width: SCREEN_WIDTH * 0.45,
