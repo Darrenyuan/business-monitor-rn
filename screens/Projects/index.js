@@ -135,7 +135,7 @@ class Projects extends Component {
               {projectList.map(item => {
                 const keyString = makeUUID();
                 {
-                  let start = moment(item.start).toDate();
+                  let start = moment.utc(item.startTime).toDate();
 
                   var localStart = moment(start)
                     .local()
