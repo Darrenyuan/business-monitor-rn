@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   KeyboardAvoidingView,
+  DeviceEventEmitter
 } from 'react-native';
 import { Button, Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -63,7 +64,7 @@ class Creatissu extends Component {
           }),
         });
       },
-      err => {},
+      err => { },
     );
   }
 
@@ -83,7 +84,7 @@ class Creatissu extends Component {
           let toast = Toast.show(t('screen.successfully saved'), {
             position: SCREEN_HEIGHT * 0.45,
           });
-          setTimeout(function() {
+          setTimeout(function () {
             Toast.hide(toast);
             _this.setState({
               title: '',
@@ -102,12 +103,12 @@ class Creatissu extends Component {
           let toast = Toast.show(t('screen.save failed'), {
             position: SCREEN_HEIGHT * 0.45,
           });
-          setTimeout(function() {
+          setTimeout(function () {
             Toast.hide(toast);
           }, 2000);
         }
       },
-      err => {},
+      err => { },
     );
   }
 
@@ -209,8 +210,8 @@ class Creatissu extends Component {
                 underlineColorAndroid={'transparent'}
                 placeholder={t('screen.createissue_titleinput')}
                 style={styles.titleInput}
-                // autoFocus={true}
-                // multiline={true}
+              // autoFocus={true}
+              // multiline={true}
               />
               <ModalDropdown
                 defaultValue={typeMap.get(this.state.typenum)}

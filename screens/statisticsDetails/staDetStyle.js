@@ -67,6 +67,9 @@ export default {
     position: 'relative',
     left: -SCREEN_WIDTH * 0.23,
   },
+  issue: {
+    marginTop: SCREEN_HEIGHT * 0.02,
+  },
   modulStyle: {
     marginTop: fsc * 0.3,
     marginBottom: fsc * 0.1,
@@ -100,6 +103,14 @@ export default {
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
   },
+  Detail1: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    marginTop: SCREEN_HEIGHT * 0.02,
+    height: "100%"
+  },
   peopel: {
     width: SCREEN_WIDTH * 0.45,
     marginTop: SCREEN_HEIGHT * 0.02,
@@ -130,8 +141,8 @@ export default {
     borderColor: '#ccc',
   },
   texts: {
+    flexShrink: 0,
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.3,
     borderWidth: 1,
     borderColor: '#ccc',
   },
@@ -140,7 +151,7 @@ export default {
     marginTop: SCREEN_HEIGHT * 0.05,
   },
   History: {
-    marginTop: SCREEN_HEIGHT * 0.1,
+    marginTop: SCREEN_HEIGHT * 0.06,
   },
   confirmbutton: {
     width: SCREEN_WIDTH * 0.3,
@@ -148,7 +159,7 @@ export default {
   },
   showView: {
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.05,
+    marginTop: SCREEN_HEIGHT * 0.005,
   },
   swiper1: {
     height: SCREEN_HEIGHT * 0.35,
