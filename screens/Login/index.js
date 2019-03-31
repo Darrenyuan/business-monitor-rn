@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { Font } from 'expo';
@@ -72,6 +73,13 @@ class Login extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.monitor.loginError !== this.props.monitor.loginError) {
+      if (this.props.monitor.loginError) {
+        Alert.alert(t('screen.login_alert'), '', [
+          { text: t('screen.login_alert_button_text'), onPress: () => console.log('OK Pressed') },
+        ]);
+      }
+    }
     if (prevProps.monitor.loginData !== this.props.monitor.loginData)
       if (this.props.monitor.loginData) {
         this.props.navigation.navigate('projectsStack');

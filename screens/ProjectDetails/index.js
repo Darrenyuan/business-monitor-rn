@@ -9,6 +9,7 @@ import { t } from '../../services/i18n';
 import { apiFetchProject } from '../../services/axios/api';
 import withLogin from '../../services/common/withLogin';
 import { Cell, Section, TableView } from 'react-native-tableview-simple';
+import moment from 'moment';
 
 const styles = StyleSheet.create({ ...detailStyle });
 
@@ -51,11 +52,14 @@ class ProjectsDetails extends Component {
   render() {
     let id = this.props.navigation.state.params.id;
     let detailItem = this.state.ProjectsDetails;
-    let startTime = new Date(detailItem.startTime);
-    let endTime = new Date(detailItem.endTime);
-    let timeStart =
-      startTime.getFullYear() + '/' + (startTime.getMonth() + 1) + '/' + startTime.getDate();
-    let timeEnd = endTime.getFullYear() + '/' + (endTime.getMonth() + 1) + '/' + endTime.getDate();
+    let start = moment.utc(detailItem.startTime).toDate();
+    let timeStart = moment(start)
+      .local()
+      .format('YYYY/MM/DD');
+    let end = moment.utc(detailItem.endTime).toDate();
+    let timeEnd = moment(end)
+      .local()
+      .format('YYYY/MM/DD');
     if (this.props.monitor.projectList.fetchProjectListPending) {
       return (
         <View>
@@ -67,12 +71,12 @@ class ProjectsDetails extends Component {
       <Cell
         {...props}
         cellContentView={
-          <View style={{ alignItems: 'left', flexDirection: 'row', flex: 1, paddingVertical: 10 }}>
-            <Text allowFontScaling numberOfLines={1} style={{ flex: 1, fontSize: 20 }}>
+          <View>
+            <Text allowFontScaling style={{ flex: 1, fontSize: 16 }}>
               {props.title}
             </Text>
-            <Text allowFontScaling numberOfLines={1} style={{ flex: 1, fontSize: 20 }}>
-              {props.title}
+            <Text allowFontScaling style={{ flex: 1, fontSize: 12 }}>
+              {props.detail}
             </Text>
           </View>
         }
@@ -142,8 +146,7 @@ class ProjectsDetails extends Component {
                 title={t('screen.projectDetails_constructionUnit')}
                 detail={detailItem.constructionUnit}
               />
-              <Cell
-                cellStyle="Subtitle"
+              <CellVariant
                 title={t('screen.projectDetails_overview')}
                 detail={detailItem.overview}
               />

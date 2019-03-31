@@ -73,7 +73,6 @@ export default class CameraScreen extends React.Component {
   }
 
   componentDidMount = async () => {
-    await FileSystem.deleteAsync(FileSystem.documentDirectory + 'photos/', { idempotent: true });
     FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
       console.log(e, 'Directory exists');
     });

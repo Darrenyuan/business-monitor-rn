@@ -111,7 +111,7 @@ export default {
     fontSize: 16,
   },
   textStyle: {
-    color: '#FFF',
+    color: '#000',
     fontSize: 18,
     textAlign: 'center',
     lineHeight: SCREEN_HEIGHT * 0.05,

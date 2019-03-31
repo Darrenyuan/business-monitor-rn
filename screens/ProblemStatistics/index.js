@@ -241,6 +241,7 @@ class ProblemStatistics extends Component {
       </TouchableOpacity>
     );
   }
+
   render() {
     const typeMap = new Map();
     typeMap.set(0, t('screen.problem_statistics_type_all'));
@@ -324,7 +325,7 @@ class ProblemStatistics extends Component {
         />
         <View style={styles.buttonViem}>
           <ModalDropdown
-            showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator={true}
             style={styles.modalDropdown}
             textStyle={styles.textStyle}
             defaultValue={typeMap.get(this.state.typenum)}
@@ -354,12 +355,12 @@ class ProblemStatistics extends Component {
               onSelect={this.interactionOnSelect.bind(this)}
             />
           ) : (
-              <Button
-                title={t('screen.problem_statistics_interaction_outer')}
-                titleStyle={styles.arrStyle}
-                disabled={true}
-              />
-            )}
+            <Button
+              title={t('screen.problem_statistics_interaction_outer')}
+              titleStyle={styles.arrStyle}
+              disabled={true}
+            />
+          )}
 
           {this.state.showInteraction ? (
             this.state.type || this.state.status || this.state.interaction ? (
@@ -369,8 +370,8 @@ class ProblemStatistics extends Component {
                 onPress={this.resetAll}
               />
             ) : (
-                <Text />
-              )
+              <Text />
+            )
           ) : this.state.type || this.state.status ? (
             <Button
               title={t('screen.problem_statistics_button_reset_all')}
@@ -378,8 +379,8 @@ class ProblemStatistics extends Component {
               onPress={this.resetAll}
             />
           ) : (
-                <Text />
-              )}
+            <Text />
+          )}
           {this.state.showCreateIssue && (
             <Button
               title={t('screen.problem_statistics_button_jump_drawer')}

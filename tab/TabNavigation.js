@@ -67,7 +67,7 @@ export default (MyTabNavigator = createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: Platform.OS === 'ios' ? '#007AFF' : '#00bcd4',
       activeBackgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
-      inactiveTintColor: Platform.OS === 'ios' ? '#616161' : 'white',
+      inactiveTintColor: Platform.OS === 'ios' ? '#616161' : '#616161',
       inactiveBackgroundColor: Platform.OS === 'ios' ? 'transparent' : 'white',
       showIcon: true,
       showLabel: true,
