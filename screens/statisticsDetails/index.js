@@ -611,6 +611,7 @@ class StatisticsDetails extends Component {
                       underlineColorAndroid={'transparent'}
                       style={styles.modulStyle}
                       multiline={true}
+                      maxLength={200}
                     />
                     <Button
                       title={t('screen.statisticsDetails_submit')}

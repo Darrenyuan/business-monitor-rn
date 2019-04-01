@@ -76,9 +76,6 @@
     "createissue_titleinput": "请输入问题标题",
     "createissue_textinput": "请输入问题描述",
     "creatissu_submit": "提交",
-    "creatissu_prompt": "标题内容不能超过20个字！",
-    "creatissu_prompt1": "问题描述不能超过200个字！",
-    "creatissu_prompt2": "回复内容不能超过200个字！",
     "createcomment_titleinput": "问题回复",
     "statisticsDetails_feedback": "反馈",
     "statisticsDetails_confirm": "确认",
@@ -106,7 +103,20 @@
     "projectDetails_designUnit": "设计单位",
     "projectDetails_supervisoryUnit": "监理单位",
     "projectDetails_constructionUnit": "建设单位",
-    "projectDetails_issueInfo": "工程问题信息"
+    "projectDetails_issueInfo": "工程问题信息",
+    "character_admin": "管理员",
+    "character_projectManager": "项目管理员",
+    "character_leader": "领导",
+    "character_projectDirector": "项目经理",
+    "character_produceDirector": "生产经理",
+    "character_professionalForeman": "专业工长",
+    "character_securityGuard": "安全员",
+    "character_qualityInspector": "质量员",
+    "character_materialStaff": "材料员",
+    "character_monitorManager": "监理，业主管理员",
+    "character_chiefInspector": "总监",
+    "character_specializedSupervisionEngineer": "专业监理工程师",
+    "character_ownerEngineer": "业主工程师"
   },
   "loading": "载入"
 }
