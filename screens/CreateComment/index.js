@@ -44,48 +44,55 @@ class CreateComment extends Component {
 
   CreateComment() {
     let _this = this;
-    apiCreatecomment({
-      issueId: _this.props.navigation.state.params.issueId,
-      content: this.state.description,
-      username: this.props.monitor.loginData.username,
-      imagePaths: JSON.stringify(this.props.monitor.imagePaths),
-      replyToId: 0,
-    }).then(
-      res => {
-        if (res.data.status === 200) {
-          let toast = Toast.show(t('screen.successfully saved'), {
-            position: SCREEN_HEIGHT * 0.45,
-          });
-          setTimeout(function () {
-            Toast.hide(toast);
-            _this.setState({
-              description: '',
-              visible: false,
+    if (this.state.description === '') {
+      Toast.show(t('screen.creatissu_prompt1'), {
+        position: SCREEN_HEIGHT * 0.45,
+      });
+    } else {
+      apiCreatecomment({
+        issueId: _this.props.navigation.state.params.issueId,
+        content: this.state.description,
+        username: this.props.monitor.loginData.username,
+        imagePaths: JSON.stringify(this.props.monitor.imagePaths),
+        replyToId: 0,
+      }).then(
+        res => {
+          if (res.data.status === 200) {
+            let toast = Toast.show(t('screen.successfully saved'), {
+              position: SCREEN_HEIGHT * 0.45,
             });
-            _this.props.actions.setImagePaths({ imagePaths: [] });
-            apiupdateIssueStatus({
-              issueId: _this.props.navigation.state.params.issueId,
-              status: 2,
-            }).then(() => {
-              _this.props.actions.setIssueStatus({
+            setTimeout(function () {
+              Toast.hide(toast);
+              _this.setState({
+                description: '',
+                visible: false,
+              });
+              _this.props.actions.setImagePaths({ imagePaths: [] });
+              apiupdateIssueStatus({
                 issueId: _this.props.navigation.state.params.issueId,
                 status: 2,
+              }).then(() => {
+                _this.props.actions.setIssueStatus({
+                  issueId: _this.props.navigation.state.params.issueId,
+                  status: 2,
+                });
+                DeviceEventEmitter.emit('xxxName', true);
+                _this.props.navigation.navigate('ProblemStatisticsStack');
               });
-              DeviceEventEmitter.emit('xxxName', true);
-              _this.props.navigation.navigate('ProblemStatisticsStack');
+            }, 2000);
+          } else {
+            let toast = Toast.show(t('screen.save failed'), {
+              position: SCREEN_HEIGHT * 0.45,
             });
-          }, 2000);
-        } else {
-          let toast = Toast.show(t('screen.save failed'), {
-            position: SCREEN_HEIGHT * 0.45,
-          });
-          setTimeout(function () {
-            Toast.hide(toast);
-          }, 2000);
-        }
-      },
-      err => { },
-    );
+            setTimeout(function () {
+              Toast.hide(toast);
+            }, 2000);
+          }
+        },
+        err => { },
+      );
+    }
+
   }
   goback(text) {
     this.props.navigation.navigate(text);

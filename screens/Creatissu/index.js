@@ -71,46 +71,56 @@ class Creatissu extends Component {
 
   createIssues() {
     let _this = this;
-    console.log('this.state.personnel', this.state.personnel);
-    apiCreateIssues({
-      name: this.state.title,
-      type: this.state.type,
-      description: this.state.description,
-      handerId: this.state.personnel,
-      projectId: this.props.navigation.state.params.projectId,
-      imagePaths: JSON.stringify(this.props.monitor.imagePaths),
-    }).then(
-      res => {
-        if (res.data.status === 200) {
-          let toast = Toast.show(t('screen.successfully saved'), {
-            position: SCREEN_HEIGHT * 0.45,
-          });
-          setTimeout(function () {
-            Toast.hide(toast);
-            _this.setState({
-              title: '',
-              description: '',
-              type: null,
-              personnel: '',
-              personnelArr: [],
-              result: [],
-              index: 0,
+    if (this.state.userName === t('screen.createissue_modalDropdown2') ||
+      this.state.description === '' || this.state.typenum === 0 ||
+      this.state.title === ''
+    ) {
+      Toast.show(t('screen.creatissu_prompt'), {
+        position: SCREEN_HEIGHT * 0.45,
+      });
+    } else {
+      apiCreateIssues({
+        name: this.state.title,
+        type: this.state.type,
+        description: this.state.description,
+        handerId: this.state.personnel,
+        projectId: this.props.navigation.state.params.projectId,
+        imagePaths: JSON.stringify(this.props.monitor.imagePaths),
+      }).then(
+        res => {
+          if (res.data.status === 200) {
+            let toast = Toast.show(t('screen.successfully saved'), {
+              position: SCREEN_HEIGHT * 0.45,
             });
-            _this.props.actions.setImagePaths({ imagePaths: [] });
-            _this.props.navigation.navigate('ProblemStatisticsStack');
-            DeviceEventEmitter.emit('xxxName', true);
-          }, 2000);
-        } else {
-          let toast = Toast.show(t('screen.save failed'), {
-            position: SCREEN_HEIGHT * 0.45,
-          });
-          setTimeout(function () {
-            Toast.hide(toast);
-          }, 2000);
-        }
-      },
-      err => { },
-    );
+            setTimeout(function () {
+              Toast.hide(toast);
+              _this.setState({
+                title: '',
+                description: '',
+                type: null,
+                personnel: '',
+                personnelArr: [],
+                result: [],
+                index: 0,
+              });
+              _this.props.actions.setImagePaths({ imagePaths: [] });
+              _this.props.navigation.navigate('ProblemStatisticsStack');
+              DeviceEventEmitter.emit('xxxName', true);
+            }, 2000);
+          } else {
+            let toast = Toast.show(t('screen.save failed'), {
+              position: SCREEN_HEIGHT * 0.45,
+            });
+            setTimeout(function () {
+              Toast.hide(toast);
+            }, 2000);
+          }
+        },
+        err => { },
+      );
+    }
+
+
   }
 
   goback(text) {

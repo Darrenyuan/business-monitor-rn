@@ -76,6 +76,8 @@
     "createissue_titleinput": "请输入问题标题",
     "createissue_textinput": "请输入问题描述",
     "creatissu_submit": "提交",
+    "creatissu_prompt": "请检查是否填写完所有信息!",
+    "creatissu_prompt1": "请填写回复内容!",
     "createcomment_titleinput": "问题回复",
     "statisticsDetails_feedback": "反馈",
     "statisticsDetails_confirm": "确认",
