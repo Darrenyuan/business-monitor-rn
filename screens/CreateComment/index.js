@@ -34,6 +34,7 @@ class CreateComment extends Component {
       description: '',
       visible: false,
       modalVisible: false,
+      contentMaxLength: true
     };
   }
 
@@ -55,7 +56,7 @@ class CreateComment extends Component {
           let toast = Toast.show(t('screen.successfully saved'), {
             position: SCREEN_HEIGHT * 0.45,
           });
-          setTimeout(function() {
+          setTimeout(function () {
             Toast.hide(toast);
             _this.setState({
               description: '',
@@ -78,12 +79,12 @@ class CreateComment extends Component {
           let toast = Toast.show(t('screen.save failed'), {
             position: SCREEN_HEIGHT * 0.45,
           });
-          setTimeout(function() {
+          setTimeout(function () {
             Toast.hide(toast);
           }, 2000);
         }
       },
-      err => {},
+      err => { },
     );
   }
   goback(text) {
@@ -163,9 +164,9 @@ class CreateComment extends Component {
                   style={styles.textInput}
                   autoFocus={true}
                   multiline={true}
+                  maxLength={200}
                 />
               </View>
-
               <View style={styles.imgContainer}>
                 {paths.length !== 0 && (
                   <View style={{ flexDirection: 'row' }}>

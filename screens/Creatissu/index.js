@@ -42,6 +42,8 @@ class Creatissu extends Component {
       index: 0,
       visible: false,
       modalVisible: false,
+      titleMaxLength: true,
+      contentMaxLength: true,
       typenum: 0,
       userName: t('screen.createissue_modalDropdown2'),
     };
@@ -54,7 +56,6 @@ class Creatissu extends Component {
   componentDidMount() {
     apiFetchforeman({ projectId: this.props.navigation.state.params.projectId }).then(
       res => {
-        console.log('res.data.data', res.data.data);
         this.setState({
           result: res.data.data,
         });
@@ -130,7 +131,6 @@ class Creatissu extends Component {
   showImageView = () => {
     this.setState({ modalVisible: true });
   };
-
   _dropdown_renderRow(rowData, rowID) {
     let evenRow = rowID % 2;
     return (
@@ -210,9 +210,11 @@ class Creatissu extends Component {
                 underlineColorAndroid={'transparent'}
                 placeholder={t('screen.createissue_titleinput')}
                 style={styles.titleInput}
+                maxLength={20}
               // autoFocus={true}
               // multiline={true}
               />
+
               <ModalDropdown
                 defaultValue={typeMap.get(this.state.typenum)}
                 options={[
@@ -275,9 +277,9 @@ class Creatissu extends Component {
                   underlineColorAndroid={'transparent'}
                   style={styles.textInput}
                   multiline={true}
+                  maxLength={200}
                 />
               </View>
-
               {paths.length !== 0 && (
                 <TouchableOpacity onPress={this.showImageView}>
                   <Image style={styles.image} resizeMode="cover" source={{ uri: paths[0].url }} />
