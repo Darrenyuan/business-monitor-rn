@@ -500,81 +500,84 @@ class StatisticsDetails extends Component {
                 (status === 2 && length === 1) ||
                 status === 3 ? (
                   historyIusseFeedBack.length !== 0 ? (
-                    historyIusseFeedBack.map((item, i) => {
-                      return (
-                        <View style={styles.History}>
-                          <View>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>历史反馈记录</Text>
-                          </View>
-                          <View style={styles.Detail1} key={i}>
-                            <View style={styles.name}>
-                              <Text style={{ fontSize: 16 }}>
-                                {t('screen.statisticsDetails_feedbackStaff')}: {item.nickname}
-                              </Text>
-                            </View>
-                            <View style={styles.status}>
-                              <Text style={{ fontSize: 16 }}>
-                                {t('screen.statisticsDetails_feedbackStatus')}:{' '}
-                                {t('screen.statisticsDetails_notPass')}
-                              </Text>
-                            </View>
-                            <View style={styles.time}>
-                              <Text style={{ fontSize: 16 }}>
-                                {t('screen.statisticsDetails_feedbackTime')}: {item.createTime}
-                              </Text>
-                            </View>
-                            {whoseIusseReplies.length !== 0 ? (
-                              <View style={styles.showView}>
-                                <Text
-                                  style={{
-                                    fontSize: 18,
-                                    color: 'red',
-                                    lineHeight: SCREEN_HEIGHT * 0.03,
-                                  }}
-                                >
-                                  {' '}
-                                  原因: {whoseIusseReplies[i].content}
+                    <View style={styles.History}>
+                      <View>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>历史反馈记录</Text>
+                      </View>
+                      {
+                        historyIusseFeedBack.map((item, i) => {
+                          return (
+                            <View style={styles.Detail1} key={i}>
+                              <View style={styles.name}>
+                                <Text style={{ fontSize: 16 }}>
+                                  {t('screen.statisticsDetails_feedbackStaff')}: {item.nickname}
                                 </Text>
                               </View>
-                            ) : (
-                                <Text />
-                              )}
-                            {item.imagePath.length === 0 ? (
-                              <Text />
-                            ) : (
-                                <View style={styles.swiper}>
-                                  <TouchableOpacity onPress={() => this.showImageView(item.imagePath)}>
-                                    <View style={styles.swiper1}>
-                                      <Swiper
-                                        showsPagination={true}
-                                        dotColor="white"
-                                        horizontal={true}
-                                        loop={true}
-                                        style={{ flex: 1 }}
-                                        paginationStyle={{ bottom: 10 }}
-                                      >
-                                        {item.imagePath.map((item, index) => {
-                                          return (
-                                            <Image
-                                              style={styles.swiperImage}
-                                              key={index}
-                                              resizeMode="cover"
-                                              source={{ uri: item.url }}
-                                            />
-                                          );
-                                        })}
-                                      </Swiper>
-                                    </View>
-                                  </TouchableOpacity>
+                              <View style={styles.status}>
+                                <Text style={{ fontSize: 16 }}>
+                                  {t('screen.statisticsDetails_feedbackStatus')}:{' '}
+                                  {t('screen.statisticsDetails_notPass')}
+                                </Text>
+                              </View>
+                              <View style={styles.time}>
+                                <Text style={{ fontSize: 16 }}>
+                                  {t('screen.statisticsDetails_feedbackTime')}: {item.createTime}
+                                </Text>
+                              </View>
+                              {whoseIusseReplies.length !== 0 ? (
+                                <View style={styles.showView}>
+                                  <Text
+                                    style={{
+                                      fontSize: 18,
+                                      color: 'red',
+                                      lineHeight: SCREEN_HEIGHT * 0.03,
+                                    }}
+                                  >
+                                    {' '}
+                                    原因: {whoseIusseReplies[i].content}
+                                  </Text>
                                 </View>
-                              )}
-                            <View style={styles.texts}>
-                              <Text style={{ fontSize: 16 }}>{item.content}</Text>
+                              ) : (
+                                  <Text />
+                                )}
+                              {item.imagePath.length === 0 ? (
+                                <Text />
+                              ) : (
+                                  <View style={styles.swiper}>
+                                    <TouchableOpacity onPress={() => this.showImageView(item.imagePath)}>
+                                      <View style={styles.swiper1}>
+                                        <Swiper
+                                          showsPagination={true}
+                                          dotColor="white"
+                                          horizontal={true}
+                                          loop={true}
+                                          style={{ flex: 1 }}
+                                          paginationStyle={{ bottom: 10 }}
+                                        >
+                                          {item.imagePath.map((item, index) => {
+                                            return (
+                                              <Image
+                                                style={styles.swiperImage}
+                                                key={index}
+                                                resizeMode="cover"
+                                                source={{ uri: item.url }}
+                                              />
+                                            );
+                                          })}
+                                        </Swiper>
+                                      </View>
+                                    </TouchableOpacity>
+                                  </View>
+                                )}
+                              <View style={styles.texts}>
+                                <Text style={{ fontSize: 16 }}>{item.content}</Text>
+                              </View>
                             </View>
-                          </View>
-                        </View>
-                      );
-                    })
+                          );
+                        })
+                      }
+                    </View>
+
                   ) : (
                       <Text />
                     )
