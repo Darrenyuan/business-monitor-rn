@@ -111,7 +111,6 @@ export default {
     justifyContent: 'flex-start',
     flexWrap: 'wrap',
     marginTop: SCREEN_HEIGHT * 0.02,
-    height: '100%',
   },
   peopel: {
     width: SCREEN_WIDTH * 0.45,

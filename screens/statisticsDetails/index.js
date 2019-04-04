@@ -256,6 +256,7 @@ class StatisticsDetails extends Component {
     if ((status === 2 && length === 1) || status === 3) {
       let copy = JSON.parse(JSON.stringify(whoseIusseFeedBack));
       historyIusseFeedBack = copy.splice(1);
+      console.log('copy', copy);
     } else if (status === 1 && length === 0) {
       historyIusseFeedBack = whoseIusseFeedBack;
     }
@@ -273,7 +274,9 @@ class StatisticsDetails extends Component {
     var localcreate = moment(create)
       .local()
       .format('YYYY-MM-DD hh:mm');
-    if (this.props.monitor.replyList.fetchReplyListPending) {
+    if (this.props.monitor.issueList.fetchIssueListPending !== false ||
+      this.props.monitor.repliesList.fetchRepliesListPending !== false ||
+      this.props.monitor.replyList.fetchReplyListPending !== false) {
       return (
         <View>
           <Text>loading...</Text>
@@ -496,7 +499,6 @@ class StatisticsDetails extends Component {
                 (status === 1 && length === 0) ||
                 (status === 2 && length === 1) ||
                 status === 3 ? (
-
                   historyIusseFeedBack.length !== 0 ? (
                     historyIusseFeedBack.map((item, i) => {
                       return (
